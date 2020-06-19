@@ -7,14 +7,14 @@ require "lib/utils"
 
 local Boat = require "boat"
 
-local screen = love.graphics.newCanvas(w, h)
+local screen = love.graphics.newCanvas(w/2, h)
 
 local boat = Boat()
 
 local drumControls = require "drumControls"
 
 function love.load()
-    camera = Camera(w/2, h/2, w, h)
+    camera = Camera(w/4, h/2, w/2, h)
     camera:setFollowLerp(0.2)
     camera:setFollowLead(20)
     camera:setFollowStyle('TOPDOWN_TIGHT')
