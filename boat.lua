@@ -31,6 +31,14 @@ end
 function Boat:paddle(left)
     self.mov.rot_speed = math.clamp(-_max_rot, self.mov.rot_speed + (left and -1 or 1) * _instant_rot_speed, _max_rot)
     self.mov.forward_speed = math.min(self.mov.forward_speed + _instant_forward_speed, _max_speed)
+
+    for i=0,3 do
+        local dx = Boat.img:getHeight()/2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
+        local dx = Boat.img:getHeight()/2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
+        local dy = Boat.img:getHeight()/2 * math.sin(self.pos.rot) + 9 * i * math.cos(self.pos.rot)
+        Particles.new(self.pos.x - Boat.img:getHeight()/2, self.pos.y + 9 * i, "splash")
+        Particles.new(self.pos.x + Boat.img:getHeight()/2, self.pos.y + 9 * i, "splash")
+    end
 end
 
 function Boat:draw()

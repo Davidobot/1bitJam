@@ -1,14 +1,17 @@
 w, h = 640, 360
 love.graphics.setDefaultFilter("nearest", "nearest", 0)
 
+-- Overall Libraries
 Object = require "lib/classic"
 local Camera = require 'lib/Camera'
 require "lib/utils"
 
+-- Global Classes
+Particles = require "particles"
+
 local Boat = require "boat"
 
 local screen = love.graphics.newCanvas(w/2, h)
-
 local drumScreen = love.graphics.newCanvas(w/2, h)
 
 local boat = Boat()
@@ -25,6 +28,9 @@ end
 function love.update(dt)
     camera:update(dt)
     drumControls.update(dt)
+
+    Particles.update(dt)
+
     boat:update(dt)
     camera:follow(boat.pos.x, boat.pos.y)
 end
@@ -34,16 +40,12 @@ function love.draw()
         love.graphics.clear()
 
         camera:attach()
+            Particles.draw()
             boat:draw()
         camera:detach()
         camera:draw()
-
-        
-
     
     love.graphics.setCanvas(drumScreen)
-        love.graphics.clear(1, 0, 0)
-
         drumControls.draw()
     love.graphics.setCanvas()
 
