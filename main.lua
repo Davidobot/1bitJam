@@ -9,6 +9,8 @@ local Boat = require "boat"
 
 local screen = love.graphics.newCanvas(w/2, h)
 
+local drumScreen = love.graphics.newCanvas(w/2, h)
+
 local boat = Boat()
 
 local drumControls = require "drumControls"
@@ -36,8 +38,13 @@ function love.draw()
         camera:detach()
         camera:draw()
 
-        drumControls.draw()
+        
 
+    
+    love.graphics.setCanvas(drumScreen)
+        love.graphics.clear(1, 0, 0)
+
+        drumControls.draw()
     love.graphics.setCanvas()
 
     local cur_w, cur_h, _ = love.window.getMode()
@@ -45,6 +52,7 @@ function love.draw()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setBlendMode('alpha', 'premultiplied')
     love.graphics.draw(screen, 0, 0, 0, cur_w/w, cur_h/h)
+    love.graphics.draw(drumScreen, cur_w/2, 0, 0, cur_w/w, cur_h/h)
     love.graphics.setBlendMode('alpha')
 end
 
