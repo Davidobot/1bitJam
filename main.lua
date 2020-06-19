@@ -13,13 +13,13 @@ local boat = Boat()
 function love.load()
     camera = Camera(w/2, h/2, w, h)
     camera:setFollowLerp(0.2)
-    camera:setFollowLead(10)
+    camera:setFollowStyle('TOPDOWN_TIGHT')
 end
 
 function love.update(dt)
     camera:update(dt)
     boat:update(dt)
-    --camera:follow(boat.pos.x, boat.pos.y)
+    camera:follow(boat.pos.x, boat.pos.y)
 end
 
 function love.draw()
@@ -27,7 +27,13 @@ function love.draw()
         love.graphics.clear()
 
         camera:attach()
-            
+            for i=-w, w, 6 do
+                for j=-h, h, 6 do
+                    love.graphics.rectangle('fill', i, j, 2, 2)
+                end
+            end     
+
+
             boat:draw()
         
         camera:detach()
