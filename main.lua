@@ -46,6 +46,7 @@ function love.draw()
         camera:draw()
     
     love.graphics.setCanvas(drumScreen)
+        love.graphics.clear()
         drumControls.draw()
     love.graphics.setCanvas()
 

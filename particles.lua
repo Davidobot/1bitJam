@@ -6,7 +6,8 @@ Particles.t = {}
 local imgs = {}
 imgs.splash = {}
 imgs.splash.img = love.graphics.newImage("gfx/splash_spritesheet.png")
-imgs.splash.g = anim8.newGrid(9, 6, imgs.splash.img:getWidth(), imgs.splash.img:getHeight())
+imgs.splash.w = 9; imgs.splash.h = 6
+imgs.splash.g = anim8.newGrid(imgs.splash.w, imgs.splash.h, imgs.splash.img:getWidth(), imgs.splash.img:getHeight())
 
 function Particles.new(x, y, type)
     local v = {}
@@ -33,7 +34,7 @@ end
 function Particles.draw()
     for i=#Particles.t,1,-1 do
         local v = Particles.t[i]
-        v.anim:draw(imgs[v.type].img, v.x, v.y)
+        v.anim:draw(imgs[v.type].img, v.x - imgs[v.type].w/2, v.y - imgs[v.type].h/2)
     end
 end
 
