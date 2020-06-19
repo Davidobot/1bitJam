@@ -19,10 +19,38 @@ local boat = Boat()
 local drumControls = require "drumControls"
 
 function love.load()
-    camera = Camera(w/4, h/2, w/2, h)
+    camera = Camera(w/4, h/2, w/2, h, 0.8)
     camera:setFollowLerp(0.2)
-    camera:setFollowLead(20)
+    camera:setFollowLead(40)
     camera:setFollowStyle('TOPDOWN_TIGHT')
+
+    -- load the noise glsl as a string
+    local perlin = love.filesystem.read("gfx/perlin2d.glsl")
+ 
+    -- prepend the noise function definition to the effect definition
+    perlin_noise = love.graphics.newShader(perlin .. [[
+        uniform vec3 vars;
+        vec4 effect(vec4 colour, Image image, vec2 local, vec2 screen)
+        {
+            // scale the screen coordinates to scale the noise
+            number noise = perlin2d((vars.xy+screen + vec2(0, -vars.z)) / 32);
+ 
+            // the noise is between -1 and 1, so scale it between 0 and 1
+            noise = noise * 0.5 + 0.5;
+            if (noise > 0.85) {
+                noise = mod(floor(screen.y), 8);
+                if (noise >= 7 && mod(floor(screen.x), 8) >= 2) {
+                    noise = 1.0;
+                } else {
+                    noise = 0.0;
+                }
+            } else {
+                noise = 0.0;
+            }
+ 
+            return vec4(noise, noise, noise, 1.0);
+        }
+    ]])
 end
 
 function love.update(dt)
@@ -38,6 +66,11 @@ end
 function love.draw()
     love.graphics.setCanvas(screen)
         love.graphics.clear()
+        
+        perlin_noise:send("vars", {camera.x, camera.y, love.timer.getTime()})
+        love.graphics.setShader(perlin_noise)
+        love.graphics.rectangle("fill", 0, 0, w/2, h)
+        love.graphics.setShader()
 
         camera:attach()
             Particles.draw()

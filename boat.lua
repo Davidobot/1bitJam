@@ -5,9 +5,9 @@ Boat.img = love.graphics.newImage("gfx/boat.png")
 local _forward_decel = 5
 local _rot_decel = math.pi/4
 
-local _instant_rot_speed = math.pi/8
-local _instant_forward_speed = 10
-local _max_speed = 30
+local _instant_rot_speed = math.pi/10
+local _instant_forward_speed = 20
+local _max_speed = 50
 local _max_rot = math.pi
 
 function Boat:new()
@@ -33,11 +33,15 @@ function Boat:paddle(left)
     self.mov.forward_speed = math.min(self.mov.forward_speed + _instant_forward_speed, _max_speed)
 
     for i=0,3 do
-        local dx = -Boat.img:getHeight()/2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
-        local dx2 = Boat.img:getHeight()/2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
-        local dy = Boat.img:getHeight()/2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
-        Particles.new(self.pos.x + dx, self.pos.y + dy, "splash")
-        Particles.new(self.pos.x + dx2, self.pos.y + dy, "splash")
+        local dx = -Boat.img:getHeight()/2*1.2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
+        local dx2 = Boat.img:getHeight()/2*1.2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
+        local dy = Boat.img:getHeight()/2*1.2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
+        local dy2 = -Boat.img:getHeight()/2*1.2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
+        if left then
+            Particles.new(self.pos.x + dx, self.pos.y + dy, "splash")
+        else
+            Particles.new(self.pos.x + dx2, self.pos.y + dy2, "splash")
+        end
     end
 end
 
