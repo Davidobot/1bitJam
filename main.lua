@@ -11,6 +11,8 @@ local screen = love.graphics.newCanvas(w, h)
 
 local boat = Boat()
 
+local drumControls = require "drumControls"
+
 function love.load()
     camera = Camera(w/2, h/2, w, h)
     camera:setFollowLerp(0.2)
@@ -20,6 +22,7 @@ end
 
 function love.update(dt)
     camera:update(dt)
+    drumControls.update(dt)
     boat:update(dt)
     camera:follow(boat.pos.x, boat.pos.y)
 end
@@ -32,6 +35,8 @@ function love.draw()
             boat:draw()
         camera:detach()
         camera:draw()
+
+        drumControls.draw()
 
     love.graphics.setCanvas()
 
