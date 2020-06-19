@@ -46,7 +46,8 @@ function Boat:paddle(left)
 end
 
 function Boat:draw()
-    love.graphics.draw(Boat.img, self.pos.x, self.pos.y, self.pos.rot, 1, 1, Boat.img:getWidth()/2, Boat.img:getHeight()/2)
+    --love.graphics.draw(Boat.img, self.pos.x, self.pos.y, self.pos.rot, 1, 1, Boat.img:getWidth()/2, Boat.img:getHeight()/2)
+    orderedDraw(self.pos.y, Boat.img, self.pos.x, self.pos.y, self.pos.rot, 1, 1, Boat.img:getWidth()/2, Boat.img:getHeight()/2)
 end
 
 return Boat

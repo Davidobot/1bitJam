@@ -69,6 +69,11 @@ function t.update(dt)
             else
                 playSound("don")
             end
+            local dx = 12 * math.cos(t.playerBoatRef.pos.rot)
+            local dy = 12* math.sin(t.playerBoatRef.pos.rot)
+            Particles.new(0, 0, "sound", true, function()
+                return t.playerBoatRef.pos.x + dx, t.playerBoatRef.pos.y + dy
+            end)
         end
     end
 end
