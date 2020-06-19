@@ -11,7 +11,13 @@ t.drumstick_idlePos = {}
 t.drumstick_img = love.graphics.newImage("gfx/hand.png")
 
 t.drum_img = love.graphics.newImage("gfx/drum.png")
-t.drum_height = h * 0.66
+t.drum_img_pos = {x = w / 2 + 50, y = h / 2 + 50}
+t.drum_height = h * 0.68
+
+t.drum_leftRimX     = w / 2 + 60
+t.drum_leftCenterX  = w / 2 + 110
+t.drum_rightCenterX = w / 2 + 210
+t.drum_rightRimX    = w / 2 + 267
 
 t.playerBoatRef = nil
 
@@ -36,16 +42,29 @@ function t.update(dt)
     t.drumstick_pos.x = lerp(t.drumstick_pos.x, t.drumstick_targetPos.x, t.drumstick_lerp * dt)
     t.drumstick_pos.y = lerp(t.drumstick_pos.y, t.drumstick_targetPos.y, t.drumstick_lerp * dt)
 
-    -- drumstick collided with the drum
+    -- drumstick to drum collision
     if (prevDrumstickPos.y < t.drum_height and t.drumstick_pos.y >= t.drum_height) then
         local left
-        if (t.drumstick_pos.x > w * 0.65 and t.drumstick_pos.x < w * 0.85) then
-            left = true
-        else
+        local hit = false
+
+        if (t.drumstick_pos.x > t.drum_rightRimX) then
+            hit = false
+        elseif (t.drumstick_pos.x > t.drum_rightCenterX) then
+            hit = true
             left = false
+        elseif (t.drumstick_pos.x > t.drum_leftCenterX) then
+            hit = true
+            left = true
+        elseif (t.drumstick_pos.x > t.drum_leftRimX) then
+            hit = true
+            left = false
+        else
+            hit = false
         end
-        
-        t.playerBoatRef:paddle(left)
+
+        if (hit) then
+            t.playerBoatRef:paddle(left)
+        end
     end
 end
 
@@ -53,9 +72,17 @@ function t.draw()
     love.graphics.setColor(1, 1, 1)
     love.graphics.push()
     love.graphics.translate(-w/2, 0)
-    --love.graphics.circle("fill", t.drumstick_pos.x, t.drumstick_pos.y, 10, 6)
-    love.graphics.line(w/2, t.drum_height, w, t.drum_height)
-    love.graphics.draw(t.drumstick_img, t.drumstick_pos.x, t.drumstick_pos.y, 0, 1, 1, 0, 0)
+       
+        --debug collision lines
+        love.graphics.setColor(1,0,1)
+        love.graphics.line(t.drum_leftRimX, t.drum_height, t.drum_leftCenterX, t.drum_height)
+        --love.graphics.line(t.drum_leftCenterX, t.drum_height, t.drum_rightCenterX, t.drum_height)
+        love.graphics.line(t.drum_rightCenterX, t.drum_height, t.drum_rightRimX, t.drum_height)
+        
+        --drum and drumstick graphics
+        love.graphics.setColor(1,1,1)
+        love.graphics.draw(t.drum_img, t.drum_img_pos.x, t.drum_img_pos.y)
+        love.graphics.draw(t.drumstick_img, t.drumstick_pos.x, t.drumstick_pos.y, 0, 1, 1, 0, 0)
     love.graphics.pop()
 end
 
