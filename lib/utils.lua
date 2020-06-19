@@ -1,6 +1,10 @@
 function lerp(a,b,t) return a * (1-t) + b * t end
 function math.clamp(low, n, high) return math.min(math.max(n, low), high) end
 
+function isVisible(x, y, w, h)
+	return x + w >= 0 and y + h >= 0 and x <= w and y <= h
+end
+
 local _channels = { }
 local _sounds = { }
 --_sounds.hit = love.sound.newSoundData ( "hit.ogg" )
