@@ -51,6 +51,7 @@ function love.load()
             return vec4(noise, noise, noise, 1.0);
         }
     ]])
+    drumControls.init(boat)
 end
 
 function love.update(dt)
