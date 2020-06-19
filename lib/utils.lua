@@ -7,7 +7,8 @@ end
 
 local _channels = { }
 local _sounds = { }
---_sounds.hit = love.sound.newSoundData ( "hit.ogg" )
+_sounds.don = love.sound.newSoundData ( "sfx/don.wav" )
+_sounds.ka = love.sound.newSoundData ( "sfx/ka.wav" )
 
 function playSound ( sound )
 	if not _channels[ sound ] then _channels[ sound ] = { } end

@@ -14,7 +14,7 @@ function Particles.new(x, y, type)
     v.x = x; v.y = y;
     v.type = type;
     v.dead = false;
-    v.anim = anim8.newAnimation(imgs[type].g('1-5', 1), 0.5, function()
+    v.anim = anim8.newAnimation(imgs[type].g('1-5', 1), 0.3, function()
         v.dead = true;
     end)
 
