@@ -23,6 +23,8 @@ function love.load()
     camera:setFollowLerp(0.2)
     camera:setFollowLead(20)
     camera:setFollowStyle('TOPDOWN_TIGHT')
+
+    drumControls.init(boat)
 end
 
 function love.update(dt)
