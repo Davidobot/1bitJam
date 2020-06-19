@@ -64,6 +64,11 @@ function t.update(dt)
 
         if (hit) then
             t.playerBoatRef:paddle(left)
+            if not left then
+                playSound("ka")
+            else
+                playSound("don")
+            end
         end
     end
 end
