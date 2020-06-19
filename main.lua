@@ -8,10 +8,11 @@ Object = require "lib/classic"
 require "lib/utils"
 
 function love.load()
-	states.menu = lovelyMoon.addState("states.title", "title")
+    states.title = lovelyMoon.addState("states.title", "title")
+    states.credits = lovelyMoon.addState("states.credits", "credits")
 	states.game = lovelyMoon.addState("states.game", "game")
 	
-	lovelyMoon.enableState("game")
+	lovelyMoon.enableState("title")
 end
 
 function love.update(dt)

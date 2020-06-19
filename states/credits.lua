@@ -19,36 +19,37 @@ function state:load()
     pointer_img = love.graphics.newImage("gfx/pointer.png")
 
     text = {
-        {s = "THE GENTLE BEAT OF A DRAGON BOAT", f = font32, y = 0, ty = 10},
-        {s = "A STORY OF HATE, FEAR, AND REDEMPTION", f = font24, y = 0, ty = 40},
-        {s = "START", f = font20, y = 0, ty = h/2},
-        {s = "CREDITS", f = font20, y = 0, ty = h/2 + 20},
-        {s = "QUIT", f = font20, y = 0, ty = h/2 + 40}
+        {s = "CREDITS", f = font32, y = 0, ty = 10},
+        {s = "Equal Contributions:", f = font20, y = 0, ty = h/2 - 55},
+        {s = "Hymyviiksi", f = font24, y = 0, ty = h/2 - 30},
+        {s = "David Khachaturov", f = font24, y = 0, ty = h/2},
+        {s = "BACK", f = font20, y = 0, ty = h/2 + 60}
     }
 
     buttons = {
-        start = {
+        hymyviiksi = {
             t = text[3],
             txt = text[3].s,
             hovered = false,
             onClick = function()
-                lovelyMoon.switchState("title", "game")
+                love.system.openURL("")
+                -- TODO: fill in URL
             end
         },
-        credits = {
+        davidobot = {
             t = text[4],
             txt = text[4].s,
             hovered = false,
             onClick = function()
-                lovelyMoon.switchState("title", "credits")
+                love.system.openURL("http://www.davidobot.net/")
             end
         },
-        quit = {
+        back = {
             t = text[5],
             txt = text[5].s,
             hovered = false,
             onClick = function()
-                love.event.quit()
+                lovelyMoon.switchState("credits", "title")
             end
         }
     }
@@ -64,9 +65,9 @@ function state:enable()
     end
 
     flux.to(text[1], 1, {y = text[1].ty}):ease("backout")
-    flux.to(text[2], 1, {y = text[2].ty}):ease("backout"):delay(0.8)
-    flux.to(text[3], 1.2, {y = text[3].ty}):ease("backout"):delay(1.8)
-    flux.to(text[4], 1.2, {y = text[4].ty}):ease("backout"):delay(1.8)
+    flux.to(text[2], 1, {y = text[2].ty}):ease("backout"):delay(0.4)
+    flux.to(text[3], 1.2, {y = text[3].ty}):ease("backout"):delay(0.8)
+    flux.to(text[4], 1.2, {y = text[4].ty}):ease("backout"):delay(0.8)
     flux.to(text[5], 1.2, {y = text[5].ty}):ease("backout"):delay(1.8)
 end
 
@@ -137,8 +138,8 @@ function state:mousepressed(x, y, button)
 end
 
 function state:mousereleased(x, y, button)
-    local mouseX = love.mouse.getX() / love.graphics.getWidth() * w
-    local mouseY = love.mouse.getY() / love.graphics.getHeight() * h
+    local mouseX = x / love.graphics.getWidth() * w
+    local mouseY = y / love.graphics.getHeight() * h
 	for i,v in pairs(buttons) do
         local ww = v.t.f:getWidth(v.t.s)
         local hh = v.t.f:getHeight(v.t.s) * 0.65 -- 0.65 is magic number for font
