@@ -3,6 +3,7 @@ love.graphics.setDefaultFilter("nearest", "nearest", 0)
 
 Object = require "lib/classic"
 local Camera = require 'lib/Camera'
+require "lib/utils"
 
 local Boat = require "boat"
 
@@ -13,6 +14,7 @@ local boat = Boat()
 function love.load()
     camera = Camera(w/2, h/2, w, h)
     camera:setFollowLerp(0.2)
+    camera:setFollowLead(20)
     camera:setFollowStyle('TOPDOWN_TIGHT')
 end
 
@@ -27,15 +29,7 @@ function love.draw()
         love.graphics.clear()
 
         camera:attach()
-            for i=-w, w, 6 do
-                for j=-h, h, 6 do
-                    love.graphics.rectangle('fill', i, j, 2, 2)
-                end
-            end     
-
-
             boat:draw()
-        
         camera:detach()
         camera:draw()
 
@@ -43,10 +37,10 @@ function love.draw()
 
     local cur_w, cur_h, _ = love.window.getMode()
 
-    love.graphics.push()
-    love.graphics.scale(cur_w/w, cur_h/h)
-    love.graphics.draw(screen)
-    love.graphics.pop()
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setBlendMode('alpha', 'premultiplied')
+    love.graphics.draw(screen, 0, 0, 0, cur_w/w, cur_h/h)
+    love.graphics.setBlendMode('alpha')
 end
 
 function love.keypressed(key)

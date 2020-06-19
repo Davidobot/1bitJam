@@ -1,4 +1,5 @@
 function lerp(a,b,t) return a * (1-t) + b * t end
+function math.clamp(low, n, high) return math.min(math.max(n, low), high) end
 
 local _channels = { }
 local _sounds = { }
