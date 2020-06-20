@@ -25,6 +25,13 @@ function Boat:update(dt)
 
     self.mov.forward_speed = math.max(0, self.mov.forward_speed - _forward_decel * dt)
     self.mov.rot_speed = self.mov.rot_speed < 0 and math.min(0, self.mov.rot_speed + _rot_decel * dt) or math.max(0, self.mov.rot_speed - _rot_decel * dt)
+
+    for i,v in ipairs(Obstacles.t) do
+        if math.dist(v.x, v.y, self.pos.x, self.pos.y) < 10 then
+            camera:shake(8, 1, 60)
+            camera:flash(0.05, {0, 0, 0, 1})
+        end
+    end
 end
 
 ---@param left boolean
