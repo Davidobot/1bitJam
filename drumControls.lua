@@ -3,7 +3,7 @@
 local t = Object:extend()
 
 love.mouse.setVisible(false)
-love.mouse.setGrabbed(true)
+--love.mouse.setGrabbed(true)
 
 t.drumstick_pos = {x = w * 0.75, y = h * 0.5}
 t.drumstick_targetPos = {x = t.drumstick_pos.x, y = t.drumstick_pos.y}

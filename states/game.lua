@@ -35,7 +35,7 @@ function state:load()
     --end
 
     level.init(Obstacles, boat, Enemies)
-    Enemies.init(boat)
+    Enemies.init(boat, Boat)
 end
 
 function state:close()
