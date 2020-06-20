@@ -6,6 +6,7 @@ lovelyMoon = require "lib/lovelyMoon"
 states = {}
 Object = require "lib/classic"
 require "lib/utils"
+flux = require "lib/flux"
 
 function love.load()
 	states.title = lovelyMoon.addState("states.title", "title")
@@ -14,10 +15,11 @@ function love.load()
 	states.game = lovelyMoon.addState("states.game", "game")
 	states.map = lovelyMoon.addState("states.map", "map")
 	
-	lovelyMoon.enableState("title")
+	lovelyMoon.enableState("game")
 end
 
 function love.update(dt)
+	flux.update(dt)
 	lovelyMoon.event.update(dt)
 end
 

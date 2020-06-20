@@ -41,14 +41,12 @@ function math.sign(n) return n>0 and 1 or n<0 and -1 or 0 end
 -- Gives a precise random decimal number given a minimum and maximum
 function math.prandom(min, max) return love.math.random() * (max - min) + min end
 
+-- GRAPHICS --
 function isVisible(x, y, ww, hh)
 	return x + ww >= 0 and y + hh >= 0 and x <= w and y <= h
 end
 
--- load the noise glsl as a string
 local perlin = love.filesystem.read("gfx/perlin2d.glsl")
- 
--- prepend the noise function definition to the effect definition
 sea_noise = love.graphics.newShader(perlin .. [[
 	uniform vec3 vars;
 	vec4 effect(vec4 colour, Image image, vec2 local, vec2 screen)
@@ -73,6 +71,32 @@ sea_noise = love.graphics.newShader(perlin .. [[
 	}
 ]])
 
+rain_noise = love.graphics.newShader(perlin .. [[
+	uniform vec3 vars;
+	vec4 effect(vec4 colour, Image image, vec2 local, vec2 screen)
+	{
+		// scale the screen coordinates to scale the noise
+		number noise = perlin2d((vars.xy+screen + 32*vec2(0, -vars.z)) / 32);
+
+		// the noise is between -1 and 1, so scale it between 0 and 1
+		noise = noise * 0.5 + 0.5;
+		if (noise > 0.85) {
+			noise = mod(floor(screen.x), 8);
+			if (noise >= 7 ) {
+				noise = 1.0;
+			} else {
+				noise = 0.0;
+			}
+		} else {
+			noise = 0.0;
+		}
+
+		return vec4(noise, noise, noise, noise);
+	}
+]])
+-- END GRAPHICS --
+
+-- DRAWING
 local draw_pile = {}
 
 function orderedDraw(z, drawable,x,y,r,sx,sy,ox,oy)
@@ -102,6 +126,7 @@ function sortedDraw()
 	draw_pile = {}
 end
 
+-- SOUNDS
 local _channels = { }
 local _sounds = { }
 _sounds.don = love.sound.newSoundData ( "sfx/don.wav" )
