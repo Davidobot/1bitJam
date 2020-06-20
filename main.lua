@@ -12,6 +12,7 @@ function love.load()
 	states.intro = lovelyMoon.addState("states.intro", "intro")
     states.credits = lovelyMoon.addState("states.credits", "credits")
 	states.game = lovelyMoon.addState("states.game", "game")
+	states.map = lovelyMoon.addState("states.map", "map")
 	
 	lovelyMoon.enableState("title")
 end
