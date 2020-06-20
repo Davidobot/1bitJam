@@ -91,6 +91,7 @@ function t.update(dt)
             if v.paddleT > 0 then
                 v.paddleT = v.paddleT - dt
             end
+            v.boat:update(dt)
 
             local dist = math.dist(t.playerBoatRef.pos.x, t.playerBoatRef.pos.y, v.boat.pos.x, v.boat.pos.y)
             if (dist > t.pirate_seeDistance) then --pirate is too far to see the player so it's not interested in doing anything
@@ -118,9 +119,7 @@ function t.update(dt)
                 if v.paddleT <= 0 then
                     v.paddleT = t.pirate_paddleTimer
                     v.boat:paddle(left)
-                end
-
-                v.boat:update(dt)
+                end           
             end
         elseif v.name == "tentacle" then
             local dir = {x = t.playerBoatRef.pos.x - v.pos.x, y = t.playerBoatRef.pos.y - v.pos.y}
