@@ -25,7 +25,7 @@ t.tentacle_speed = 10
 t.pirate_closeDistance = w / 4
 t.pirate_seeDistance = w * 0.75
 t.pirate_fireTimer = 3
-t.pirate_paddleTimer = 2
+t.pirate_paddleTimer = 1
 
 t.playerBoatRef = nil
 t.boatClassRef = nil
@@ -50,7 +50,7 @@ function t.spawnEnemy(name, x, y)
         newEnemy.boat.pos.x = x
         newEnemy.boat.pos.y = y
         newEnemy.fireT = t.pirate_fireTimer
-        newEnemy.pirate_paddleTimer = t.pirate_paddleTimer
+        newEnemy.paddleT = t.pirate_paddleTimer
     elseif newEnemy.name == "tentacle" then
 
     elseif newEnemy.name == "seagull" then
@@ -88,13 +88,39 @@ function t.update(dt)
             end
             v.boat:update(dt)
         elseif v.name == "pirate" then
-            local dist = math.dist(t.playerBoatRef.pos.x, t.playerBoatRef.pos.y, v.pos.x, v.pos.y)
+            if v.paddleT > 0 then
+                v.paddleT = v.paddleT - dt
+            end
+
+            local dist = math.dist(t.playerBoatRef.pos.x, t.playerBoatRef.pos.y, v.boat.pos.x, v.boat.pos.y)
             if (dist > t.pirate_seeDistance) then --pirate is too far to see the player so it's not interested in doing anything
                 --do nothing lol
             elseif (dist > t.pirate_closeDistance) then --pirate is pretty far so it attempts to face the player and paddle towards them
-                
+                local angle = math.atan2(t.playerBoatRef.pos.y - v.boat.pos.y, t.playerBoatRef.pos.y - v.boat.pos.x)
+                local left = angle < 0
+                if v.paddleT <= 0 then
+                    v.paddleT = t.pirate_paddleTimer
+                    v.boat:paddle(left)
+                end
             else --pirate is pretty close so it tries to turn its side towards the player as an attempt to aim and fire with its cannons
-                
+                local angle = math.atan2(t.playerBoatRef.pos.y - v.boat.pos.y, t.playerBoatRef.pos.y - v.boat.pos.x)
+                local left
+                if angle < -math.pi * 0.5 then
+                    left = false
+                elseif angle < 0 then
+                    left = true
+                elseif angle < math.pi * 0.5 then
+                    left = false
+                else
+                    left = true
+                end
+
+                if v.paddleT <= 0 then
+                    v.paddleT = t.pirate_paddleTimer
+                    v.boat:paddle(left)
+                end
+
+                v.boat:update(dt)
             end
         elseif v.name == "tentacle" then
             local dir = {x = t.playerBoatRef.pos.x - v.pos.x, y = t.playerBoatRef.pos.y - v.pos.y}
@@ -118,7 +144,23 @@ function t.draw()
         if v.name == "racer" then
             v.boat:draw()
         elseif v.name == "pirate" then
-    
+            v.boat:draw()
+
+            --debug distances
+            local dist = math.dist(t.playerBoatRef.pos.x, t.playerBoatRef.pos.y, v.pos.x, v.pos.y)
+            local debugColor
+            if (dist > t.pirate_seeDistance) then
+                debugColor = {1, 0, 0}
+            elseif (dist > t.pirate_closeDistance) then --pirate is pretty far so it attempts to face the player and paddle towards them
+                debugColor = {1, 1, 0}
+            else --pirate is pretty close so it tries to turn its side towards the player as an attempt to aim and fire with its cannons
+                debugColor = {0, 1, 0}
+            end
+            love.graphics.setColor(debugColor)
+            love.graphics.circle("line", v.boat.pos.x, v.boat.pos.y, 30)
+            love.graphics.circle("line", v.boat.pos.x, v.boat.pos.y, 40)
+            love.graphics.circle("line", v.boat.pos.x, v.boat.pos.y, 50)
+            love.graphics.setColor(1,1,1)
         elseif v.name == "tentacle" then
            love.graphics.draw(t.tentacle_img, v.pos.x, v.pos.y, 0, 1, 1, t.tentacle_img:getWidth() * 0.5, t.tentacle_img:getHeight() * 0.75)
         elseif v.name == "seagull" then
