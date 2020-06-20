@@ -20,9 +20,9 @@ t.drum_leftCenterX  = w / 2 + 90
 t.drum_rightCenterX = w / 2 + 237
 t.drum_rightRimX    = w / 2 + 267
 
-t.gong_img = love.graphics.newImage("gfx/whirlpool.png")
-t.gong_img_pos = {x = w / 2 + 50, y = h / 2 - 50}
-t.gong_collisionPos = {x = w / 2 + 50, y = h / 2 - 50}
+t.gong_img = love.graphics.newImage("gfx/gong.png")
+t.gong_img_pos = {x = w / 2, y = 30}
+t.gong_collisionPos = {x = w / 2 + 39, y = 100}
 t.gong_collisionRad = 30
 t.gong_colliding = false
 
@@ -133,6 +133,7 @@ function t.draw()
         love.graphics.draw(t.drumstick_img, t.drumstick_pos.x, t.drumstick_pos.y, 0, 1, 1, 0, 0)
 
         --debug colliders
+        --[[
         love.graphics.setColor(1,0,1)
         
         love.graphics.circle("line", t.gong_collisionPos.x, t.gong_collisionPos.y, t.gong_collisionRad)
@@ -140,6 +141,7 @@ function t.draw()
         for i,v in ipairs(t.drum_collisionLines) do
             love.graphics.line(v.point1.x, v.point1.y, v.point2.x, v.point2.y)
         end
+        ]]
     love.graphics.pop()
 end
 
@@ -159,7 +161,6 @@ end
 
 function t.gongHit()
     playSound("ka")
-    playSound("don")
 end
 
 --todo move inside utils
