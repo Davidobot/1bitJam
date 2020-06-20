@@ -11,41 +11,52 @@ local font32, font24, font20
 local pointer_img
 local text
 local buttons
+local dragon_img
 function state:load()
     font32 = love.graphics.newFont("PERTILI.TTF", 32, "mono")
     font24 = love.graphics.newFont("PERTILI.TTF", 24, "mono")
     font20 = love.graphics.newFont("PERTILI.TTF", 20, "mono")
 
     pointer_img = love.graphics.newImage("gfx/pointer.png")
+    dragon_img = love.graphics.newImage("gfx/dragon.png")
 
     text = {
         {s = "THE GENTLE BEAT OF A DRAGON BOAT", f = font32, y = 0, ty = 10},
         {s = "A STORY OF HATE, FEAR, AND REDEMPTION", f = font24, y = 0, ty = 40},
-        {s = "START", f = font20, y = 0, ty = h/2},
-        {s = "CREDITS", f = font20, y = 0, ty = h/2 + 20},
-        {s = "QUIT", f = font20, y = 0, ty = h/2 + 40}
+        {s = "INTRO", f = font20, y = 0, ty = h/2 + 20},
+        {s = "START", f = font20, y = 0, ty = h/2 + 40},
+        {s = "CREDITS", f = font20, y = 0, ty = h/2 + 60},
+        {s = "QUIT", f = font20, y = 0, ty = h/2 + 80}
     }
 
     buttons = {
-        start = {
+        intro = {
             t = text[3],
             txt = text[3].s,
+            hovered = false,
+            onClick = function()
+                lovelyMoon.switchState("title", "intro")
+            end
+        },
+        start = {
+            t = text[4],
+            txt = text[4].s,
             hovered = false,
             onClick = function()
                 lovelyMoon.switchState("title", "game")
             end
         },
         credits = {
-            t = text[4],
-            txt = text[4].s,
+            t = text[5],
+            txt = text[5].s,
             hovered = false,
             onClick = function()
                 lovelyMoon.switchState("title", "credits")
             end
         },
         quit = {
-            t = text[5],
-            txt = text[5].s,
+            t = text[6],
+            txt = text[6].s,
             hovered = false,
             onClick = function()
                 love.event.quit()
@@ -68,6 +79,7 @@ function state:enable()
     flux.to(text[3], 1.2, {y = text[3].ty}):ease("backout"):delay(1.8)
     flux.to(text[4], 1.2, {y = text[4].ty}):ease("backout"):delay(1.8)
     flux.to(text[5], 1.2, {y = text[5].ty}):ease("backout"):delay(1.8)
+    flux.to(text[6], 1.2, {y = text[6].ty}):ease("backout"):delay(1.8)
 end
 
 function state:disable()
@@ -108,6 +120,8 @@ function state:draw()
 
     love.graphics.setCanvas(screen)
     love.graphics.clear()
+    love.graphics.draw(dragon_img, (w - dragon_img:getWidth()) / 2, 70)
+
     for i,v in ipairs(text) do
         love.graphics.setFont(v.f)
         centeredText(v.s, v.y)

@@ -8,7 +8,8 @@ Object = require "lib/classic"
 require "lib/utils"
 
 function love.load()
-    states.title = lovelyMoon.addState("states.title", "title")
+	states.title = lovelyMoon.addState("states.title", "title")
+	states.intro = lovelyMoon.addState("states.intro", "intro")
     states.credits = lovelyMoon.addState("states.credits", "credits")
 	states.game = lovelyMoon.addState("states.game", "game")
 	
