@@ -32,4 +32,8 @@ function Obstacles.draw()
     end
 end
 
+function Obstacles.clearObstacles()
+    table.clear(Obstacles.t)
+end
+
 return Obstacles

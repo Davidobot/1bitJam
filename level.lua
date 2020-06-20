@@ -20,7 +20,12 @@ t.data = {
             {name = "rock", pos = {x = w*0.3,     y = -h*1.2}},
         },
         enemies = {
-            {name = "racer", pos = {x = 0, y = 0}},
+            {name = "tentacle", pos = {x = w*0.4, y = 0}},
+            {name = "tentacle", pos = {x = w*0, y = -h*1}},
+            {name = "tentacle", pos = {x = w*0.2, y = -h*1-2}},
+            {name = "tentacle", pos = {x = w*0.8, y = -h*1.3}},
+            {name = "tentacle", pos = {x = w*0.5, y = -h*0.5}},
+            {name = "tentacle", pos = {x = w*0, y = -h*0.5}},
         },
         startFunc = function()
 
@@ -109,6 +114,8 @@ function t.endCurrentLevel()
     if (t.currentLevel < 1 or t.currentLevel > #t.data) then return end
     --todo destroy all obstacles
     --todo destroy all enemies
+    t.enemyRef.clearEnemies()
+
     t.data[t.currentLevel].endFunc()
 end
 

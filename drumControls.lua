@@ -1,3 +1,5 @@
+--todo prevent double hits (velocity, directions? or a big drum collider that checks for the drumstick leaving the area before allowing another hit, like with the gong?)
+
 local t = Object:extend()
 
 love.mouse.setVisible(false)
