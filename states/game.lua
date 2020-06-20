@@ -13,6 +13,7 @@ local boat = Boat()
 local drumControls = require "drumControls"
 
 local level = require "level"
+local Enemies = require "enemies"
 
 local stormy = true
 local time_til_next_light = 0
@@ -33,7 +34,8 @@ function state:load()
     --    Obstacles.new(love.math.random(-w, w), love.math.random(-h, h), "rock")
     --end
 
-    level.init(Obstacles, boat)
+    level.init(Obstacles, boat, Enemies)
+    Enemies.init(boat)
 end
 
 function state:close()
@@ -54,6 +56,7 @@ function state:update(dt)
 
     Particles.update(dt)
     Obstacles.update(dt)
+    Enemies.update(dt)
 
     if stormy then
         time_til_next_light = time_til_next_light - dt
@@ -82,6 +85,7 @@ function state:draw()
         camera:attach()
             -- Draw in any order
             Obstacles.draw()
+            Enemies.draw()
             Particles.draw()
             boat:draw()
 

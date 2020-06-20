@@ -46,7 +46,7 @@ function t.update(dt)
     
         elseif v.name == "tentacle" then
             local dir = {x = t.playerBoatRef.pos.x - v.pos.x, y = t.playerBoatRef.pos.y - v.pos.y}
-            local magnitude = dir.x + dir.y
+            local magnitude = math.abs(dir.x) + math.abs(dir.y)
             dir.x = dir.x / magnitude
             dir.y = dir.y / magnitude
 
@@ -66,7 +66,7 @@ function t.draw()
         elseif v.name == "pirate" then
     
         elseif v.name == "tentacle" then
-           love.graphics.draw(t.tentacle_img, v.pos.x, v.pos.y, 0, 1, 1, t.tentacle_img.getWidth() * 0.5, t.tentacle_img.getHeight() * 0.75) 
+           love.graphics.draw(t.tentacle_img, v.pos.x, v.pos.y, 0, 1, 1, t.tentacle_img:getWidth() * 0.5, t.tentacle_img:getHeight() * 0.75) 
         elseif v.name == "boss" then
     
         end  

@@ -91,9 +91,10 @@ t.data = {
     }
 }
 
-function t.init(obstacle, playerBoat)
+function t.init(obstacle, playerBoat, enemies)
     t.obstacleRef = obstacle
     t.playerBoatRef = playerBoat
+    t.enemyRef = enemies
 end
 
 function t.update(dt)
@@ -112,8 +113,7 @@ end
 
 function t.endCurrentLevel()
     if (t.currentLevel < 1 or t.currentLevel > #t.data) then return end
-    --todo destroy all obstacles
-    --todo destroy all enemies
+    t.obstacleRef.clearObstacles()
     t.enemyRef.clearEnemies()
 
     t.data[t.currentLevel].endFunc()
@@ -125,6 +125,9 @@ function t.startCurrentLevel()
 
     for i,v in ipairs(t.data[t.currentLevel].obstacles) do
         t.obstacleRef.new(v.pos.x, v.pos.y, v.name)
+    end
+    for i,v in ipairs(t.data[t.currentLevel].enemies) do
+        t.enemyRef.spawnEnemy(v.name, v.pos.x, v.pos.y)
     end
 
     t.data[t.currentLevel].startFunc()
