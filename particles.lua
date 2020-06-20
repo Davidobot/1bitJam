@@ -16,6 +16,12 @@ imgs.sound.w = 16; imgs.sound.h = 12
 imgs.sound.g = anim8.newGrid(imgs.sound.w, imgs.sound.h, imgs.sound.img:getWidth(), imgs.sound.img:getHeight())
 imgs.sound.t = 0.05
 
+imgs.fire = {}
+imgs.fire.img = love.graphics.newImage("gfx/fire_spritesheet.png")
+imgs.fire.w = 6; imgs.fire.h = 6
+imgs.fire.g = anim8.newGrid(imgs.fire.w, imgs.fire.h, imgs.fire.img:getWidth(), imgs.fire.img:getHeight())
+imgs.fire.t = 0.03
+
 --- getCoords for anchoring stuff
 function Particles.new(x, y, type, above, getCoords)
     local v = {}

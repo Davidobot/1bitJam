@@ -2,6 +2,7 @@ w, h = 640, 360
 love.graphics.setDefaultFilter("nearest", "nearest", 0)
 
 -- Overall Libraries
+require "lib.autobatch"
 lovelyMoon = require "lib/lovelyMoon"
 states = {}
 Object = require "lib/classic"

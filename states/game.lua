@@ -111,7 +111,9 @@ function state:draw()
 end
 
 function state:keypressed(key, unicode)
-	
+    for i=1,10 do
+        Particles.new(boat.pos.x, boat.pos.y, "fire", true)
+    end
 end
 
 function state:keyreleased(key, unicode)
