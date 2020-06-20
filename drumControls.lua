@@ -16,8 +16,8 @@ t.drum_img_pos = {x = w / 2 + 50, y = h / 2 + 50}
 t.drum_height = h * 0.68
 
 t.drum_leftRimX     = w / 2 + 60
-t.drum_leftCenterX  = w / 2 + 110
-t.drum_rightCenterX = w / 2 + 210
+t.drum_leftCenterX  = w / 2 + 90
+t.drum_rightCenterX = w / 2 + 237
 t.drum_rightRimX    = w / 2 + 267
 
 t.playerBoatRef = nil
