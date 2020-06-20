@@ -104,8 +104,8 @@ function orderedDraw(z, drawable,x,y,r,sx,sy,ox,oy)
 	table.insert(draw_pile, v)
 end
 
-function orderedAnimDraw(z, anim, drawable,x,y)
-	local v = {z, anim, drawable,x,y}
+function orderedAnimDraw(z, anim, drawable,x,y,r,sx,sy,ox,oy)
+	local v = {z, anim, drawable,x,y,r,sx,sy,ox,oy}
 	v.anim = true
 	table.insert(draw_pile, v)
 end
@@ -118,7 +118,7 @@ function sortedDraw()
 	table.sort(draw_pile, orderByZ)
 	for i,v in ipairs(draw_pile) do
 		if v.anim then
-			v[2]:draw(v[3], v[4], v[5])
+			v[2]:draw(v[3], v[4], v[5], v[6], v[7], v[8], v[9], v[10])
 		else
 			love.graphics.draw(v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9])
 		end
@@ -131,6 +131,7 @@ local _channels = { }
 local _sounds = { }
 _sounds.don = love.sound.newSoundData ( "sfx/don.wav" )
 _sounds.ka = love.sound.newSoundData ( "sfx/ka.wav" )
+_sounds.gong = love.sound.newSoundData ( "sfx/gong.ogg" )
 
 function playSound ( sound )
 	if not _channels[ sound ] then _channels[ sound ] = { } end

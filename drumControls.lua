@@ -162,7 +162,15 @@ function t.drumHit(left)
 end
 
 function t.gongHit()
-    playSound("ka")
+    playSound("gong")
+    local len = 15
+    for i=1, len do
+        local dx = (i*6 + 36) * math.cos(t.playerBoatRef.pos.rot)
+        local dy = (i*6 + 36) * math.sin(t.playerBoatRef.pos.rot)
+        Particles.new(0, 0, "fire", true, function()
+            return t.playerBoatRef.pos.x + dx, t.playerBoatRef.pos.y + dy
+        end, love.math.random(0, math.pi/2), math.random(0.8 + (i/len), 1 + 2*(i/len)))
+    end
 end
 
 --todo move inside utils
