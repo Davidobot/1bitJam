@@ -89,6 +89,8 @@ function t.update(dt)
 end
 
 function t.draw()
+    love.graphics.clear(0, 0, 0)
+
     love.graphics.setColor(1, 1, 1)
     love.graphics.push()
     love.graphics.translate(-w/2, 0)
