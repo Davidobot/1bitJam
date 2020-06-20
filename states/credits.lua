@@ -7,7 +7,7 @@ function state:new()
 	return lovelyMoon.new(self)
 end
 
-local font32, font24, font20
+local font32, font24, font20, font18, font16
 local pointer_img
 local text
 local buttons
@@ -15,21 +15,24 @@ function state:load()
     font32 = love.graphics.newFont("PERTILI.TTF", 32, "mono")
     font24 = love.graphics.newFont("PERTILI.TTF", 24, "mono")
     font20 = love.graphics.newFont("PERTILI.TTF", 20, "mono")
+    font18 = love.graphics.newFont("PERTILI.TTF", 18, "mono")
+    font16 = love.graphics.newFont("PERTILI.TTF", 16, "mono")
 
     pointer_img = love.graphics.newImage("gfx/pointer.png")
 
     text = {
-        {s = "CREDITS", f = font32, y = 0, ty = 10},
-        {s = "Equal Contributions:", f = font20, y = 0, ty = h/2 - 55},
-        {s = "Joonas Suikki", f = font24, y = 0, ty = h/2 - 30},
-        {s = "David Khachaturov", f = font24, y = 0, ty = h/2},
-        {s = "BACK", f = font20, y = 0, ty = h/2 + 100}
+        {s = "CODE & DESIGN:", f = font16, y = 0, ty = h * 0.1},
+        {s = "Joonas Lima Suikki", f = font20, y = 0, ty = h * 0.15},
+        {s = "David Khachaturov", f = font20, y = 0, ty = h * 0.22},
+        {s = "SOUND EFFECTS:", f = font16, y = 0, ty = h * 0.35},
+        {s = "Samu Kaivola", f = font20, y = 0, ty = h * 0.4},
+        {s = "BACK", f = font16, y = 0, ty = h * 0.85}
     }
 
     buttons = {
         hymyviiksi = {
-            t = text[3],
-            txt = text[3].s,
+            t = text[2],
+            txt = text[2].s,
             hovered = false,
             onClick = function()
                 love.system.openURL("")
@@ -37,16 +40,24 @@ function state:load()
             end
         },
         davidobot = {
-            t = text[4],
-            txt = text[4].s,
+            t = text[3],
+            txt = text[3].s,
             hovered = false,
             onClick = function()
                 love.system.openURL("http://www.davidobot.net/")
             end
         },
-        back = {
+        samu = {
             t = text[5],
             txt = text[5].s,
+            hovered = false,
+            onClick = function()
+                love.system.openURL("https://www.instagram.com/samukosamu/")
+            end
+        },
+        back = {
+            t = text[6],
+            txt = text[6].s,
             hovered = false,
             onClick = function()
                 lovelyMoon.switchState("credits", "title")
@@ -64,11 +75,15 @@ function state:enable()
         v.y = -v.f:getHeight(v.s)
     end
 
-    flux.to(text[1], 1, {y = text[1].ty}):ease("backout")
-    flux.to(text[2], 1, {y = text[2].ty}):ease("backout"):delay(0.4)
-    flux.to(text[3], 1.2, {y = text[3].ty}):ease("backout"):delay(0.8)
-    flux.to(text[4], 1.2, {y = text[4].ty}):ease("backout"):delay(0.8)
-    flux.to(text[5], 1.2, {y = text[5].ty}):ease("backout"):delay(1.8)
+    --flux.to(text[1], 1, {y = text[1].ty}):ease("backout")
+    --flux.to(text[2], 1, {y = text[2].ty}):ease("backout"):delay(0.4)
+    --flux.to(text[3], 1.2, {y = text[3].ty}):ease("backout"):delay(0.8)
+    --flux.to(text[4], 1.2, {y = text[4].ty}):ease("backout"):delay(0.8)
+    --flux.to(text[5], 1.2, {y = text[5].ty}):ease("backout"):delay(1.8)
+
+    for i,v in ipairs(text) do
+        flux.to(v, 1, {y = v.ty}):ease("backout"):delay((i - 1) * 0.3)
+    end
 end
 
 function state:disable()
