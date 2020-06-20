@@ -12,6 +12,8 @@ local drumScreen = love.graphics.newCanvas(w/2, h)
 local boat = Boat()
 local drumControls = require "drumControls"
 
+local level = require "level"
+
 function state:new()
 	return lovelyMoon.new(self)
 end
@@ -24,9 +26,11 @@ function state:load()
 
     drumControls.init(boat)
 
-    for i=1, 100 do
-        Obstacles.new(love.math.random(-w, w), love.math.random(-h, h), "rock")
-    end
+    --for i=1, 100 do
+    --    Obstacles.new(love.math.random(-w, w), love.math.random(-h, h), "rock")
+    --end
+
+    level.init(Obstacles, boat)
 end
 
 function state:close()
@@ -34,11 +38,11 @@ function state:close()
 end
 
 function state:enable()
-	
+	level.loadLevel(1)
 end
 
 function state:disable()
-	
+	level.endCurrentLevel()
 end
 
 function state:update(dt)
@@ -50,6 +54,8 @@ function state:update(dt)
 
     boat:update(dt)
     camera:follow(boat.pos.x, boat.pos.y)
+
+    level.update(dt)
 end
 
 function state:draw()
