@@ -39,7 +39,6 @@ function Boat:update(dt)
             self.mov.forward_speed = 0
             self.mov.current.rot = math.atan2(self.pos.y - v.y , self.pos.x - v.x)
             flux.to(self.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
-            --camera:flash(0.05, {0, 0, 0, 1})
         end
     end
 end

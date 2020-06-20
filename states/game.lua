@@ -14,6 +14,9 @@ local drumControls = require "drumControls"
 
 local level = require "level"
 
+local stormy = true
+local time_til_next_light = 0
+
 function state:new()
 	return lovelyMoon.new(self)
 end
@@ -52,6 +55,15 @@ function state:update(dt)
     Particles.update(dt)
     Obstacles.update(dt)
 
+    if stormy then
+        time_til_next_light = time_til_next_light - dt
+        if time_til_next_light <= 0 then
+            time_til_next_light = love.math.random(2, 10)
+            camera:flash(0.05, {1, 1, 1, 1})
+            -- TODO: Add thunder noise
+        end
+    end
+
     boat:update(dt)
     camera:follow(boat.pos.x, boat.pos.y)
 
@@ -62,7 +74,7 @@ function state:draw()
 	love.graphics.setCanvas(screen)
         love.graphics.clear()
         
-        sea_noise:send("vars", {camera.x, camera.y, love.timer.getTime()})
+        sea_noise:send("vars", {camera.x, camera.y, (not stormy and 1 or 64) * love.timer.getTime()})
         love.graphics.setShader(sea_noise)
         love.graphics.rectangle("fill", 0, 0, w/2, h)
         love.graphics.setShader()
@@ -77,6 +89,13 @@ function state:draw()
             sortedDraw()
         camera:detach()
         camera:draw()
+        
+        if stormy then
+            rain_noise:send("vars", {camera.x, camera.y, 64 * love.timer.getTime()})
+            love.graphics.setShader(rain_noise)
+            love.graphics.rectangle("fill", 0, 0, w/2, h)
+            love.graphics.setShader()
+        end
     
     love.graphics.setCanvas(drumScreen)
         love.graphics.clear()
