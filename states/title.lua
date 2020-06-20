@@ -43,7 +43,7 @@ function state:load()
             txt = text[4].s,
             hovered = false,
             onClick = function()
-                lovelyMoon.switchState("title", "game")
+                lovelyMoon.switchState("title", "map")
             end
         },
         credits = {

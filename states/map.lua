@@ -7,52 +7,45 @@ function state:new()
 	return lovelyMoon.new(self)
 end
 
-local font32, font24, font20
+local font20
 local pointer_img
 local text
 local buttons
+local unlocked_levels
+
+local anim8 = require 'lib/anim8'
+local maps = {}
+
+
 function state:load()
-    font32 = love.graphics.newFont("PERTILI.TTF", 32, "mono")
-    font24 = love.graphics.newFont("PERTILI.TTF", 24, "mono")
+    unlocked_levels = 2
     font20 = love.graphics.newFont("PERTILI.TTF", 20, "mono")
 
     pointer_img = love.graphics.newImage("gfx/pointer.png")
 
     text = {
-        {s = "CREDITS", f = font32, y = 0, ty = 10},
-        {s = "Equal Contributions:", f = font20, y = 0, ty = h/2 - 55},
-        {s = "Joonas Suikki", f = font24, y = 0, ty = h/2 - 30},
-        {s = "David Khachaturov", f = font24, y = 0, ty = h/2},
-        {s = "BACK", f = font20, y = 0, ty = h/2 + 100}
+        {s = "BACK", f = font20, y = 0, ty = h/2 + 120},     
     }
 
     buttons = {
-        hymyviiksi = {
-            t = text[3],
-            txt = text[3].s,
+        quit = {
+            t = text[1],
+            txt = text[1].s,
             hovered = false,
             onClick = function()
-                love.system.openURL("")
-                -- TODO: fill in URL
-            end
-        },
-        davidobot = {
-            t = text[4],
-            txt = text[4].s,
-            hovered = false,
-            onClick = function()
-                love.system.openURL("http://www.davidobot.net/")
-            end
-        },
-        back = {
-            t = text[5],
-            txt = text[5].s,
-            hovered = false,
-            onClick = function()
-                lovelyMoon.switchState("credits", "title")
+                lovelyMoon.switchState("intro", "title")
             end
         }
     }
+
+    for i = 1, 3 do
+        maps[i] = {}
+        maps[i].img = love.graphics.newImage("gfx/map/map_"..i..".png")
+        maps[i].w = 207; maps[i].h = 207
+        maps[i].g = anim8.newGrid(maps[i].w, maps[i].h, maps[i].img:getWidth(), maps[i].img:getHeight())
+        maps[i].t = 0.2
+        maps[i].anim = anim8.newAnimation(maps[i].g('1-2', 1), maps[i].t)
+    end
 end
 
 function state:close()
@@ -64,11 +57,7 @@ function state:enable()
         v.y = -v.f:getHeight(v.s)
     end
 
-    flux.to(text[1], 1, {y = text[1].ty}):ease("backout")
-    flux.to(text[2], 1, {y = text[2].ty}):ease("backout"):delay(0.4)
-    flux.to(text[3], 1.2, {y = text[3].ty}):ease("backout"):delay(0.8)
-    flux.to(text[4], 1.2, {y = text[4].ty}):ease("backout"):delay(0.8)
-    flux.to(text[5], 1.2, {y = text[5].ty}):ease("backout"):delay(1.8)
+    flux.to(text[1], 1.2, {y = text[1].ty}):ease("backout"):delay(0.4)
 end
 
 function state:disable()
@@ -77,6 +66,7 @@ end
 
 function state:update(dt)
     flux.update(dt)
+    maps[unlocked_levels].anim:update(dt)
     
     local mouseX = love.mouse.getX() / love.graphics.getWidth() * w
     local mouseY = love.mouse.getY() / love.graphics.getHeight() * h
@@ -109,6 +99,10 @@ function state:draw()
 
     love.graphics.setCanvas(screen)
     love.graphics.clear()
+
+    local i = maps[unlocked_levels]
+    i.anim:draw(i.img, (w - i.w - 1)/2, (h - i.h - 1)/2)
+
     for i,v in ipairs(text) do
         love.graphics.setFont(v.f)
         centeredText(v.s, v.y)
@@ -138,8 +132,8 @@ function state:mousepressed(x, y, button)
 end
 
 function state:mousereleased(x, y, button)
-    local mouseX = x / love.graphics.getWidth() * w
-    local mouseY = y / love.graphics.getHeight() * h
+    local mouseX = love.mouse.getX() / love.graphics.getWidth() * w
+    local mouseY = love.mouse.getY() / love.graphics.getHeight() * h
 	for i,v in pairs(buttons) do
         local ww = v.t.f:getWidth(v.t.s)
         local hh = v.t.f:getHeight(v.t.s) * 0.65 -- 0.65 is magic number for font
