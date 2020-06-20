@@ -6,6 +6,7 @@ lovelyMoon = require "lib/lovelyMoon"
 states = {}
 Object = require "lib/classic"
 require "lib/utils"
+flux = require "lib/flux"
 
 function love.load()
 	states.title = lovelyMoon.addState("states.title", "title")
@@ -18,6 +19,7 @@ function love.load()
 end
 
 function love.update(dt)
+	flux.update(dt)
 	lovelyMoon.event.update(dt)
 end
 

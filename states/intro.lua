@@ -61,8 +61,6 @@ function state:disable()
 end
 
 function state:update(dt)
-    flux.update(dt)
-    
     local mouseX = love.mouse.getX() / love.graphics.getWidth() * w
     local mouseY = love.mouse.getY() / love.graphics.getHeight() * h
     for i,v in pairs(buttons) do

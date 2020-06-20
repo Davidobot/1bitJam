@@ -1,7 +1,6 @@
 local state = {}
 
 local screen = love.graphics.newCanvas(w, h)
-local flux = require "lib/flux"
 
 function state:new()
 	return lovelyMoon.new(self)
@@ -75,7 +74,6 @@ function state:disable()
 end
 
 function state:update(dt)
-    flux.update(dt)
     maps[unlocked_levels].anim:update(dt)
     
     local mouseX = love.mouse.getX() / love.graphics.getWidth() * w

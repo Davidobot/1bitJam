@@ -15,20 +15,30 @@ function Boat:new()
     self.mov = {
         forward_speed = 0,
         rot_speed = 0,
+        current = {
+            speed = 0,
+            rot = 0,
+        },
     }
 end
 
 function Boat:update(dt)
     self.pos.rot = self.pos.rot + self.mov.rot_speed * dt
-    self.pos.x = self.pos.x + self.mov.forward_speed * math.cos(self.pos.rot) * dt
-    self.pos.y = self.pos.y + self.mov.forward_speed * math.sin(self.pos.rot) * dt
+    self.pos.x = self.pos.x + (self.mov.forward_speed * math.cos(self.pos.rot)
+                            +  self.mov.current.speed * math.cos(self.mov.current.rot)) * dt
+    self.pos.y = self.pos.y + (self.mov.forward_speed * math.sin(self.pos.rot)
+                            +  self.mov.current.speed * math.sin(self.mov.current.rot))* dt
 
     self.mov.forward_speed = math.max(0, self.mov.forward_speed - _forward_decel * dt)
     self.mov.rot_speed = self.mov.rot_speed < 0 and math.min(0, self.mov.rot_speed + _rot_decel * dt) or math.max(0, self.mov.rot_speed - _rot_decel * dt)
 
     for i,v in ipairs(Obstacles.t) do
         if math.pow((v.x - self.pos.x), 2) + math.pow(v.y - self.pos.y, 2) < 300 then
-            camera:shake(8, 1, 60)
+            camera:shake(8 * (self.mov.forward_speed / _max_speed), 1, 60)
+            self.mov.current.speed = self.mov.forward_speed
+            self.mov.forward_speed = 0
+            self.mov.current.rot = math.atan2(self.pos.y - v.y , self.pos.x - v.x)
+            flux.to(self.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
             --camera:flash(0.05, {0, 0, 0, 1})
         end
     end
