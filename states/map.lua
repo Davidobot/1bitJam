@@ -18,13 +18,14 @@ local maps = {}
 
 
 function state:load()
-    unlocked_levels = 2
+    unlocked_levels = 1
     font20 = love.graphics.newFont("PERTILI.TTF", 20, "mono")
 
     pointer_img = love.graphics.newImage("gfx/pointer.png")
 
     text = {
-        {s = "BACK", f = font20, y = 0, ty = h/2 + 120},     
+        {s = "BACK", f = font20, y = 0, ty = h/2 - 140},
+        {s = "EMBARK", f = font20, y = 0, ty = h/2 + 120},      
     }
 
     buttons = {
@@ -33,7 +34,15 @@ function state:load()
             txt = text[1].s,
             hovered = false,
             onClick = function()
-                lovelyMoon.switchState("intro", "title")
+                lovelyMoon.switchState("map", "title")
+            end
+        },
+        start = {
+            t = text[2],
+            txt = text[2].s,
+            hovered = false,
+            onClick = function()
+                lovelyMoon.switchState("map", "game")
             end
         }
     }
@@ -57,7 +66,8 @@ function state:enable()
         v.y = -v.f:getHeight(v.s)
     end
 
-    flux.to(text[1], 1.2, {y = text[1].ty}):ease("backout"):delay(0.4)
+    flux.to(text[1], 1.2, {y = text[1].ty}):ease("backout"):delay(1.4)
+    flux.to(text[2], 1.2, {y = text[2].ty}):ease("backout"):delay(0.4)
 end
 
 function state:disable()
