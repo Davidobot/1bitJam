@@ -52,7 +52,12 @@ function t.spawnEnemy(name, x, y)
         newEnemy.fireT = t.pirate_fireTimer
         newEnemy.paddleT = t.pirate_paddleTimer
     elseif newEnemy.name == "tentacle" then
-
+        newEnemy.g = {}
+        newEnemy.g.img = t.tentacle_img
+        newEnemy.g.w = 43; newEnemy.g.h = 37
+        newEnemy.g.g = anim8.newGrid(newEnemy.g.w, newEnemy.g.h, newEnemy.g.img:getWidth(), newEnemy.g.img:getHeight())
+        newEnemy.g.t = 0.3; newEnemy.g.n = 3
+        newEnemy.g.anim = anim8.newAnimation(newEnemy.g.g('1-'..newEnemy.g.n, 1), newEnemy.g.t * love.math.random(0.8, 1.2))
     elseif newEnemy.name == "seagull" then
 
     elseif newEnemy.name == "boss" then
@@ -122,6 +127,7 @@ function t.update(dt)
                 end           
             end
         elseif v.name == "tentacle" then
+            v.g.anim:update(dt)
             local dir = {x = t.playerBoatRef.pos.x - v.pos.x, y = t.playerBoatRef.pos.y - v.pos.y}
             local magnitude = math.abs(dir.x) + math.abs(dir.y)
             dir.x = dir.x / magnitude
@@ -161,7 +167,8 @@ function t.draw()
             love.graphics.circle("line", v.boat.pos.x, v.boat.pos.y, 50)
             love.graphics.setColor(1,1,1)
         elseif v.name == "tentacle" then
-           love.graphics.draw(t.tentacle_img, v.pos.x, v.pos.y, 0, 1, 1, t.tentacle_img:getWidth() * 0.5, t.tentacle_img:getHeight() * 0.75)
+            orderedAnimDraw(v.pos.y + v.g.h/2, v.g.anim, v.g.img, v.pos.x, v.pos.y, 0, 1, 1, v.g.w/2, v.g.h/2)
+           --t.g.anim:draw(t.g.img, v.pos.x, v.pos.y, 0, 1, 1, t.g.w * 0.5, t.g.h * 0.75)
         elseif v.name == "seagull" then
 
         elseif v.name == "boss" then

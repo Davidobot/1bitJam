@@ -8,6 +8,7 @@ states = {}
 Object = require "lib/classic"
 require "lib/utils"
 flux = require "lib/flux"
+anim8 = require 'lib/anim8'
 
 function love.load()
 	states.title = lovelyMoon.addState("states.title", "title")

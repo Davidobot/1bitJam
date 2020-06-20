@@ -25,7 +25,7 @@ t.data = {
             --{name = "tentacle", pos = {x = w*0.2, y = -h*1-2}},
             --{name = "tentacle", pos = {x = w*0.8, y = -h*1.3}},
             --{name = "tentacle", pos = {x = w*0.5, y = -h*0.5}},
-            --{name = "tentacle", pos = {x = w*0, y = -h*0.5}},
+            {name = "tentacle", pos = {x = w*0, y = -h*0.5}},
             --{name = "racer", pos = {x = w*0.3, y = -h*0.3}},
             {name = "pirate", pos = {x = w*0.1, y = -h*0.3}},
         },

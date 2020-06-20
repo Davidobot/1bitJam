@@ -1,5 +1,4 @@
 local Particles = Object:extend()
-local anim8 = require 'lib/anim8'
 
 Particles.t = {}
 
