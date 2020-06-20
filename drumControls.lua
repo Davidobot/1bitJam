@@ -20,6 +20,53 @@ t.drum_leftCenterX  = w / 2 + 90
 t.drum_rightCenterX = w / 2 + 237
 t.drum_rightRimX    = w / 2 + 267
 
+t.gong_img = love.graphics.newImage("gfx/whirlpool.png")
+t.gong_img_pos = {x = w / 2 + 50, y = h / 2 - 50}
+t.gong_collisionPos = {x = w / 2 + 50, y = h / 2 - 50}
+t.gong_collisionRad = 30
+t.gong_colliding = false
+
+t.drum_collisionLines = {
+    --left rim
+    {
+        point1 = {x = t.drum_leftRimX - 10, y = t.drum_height + 60},
+        point2 = {x = t.drum_leftRimX, y = t.drum_height},
+        onHitFunc = function()
+            t.drumHit(false)
+        end
+    },
+    {
+        point1 = {x = t.drum_leftRimX, y = t.drum_height},
+        point2 = {x = t.drum_leftCenterX, y = t.drum_height},
+        onHitFunc = function()
+            t.drumHit(false)
+        end
+    },
+    --center
+    {
+        point1 = {x = t.drum_leftCenterX, y = t.drum_height},
+        point2 = {x = t.drum_rightCenterX, y = t.drum_height},
+        onHitFunc = function()
+            t.drumHit(true)
+        end
+    },
+    --right rim
+    {
+        point1 =  {x = t.drum_rightCenterX, y = t.drum_height},
+        point2 = {x = t.drum_rightRimX, y = t.drum_height},
+        onHitFunc = function()
+            t.drumHit(false)
+        end
+    },
+    {
+        point1 = {x = t.drum_rightRimX, y = t.drum_height},
+        point2 = {x = t.drum_rightRimX + 10, y = t.drum_height + 60},
+        onHitFunc = function()
+            t.drumHit(false)
+        end
+    },
+}
+
 t.playerBoatRef = nil
 
 function t.init(playerBoat)
@@ -53,38 +100,20 @@ function t.update(dt)
     t.drumstick_pos.y = lerp(t.drumstick_pos.y, t.drumstick_targetPos.y, t.drumstick_lerp * dt)
 
     -- drumstick to drum collision
-    if (prevDrumstickPos.y < t.drum_height and t.drumstick_pos.y >= t.drum_height) then
-        local left
-        local hit = false
-
-        if (t.drumstick_pos.x > t.drum_rightRimX) then
-            hit = false
-        elseif (t.drumstick_pos.x > t.drum_rightCenterX) then
-            hit = true
-            left = false
-        elseif (t.drumstick_pos.x > t.drum_leftCenterX) then
-            hit = true
-            left = true
-        elseif (t.drumstick_pos.x > t.drum_leftRimX) then
-            hit = true
-            left = false
-        else
-            hit = false
+    for i,v in ipairs(t.drum_collisionLines) do
+        if (checkIntersect(prevDrumstickPos, t.drumstick_pos, v.point1, v.point2)) then
+            v.onHitFunc()
         end
+    end
 
-        if (hit) then
-            t.playerBoatRef:paddle(left)
-            if not left then
-                playSound("ka")
-            else
-                playSound("don")
-            end
-            local dx = 12 * math.cos(t.playerBoatRef.pos.rot)
-            local dy = 12* math.sin(t.playerBoatRef.pos.rot)
-            Particles.new(0, 0, "sound", true, function()
-                return t.playerBoatRef.pos.x + dx, t.playerBoatRef.pos.y + dy
-            end)
+    local insideGong = math.dist(t.drumstick_pos.x, t.drumstick_pos.y, t.gong_collisionPos.x, t.gong_collisionPos.y) <= t.gong_collisionRad
+    if (t.gong_colliding == false) then
+        if (insideGong) then
+            t.gong_colliding = true
+            t.gongHit()
         end
+    elseif (insideGong == false) then
+        t.gong_colliding = false
     end
 end
 
@@ -95,17 +124,49 @@ function t.draw()
     love.graphics.push()
     love.graphics.translate(-w/2, 0)
        
-        --debug collision lines
-        love.graphics.setColor(1,0,1)
-        love.graphics.line(t.drum_leftRimX, t.drum_height, t.drum_leftCenterX, t.drum_height)
-        --love.graphics.line(t.drum_leftCenterX, t.drum_height, t.drum_rightCenterX, t.drum_height)
-        love.graphics.line(t.drum_rightCenterX, t.drum_height, t.drum_rightRimX, t.drum_height)
-        
-        --drum and drumstick graphics
         love.graphics.setColor(1,1,1)
+        --gong graphics
+        love.graphics.draw(t.gong_img, t.gong_img_pos.x, t.gong_img_pos.y)
+        --drum graphics
         love.graphics.draw(t.drum_img, t.drum_img_pos.x, t.drum_img_pos.y)
+        --drumstick graphics
         love.graphics.draw(t.drumstick_img, t.drumstick_pos.x, t.drumstick_pos.y, 0, 1, 1, 0, 0)
+
+        --debug colliders
+        love.graphics.setColor(1,0,1)
+        
+        love.graphics.circle("line", t.gong_collisionPos.x, t.gong_collisionPos.y, t.gong_collisionRad)
+        
+        for i,v in ipairs(t.drum_collisionLines) do
+            love.graphics.line(v.point1.x, v.point1.y, v.point2.x, v.point2.y)
+        end
     love.graphics.pop()
+end
+
+function t.drumHit(left)
+    t.playerBoatRef:paddle(left)
+    if not left then
+        playSound("ka")
+    else
+        playSound("don")
+    end
+    local dx = 12 * math.cos(t.playerBoatRef.pos.rot)
+    local dy = 12* math.sin(t.playerBoatRef.pos.rot)
+    Particles.new(0, 0, "sound", true, function()
+        return t.playerBoatRef.pos.x + dx, t.playerBoatRef.pos.y + dy
+    end)
+end
+
+function t.gongHit()
+    playSound("ka")
+    playSound("don")
+end
+
+--todo move inside utils
+-- Checks if two line segments intersect. Line segments are given in form of ({x,y},{x,y}, {x,y},{x,y}).
+function checkIntersect(l1p1, l1p2, l2p1, l2p2)
+	local function checkDir(pt1, pt2, pt3) return math.sign(((pt2.x-pt1.x)*(pt3.y-pt1.y)) - ((pt3.x-pt1.x)*(pt2.y-pt1.y))) end
+	return (checkDir(l1p1,l1p2,l2p1) ~= checkDir(l1p1,l1p2,l2p2)) and (checkDir(l2p1,l2p2,l1p1) ~= checkDir(l2p1,l2p2,l1p2))
 end
 
 return t
