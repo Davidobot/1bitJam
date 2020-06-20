@@ -92,13 +92,13 @@ function t.init(obstacle, playerBoat)
 end
 
 function t.update(dt)
-    if (index < 0 or index > #t.data) then return end
+    if (t.currentLevel < 1 or t.currentLevel > #t.data) then return end
 
-    t.data[currentLevel].updateFunc(dt)
+    t.data[t.currentLevel].updateFunc(dt)
 end
 
 function t.loadLevel(index)
-    if (index < 0 or index > #t.data) then return end
+    if (index < 1 or index > #t.data) then return end
 
     t.endCurrentLevel()
     t.currentLevel = index
@@ -106,21 +106,21 @@ function t.loadLevel(index)
 end
 
 function t.endCurrentLevel()
-    if (t.currentLevel < 0 or t.currentLevel > #t.data) then return end
+    if (t.currentLevel < 1 or t.currentLevel > #t.data) then return end
     --todo destroy all obstacles
     --todo destroy all enemies
-    t.data[currentLevel].endFunc()
+    t.data[t.currentLevel].endFunc()
 end
 
-function t:startCurrentLevel()
-    t.playerBoatRef.pos.x = t.data[currentLevel].startPos.x
-    t.playerBoatRef.pos.y = t.data[currentLevel].startPos.y
+function t.startCurrentLevel()
+    t.playerBoatRef.pos.x = t.data[t.currentLevel].startPos.x
+    t.playerBoatRef.pos.y = t.data[t.currentLevel].startPos.y
 
-    for i,v in ipairs(t.data[currentLevel].obstacles) do
+    for i,v in ipairs(t.data[t.currentLevel].obstacles) do
         t.obstacleRef.new(v.pos.x, v.pos.y, v.name)
     end
 
-    t.data[currentLevel].startFunc()
+    t.data[t.currentLevel].startFunc()
 end
 
 return t
