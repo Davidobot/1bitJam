@@ -1,6 +1,7 @@
 local t = Object:extend()
 
 t.obstacleRef = nil
+t.playerBoatRef = nil
 t.enemyRef = nil
 
 t.currentLevel = 0
@@ -58,8 +59,9 @@ t.data = {
     }
 }
 
-function t.init(obstacle)
+function t.init(obstacle, playerBoat)
     t.obstacleRef = obstacle
+    t.playerBoatRef = playerBoat
 end
 
 function t.loadLevel(index)
@@ -78,6 +80,8 @@ function t.endCurrentLevel()
 end
 
 function t:startCurrentLevel()
+    t.playerBoatRef.pos.x = t.data[currentLevel].startPos.x
+    t.playerBoatRef.pos.y = t.data[currentLevel].startPos.y
 
     for i,v in ipairs(t.data[currentLevel].obstacles) do
         t.obstacleRef.new(v.pos.x, v.pos.y, v.name)
