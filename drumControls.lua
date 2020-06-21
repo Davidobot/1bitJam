@@ -161,14 +161,7 @@ end
 
 function t.gongHit()
     playSound("gong")
-    local len = 15
-    for i=1, len do
-        local dx = (i*6 + 36) * math.cos(player_boat.pos.rot)
-        local dy = (i*6 + 36) * math.sin(player_boat.pos.rot)
-        Particles.new(0, 0, "fire", true, function()
-            return player_boat.pos.x + dx, player_boat.pos.y + dy
-        end, love.math.random(0, math.pi/2), math.random(0.8 + (i/len), 1 + 2*(i/len)))
-    end
+    player_boat:fire()
 end
 
 --todo move inside utils

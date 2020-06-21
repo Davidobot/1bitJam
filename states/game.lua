@@ -14,7 +14,7 @@ player_boat.isPlayer = true
 local drumControls = require "drumControls"
 
 level = require "level"
-local Enemies = require "enemies"
+Enemies = require "enemies"
 
 local stormy = true
 local time_til_next_light = 0

@@ -45,12 +45,14 @@ function t.spawnEnemy(name, x, y)
         newEnemy.moving = false
         newEnemy.t = 0
         newEnemy.paddleIndex = 1
+        newEnemy.w = 40
     elseif newEnemy.name == "pirate" then
         newEnemy.boat = t.boatClassRef()
         newEnemy.boat.pos.x = x
         newEnemy.boat.pos.y = y
         newEnemy.fireT = t.pirate_fireTimer
         newEnemy.paddleT = t.pirate_paddleTimer
+        newEnemy.w = 40
     elseif newEnemy.name == "tentacle" then
         newEnemy.g = {}
         newEnemy.g.img = t.tentacle_img
@@ -58,6 +60,7 @@ function t.spawnEnemy(name, x, y)
         newEnemy.g.g = anim8.newGrid(newEnemy.g.w, newEnemy.g.h, newEnemy.g.img:getWidth(), newEnemy.g.img:getHeight())
         newEnemy.g.t = 0.3; newEnemy.g.n = 3
         newEnemy.g.anim = anim8.newAnimation(newEnemy.g.g('1-'..newEnemy.g.n, 1), newEnemy.g.t * love.math.random(0.8, 1.2))
+        newEnemy.w = 43
     elseif newEnemy.name == "seagull" then
 
     elseif newEnemy.name == "boss" then
@@ -154,7 +157,7 @@ function t.update(dt)
 
         v.attackCoolDown = math.max(0, v.attackCoolDown - dt)
         -- Physical collision
-        if math.dist(v.pos.x, v.pos.y, player_boat.pos.x, player_boat.pos.y) <  (v.g and v.g.w*3/4 or 30) and v.attackCoolDown <= 0 then
+        if math.dist(v.pos.x, v.pos.y, player_boat.pos.x, player_boat.pos.y) <  (v.w) and v.attackCoolDown <= 0 then
             camera:shake(10, 1, 60)
             player_boat.mov.current.speed = 50
             player_boat.mov.forward_speed = 0
