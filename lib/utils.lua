@@ -146,7 +146,7 @@ _sounds.don = love.sound.newSoundData ( "sfx/don.wav" )
 _sounds.ka = love.sound.newSoundData ( "sfx/ka.wav" )
 _sounds.gong = love.sound.newSoundData ( "sfx/gong.ogg" )
 
-function playSound ( sound )
+function playSound ( sound, volume )
 	if not _channels[ sound ] then _channels[ sound ] = { } end
 	local chan = _channels[ sound ]
 	
@@ -159,4 +159,7 @@ function playSound ( sound )
 		chan[ free ] = love.audio.newSource ( _sounds[ sound ] )
 	end
 	chan[ free ]:play ( )
+	if (volume ~= nil) then
+		chan[ free ]:setVolume(volume)
+	end
 end

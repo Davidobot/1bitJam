@@ -138,7 +138,7 @@ function t.enemies.racer:onDraw(enemies)
     self.boat:draw()
 end
 
-function t.enemies.racer:takeDamage(enemies)
+function t.enemies.racer:takeDamage()
     --racer never engaged the player in combat, so it can just ignore damage
 end
 
@@ -238,7 +238,7 @@ function t.enemies.pirate:onDraw(enemies)
     self.boat:draw()
 end
 
-function t.enemies.pirate:takeDamage(enemies)
+function t.enemies.pirate:takeDamage()
     self.state = "burning"
 end
 
@@ -278,7 +278,7 @@ function t.enemies.tentacle:onDraw(enemies)
     --enemies.g.anim:draw(enemies.g.img, v.pos.x, v.pos.y, 0, 1, 1, enemies.g.w * 0.5, enemies.g.h * 0.75)
 end
 
-function t.enemies.tentacle:takeDamage(enemies)
+function t.enemies.tentacle:takeDamage()
 
 end
 

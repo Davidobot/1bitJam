@@ -12,6 +12,9 @@ t.drumstick_minPos = {x = w / 2 + 5, y = 0 + 5}
 t.drumstick_maxPos = {x = w - 5, y = h - 5}
 t.drumstick_idlePos = {}
 t.drumstick_img = love.graphics.newImage("gfx/hand.png")
+t.drumstick_velocity = 0
+t.drumstick_velocity_falloff = 300
+t.drumstick_velocity_max = 100
 
 t.drum_img = love.graphics.newImage("gfx/drum.png")
 t.drum_img_pos = {x = w / 2 + 50, y = h / 2 + 50}
@@ -99,6 +102,14 @@ function t.update(dt)
     t.drumstick_pos.x = lerp(t.drumstick_pos.x, t.drumstick_targetPos.x, t.drumstick_lerp * dt)
     t.drumstick_pos.y = lerp(t.drumstick_pos.y, t.drumstick_targetPos.y, t.drumstick_lerp * dt)
 
+    
+    t.drumstick_velocity = t.drumstick_velocity - t.drumstick_velocity_falloff * dt
+    t.drumstick_velocity = math.max(t.drumstick_velocity, 0)
+
+    local travelledDist = math.dist(t.drumstick_pos.x, t.drumstick_pos.y, prevDrumstickPos.x, prevDrumstickPos.y)
+    t.drumstick_velocity = t.drumstick_velocity + travelledDist
+    t.drumstick_velocity = math.min(t.drumstick_velocity, t.drumstick_velocity_max)
+
     -- drumstick to drum collision
     if (t.drumstick_pos.y > prevDrumstickPos.y) then
         for i,v in ipairs(t.drum_collisionLines) do
@@ -134,6 +145,8 @@ function t.draw()
         --drumstick graphics
         love.graphics.draw(t.drumstick_img, t.drumstick_pos.x, t.drumstick_pos.y, 0, 1, 1, 0, 0)
 
+        --love.graphics.rectangle("fill", w / 2, 0, w / 2 * t.drumstick_velocity / t.drumstick_velocity_max, 10)
+
         --debug colliders
         --[[
         love.graphics.setColor(1,0,1)
@@ -150,14 +163,14 @@ end
 function t.drumHit(left)
     player_boat:paddle(left)
     if not left then
-        playSound("ka")
+        playSound("ka", t.drumstick_velocity / t.drumstick_velocity_max) --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity_max
     else
-        playSound("don")
+        playSound("don", t.drumstick_velocity / t.drumstick_velocity_max) --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity_max
     end
 end
 
 function t.gongHit()
-    playSound("gong")
+    playSound("gong", t.drumstick_velocity / t.drumstick_velocity_max) --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity_max
     player_boat:fire()
 end
 
