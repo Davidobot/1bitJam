@@ -145,6 +145,7 @@ local _sounds = { }
 _sounds.don = love.sound.newSoundData ( "sfx/don.ogg" )
 _sounds.ka = love.sound.newSoundData ( "sfx/ka.ogg" )
 _sounds.gong = love.sound.newSoundData ( "sfx/gong.ogg" )
+_sounds.screams = love.sound.newSoundData ( "sfx/screams.ogg" )
 
 function playSound ( sound, volume )
 	if not _channels[ sound ] then _channels[ sound ] = { } end
