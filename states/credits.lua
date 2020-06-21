@@ -24,6 +24,7 @@ function state:load()
         {s = "Joonas Lima Suikki", f = font20, y = 0, ty = h * 0.15},
         {s = "CODE, DESIGN, GRAPHICS & THE VOICES IN YOUR HEAD:", f = font16, y = 0, ty = h * 0.25},
         {s = "David Khachaturov", f = font20, y = 0, ty = h * 0.3},
+        {s = "BACKGROUND SFX: freesound.org", f = font20, y = 0, ty = h * 0.45},
         {s = "BACK", f = font16, y = 0, ty = h * 0.85}
     }
 
@@ -46,8 +47,8 @@ function state:load()
             end
         },
         back = {
-            t = text[5],
-            txt = text[5].s,
+            t = text[6],
+            txt = text[6].s,
             hovered = false,
             onClick = function()
                 lovelyMoon.switchState("credits", "title")
