@@ -20,7 +20,7 @@ function state:load()
 
     text = {
         {s = "ONWARDS", f = font20, y = 0, ty = h/2 + 140},
-        {s = "YOU EVADED THE PIRATE AND MADE IT TO THE STORM", f = font20, y = 0, ty = 20},
+        {s = "YOU EVADED THE PIRATES AND MADE IT TO THE STORM", f = font20, y = 0, ty = 20},
     }
 
     buttons = {

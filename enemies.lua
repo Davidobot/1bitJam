@@ -84,7 +84,7 @@ function t.update(dt)
                 player_boat.mov.current.rot = math.atan2(player_boat.pos.y - v.pos.y , player_boat.pos.x - v.pos.x)
                 flux.to(player_boat.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
                 player_boat:killSomeone()
-                v.attackCoolDown = 1
+                v.attackCoolDown = 3
                 
                 if v.boat then
                     v.boat:killSomeone()
