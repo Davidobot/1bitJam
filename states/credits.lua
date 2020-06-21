@@ -20,9 +20,9 @@ function state:load()
     pointer_img = love.graphics.newImage("gfx/pointer.png")
 
     text = {
-        {s = "CODE & DESIGN:", f = font16, y = 0, ty = h * 0.1},
+        {s = "CODE, GAME- & LEVEL DESIGN:", f = font16, y = 0, ty = h * 0.1},
         {s = "Joonas Lima Suikki", f = font20, y = 0, ty = h * 0.15},
-        {s = "CODE, DESIGN & ART:", f = font16, y = 0, ty = h * 0.25},
+        {s = "CODE, GAME DESIGN, SOUNDS & GRAPHICS:", f = font16, y = 0, ty = h * 0.25},
         {s = "David Khachaturov", f = font20, y = 0, ty = h * 0.3},
         {s = "BACK", f = font16, y = 0, ty = h * 0.85}
     }

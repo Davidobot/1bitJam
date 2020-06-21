@@ -6,7 +6,7 @@ t.enemyRef = nil
 
 t.currentLevel = 0
 t.data = {
-    -- level 1: the race
+    --! level 1: the race
     {
         stormy = false,
         startPos = {x = w * 0.25, y = h * -0.15},
@@ -34,33 +34,14 @@ t.data = {
             {row = false, randOffset = true, name = "rock", pos = {x = w * 1,          y = h * -2.6}},
             {row = false, randOffset = true, name = "rock", pos = {x = w * 0.8,          y = h * -2.8}},
             {row = false, randOffset = true, name = "rock", pos = {x = w * 0.8,          y = h * -3}},
-            --{row = false, randOffset = true, name = "rock", pos = {x = w * 1,          y = h * -3.2}},
-            --{row = false, randOffset = true, name = "rock", pos = {x = w * 1.2,          y = h * -3.4}},
-            --{row = false, randOffset = true, name = "rock", pos = {x = w * 1.3,          y = h * -3.6}},
-            --{row = false, randOffset = true, name = "rock", pos = {x = w * 1.4,          y = h * -3.8}},
             {row = false, randOffset = true, name = "rock", pos = {x = w * 1.0,          y = h * -4}},
             {row = false, randOffset = true, name = "rock", pos = {x = w * 0.9,          y = h * -4.2}},
             {row = false, randOffset = true, name = "rock", pos = {x = w * 0.74,          y = h * -4.4}},
             {row = false, randOffset = true, name = "rock", pos = {x = w * 0.6,          y = h * -4.6}},
             {row = false, randOffset = true, name = "rock", pos = {x = w * 0.9,          y = h * -4.8}},
             {row = false, randOffset = true, name = "rock", pos = {x = w * 1.24,          y = h * -5}},
-
-            --{name = "rock", pos = {x = w*0.5,     y = 0}},
-            --{name = "rock", pos = {x = w*0.3,     y = -h*0.25}},
-            --{name = "rock", pos = {x = w*0.1,     y = -h*0.5}},
-            --{name = "rock", pos = {x = w*0.4,     y = -h*0.6}},
-            --{name = "rock", pos = {x = w*0.1,     y = -h*0.65}},
-            --{name = "rock", pos = {x = w*0.3,     y = -h*1.2}},
         },
         enemies = {
-            --{name = "tentacle", pos = {x = w*0.4, y = 0}},
-            --{name = "tentacle", pos = {x = w*0, y = -h*1}},
-            --{name = "tentacle", pos = {x = w*0.2, y = -h*1-2}},
-            --{name = "tentacle", pos = {x = w*0.8, y = -h*1.3}},
-            --{name = "tentacle", pos = {x = w*0.5, y = -h*0.5}},
-            --{name = "tentacle", pos = {x = w*0, y = -h*0.5}},
-            --{name = "racer", pos = {x = w*0.3, y = -h*0.3}},
-            --{name = "pirate", pos = {x = w*0.1, y = -h*0.3}},
             {name = "racer", pos = {x = w*1.1, y = -h*1.25}},
         },
         startFunc = function()
@@ -75,22 +56,16 @@ t.data = {
 
         end
     },
-    -- level 2: pirates
+    --! level 2: pirates
     {
         stormy = false,
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
-            {name = "rock", pos = {x = 0,         y = 0}},
-            {name = "rock", pos = {x = w*0.5,     y = 0}},
-            {name = "rock", pos = {x = w*0.3,     y = -h*0.25}},
-            {name = "rock", pos = {x = w*0.1,     y = -h*0.5}},
-            {name = "rock", pos = {x = w*0.4,     y = -h*0.6}},
-            {name = "rock", pos = {x = w*0.1,     y = -h*0.65}},
-            {name = "rock", pos = {x = w*0.3,     y = -h*1.2}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.5,         y = h * 1},   pos2 = {x = w * 0.4,             y = h * 0.2}},
         },
         enemies = {
-            {name = "racer", pos = {x = 0, y = 0}},
+            {name = "pirate", pos = {x = w*0.25, y = h*-1}},
         },
         startFunc = function()
 
@@ -102,7 +77,7 @@ t.data = {
 
         end
     },
-    -- level 3: storm
+    --! level 3: storm
     {
         stormy = true,
         startPos = {x = w * 0.25, y = 0},
@@ -141,6 +116,14 @@ function t.update(dt)
     if (t.currentLevel < 1 or t.currentLevel > #t.data) then return end
 
     t.data[t.currentLevel].updateFunc(dt)
+
+    if love.keyboard.isDown("1") then
+        t.loadLevel(1)
+    elseif love.keyboard.isDown("2") then
+        t.loadLevel(2)
+    elseif love.keyboard.isDown("3") then
+        t.loadLevel(3)
+    end
 end
 
 function t.loadLevel(index)
