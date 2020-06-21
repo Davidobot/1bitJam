@@ -9,12 +9,13 @@ t.data = {
     -- level 1: the race
     {
         stormy = false,
-        --startPos = {x = w * 0.25, y = 0},
-        startPos = {x = w * 0.9, y = h * -1},
+        startPos = {x = w * 0.25, y = h * -0.15},
+        --startPos = {x = w * 0.9, y = h * -1},
         goalPosY = -99999,
         obstacles = {
             {row = false, randOffset = false, name = "tape", pos = {x = w * 0.9,         y = h * - 1.3}},
             {row = false, randOffset = false, name = "tape", pos = {x = w * 1,         y = h * - 5.5}},
+            {row = false, randOffset = false, name = "tape", pos = {x = w * 1.2,         y = h * - 5.5}},
 
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,         y = h * 0.1},   pos2 = {x = w * 0.4,             y = h * 0.1}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,           y = h * 0},   pos2 = {x = w * -0.1,           y = h * -0.5}},
@@ -66,8 +67,8 @@ t.data = {
 
         end,
         updateFunc = function(dt)
-            if (player_boat.pos.y < h * -5.5) then
-                lovelyMoon.switchState("afterLvl1")
+            if (player_boat.pos.y < h * -5.4) then
+                lovelyMoon.switchState("game", "afterLvl1")
             end
         end,
         endFunc = function()
