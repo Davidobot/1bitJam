@@ -119,14 +119,14 @@ t.data = {
             --{name = "pirate", pos = {x = w*0.5, y = h*-4}},
         },
         startFunc = function()
-            t.tentacleSpawnTimer = 5
+            t.tentacleSpawnTimer = 2
             t.tentacleSurprise = true
             t.tentacleSurprise2 = true
         end,
         updateFunc = function(dt)
             t.tentacleSpawnTimer = t.tentacleSpawnTimer - dt
             if (t.tentacleSpawnTimer <= 0) then
-                t.tentacleSpawnTimer = t.tentacleSpawnTimer + 4
+                t.tentacleSpawnTimer = t.tentacleSpawnTimer + 2
                 local randomRot = (math.pi * 2) * love.math.random()
                 local posX = player_boat.pos.x + math.cos(randomRot) * w / 3
                 local posY = player_boat.pos.y + math.sin(randomRot) * w / 3
