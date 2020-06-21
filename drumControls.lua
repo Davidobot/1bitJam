@@ -161,7 +161,7 @@ function t.draw()
 end
 
 function t.drumHit(left)
-    player_boat:paddle(left)
+    player_boat:paddle(left, t.drumstick_velocity / t.drumstick_velocity_max)
     if not left then
         playSound("ka", t.drumstick_velocity / t.drumstick_velocity_max) --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity_max
     else

@@ -66,7 +66,7 @@ function Boat:fire()
         local dy = (i*6 + 36) * math.sin(player_boat.pos.rot)
         Particles.new(0, 0, "fire", true, function()
             return player_boat.pos.x + dx, player_boat.pos.y + dy
-        end, love.math.random(0, math.pi/2), math.random(0.8 + (i/len), 1 + 2*(i/len)))
+        end, love.math.random(0, math.pi/2), 0.8 + (i/len) + math.random()*( 0.2 + 2*(i/len)))
 
         for i,v in ipairs(Enemies.data) do
             if math.dist(player_boat.pos.x + dx, player_boat.pos.y + dy, v.pos.x, v.pos.y) < v.w then
@@ -88,7 +88,9 @@ function Boat:update(dt)
 
     for i,v in ipairs(Obstacles.t) do
         if math.pow((v.x - self.pos.x), 2) + math.pow(v.y - self.pos.y, 2) < 300 then
-            camera:shake(8 * (self.mov.forward_speed / _max_speed), 1, 60)
+            if self.isPlayer then
+                camera:shake(8 * (self.mov.forward_speed / _max_speed), 1, 60)
+            end
             self.mov.current.speed = self.mov.forward_speed
             self.mov.forward_speed = 0
             self.mov.current.rot = math.atan2(self.pos.y - v.y , self.pos.x - v.x)
@@ -98,14 +100,15 @@ function Boat:update(dt)
 end
 
 ---@param left boolean
-function Boat:paddle(left)
+function Boat:paddle(left, strength)
+    strength = strength or 0
     local alive = 4
     for i=(left and 4 or 0), (left and 7 or 3) do
         if contains(self.dead, i) then
             alive = alive - 1
         end
     end
-    local pow = alive/4
+    local pow = (alive/4 + strength)*strength
     self.mov.rot_speed = math.clamp(-_max_rot, self.mov.rot_speed + (left and -1 or 1) * _instant_rot_speed, _max_rot)
     self.mov.forward_speed = math.min(self.mov.forward_speed + _instant_forward_speed * pow, _max_speed)
 
