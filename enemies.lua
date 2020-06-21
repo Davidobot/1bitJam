@@ -146,6 +146,16 @@ function t.update(dt)
         elseif v.name == "boss" then
     
         end
+
+        -- Physical collision
+        if math.dist(v.pos.x, v.pos.y, t.playerBoatRef.pos.x, t.playerBoatRef.pos.y) <  (v.g and v.g.w*3/4 or 20) then
+            camera:shake(10, 1, 60)
+            t.playerBoatRef.mov.current.speed = 50
+            t.playerBoatRef.mov.forward_speed = 0
+            t.playerBoatRef.mov.current.rot = math.atan2(t.playerBoatRef.pos.y - v.pos.y , t.playerBoatRef.pos.x - v.pos.x)
+            flux.to(t.playerBoatRef.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
+            t.playerBoatRef:killSomeone()
+        end
     end
 end
 

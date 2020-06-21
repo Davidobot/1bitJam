@@ -23,11 +23,27 @@ function Boat:new()
     }
 
     -- 0,3 on left, 4 to 7 on right
-    self.dead = {1, 3}
+    self.dead = {}
 end
 
 function Boat:kill(n)
     table.insert(self.dead, n)
+
+    -- TODO: if #self.dead == 8, then go to GAMEOVER screen
+end
+
+function Boat:killSomeone()
+    if #self.dead == 8 then
+        return
+    end
+
+    while true do 
+        local t = love.math.random(0, 7)
+        if not contains(self.dead, t) then
+            self:kill(t)
+            return
+        end
+    end
 end
 
 function Boat:update(dt)
