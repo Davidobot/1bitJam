@@ -78,7 +78,7 @@ function t.update(dt)
     for i,v in ipairs(t.data) do
         if v.name == "racer" then
             if (v.moving == false) then
-                if (t.playerBoatRef.pos.y < v.pos.y) then
+                if (t.playerBoatRef.pos.y < v.boat.pos.y) then
                     v.moving = true
                 end
             else
@@ -132,6 +132,10 @@ function t.update(dt)
                 end           
             end
             v.boat:update(dt)
+
+            v.pos.x = v.boat.pos.x
+            v.pos.y = v.boat.pos.y
+
         elseif v.name == "tentacle" then
             v.g.anim:update(dt)
             local dir = {x = t.playerBoatRef.pos.x - v.pos.x, y = t.playerBoatRef.pos.y - v.pos.y}
