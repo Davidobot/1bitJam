@@ -34,6 +34,7 @@ t.racer_paddles = {
 }
 
 t.tentacle_img = love.graphics.newImage("gfx/tentacle.png")
+t.tentacle_spawn_img = love.graphics.newImage("gfx/tentacle_spawn.png")
 t.tentacle_speed = 10
 
 t.pirate_closeDistance = w / 4
@@ -296,7 +297,6 @@ function t.enemies.pirate:onUpdate(enemies, dt)
                 local x = dx * math.cos(self.boat.pos.rot) - dy * math.sin(self.boat.pos.rot)
                 local y = dx * math.sin(self.boat.pos.rot) + dy * math.cos(self.boat.pos.rot)
 
-                --todo assuming the particle pos is right, spawn a particle there!
                 Particles.new(0, 0, "fire", true, function()
                     if self.boat then
                         if self.boat.pos then
@@ -371,10 +371,24 @@ function t.enemies.tentacle:onStart(enemies)
     self.g.w = 43; self.g.h = 37
     self.g.g = anim8.newGrid(self.g.w, self.g.h, self.g.img:getWidth(), self.g.img:getHeight())
     self.g.t = 0.3; self.g.n = 3
-    self.g.anim = anim8.newAnimation(self.g.g('1-'..self.g.n, 1), self.g.t * love.math.random(0.8, 1.2))
+    self.g.anim = anim8.newAnimation(self.g.g('1-'..self.g.n, 1), self.g.t * (0.8 + love.math.random()*0.4))
+    
     self.w = 40
 
-    self.state = "alive"
+    self.sg = {}
+    self.sg.img = enemies.tentacle_spawn_img
+    self.sg.w = 43; self.sg.h = 37
+    self.sg.g = anim8.newGrid(self.sg.w, self.sg.h, self.sg.img:getWidth(), self.sg.img:getHeight())
+    self.sg.t = 0.5 * (0.8 + love.math.random()*0.4); self.sg.n = 3
+    self.sg.anim = anim8.newAnimation(self.sg.g('1-'..self.sg.n, 1), self.sg.t)
+
+    local tt = {t = 0}
+    flux.to(tt, self.sg.n * self.sg.t, {t = 1}):oncomplete(function() 
+        self.state = "alive"
+        self.sg.anim:pauseAtEnd()
+    end)
+
+    self.state = "spawning"
     self.burning_particleTimer = 0
     self.burning_deathTimer = enemies.enemies.tentacle.burning_deathTimer
 end
@@ -397,7 +411,6 @@ function t.enemies.tentacle:onUpdate(enemies, dt)
                 local dx = enemies.enemies.tentacle.burning_particleRect.w * (love.math.random() - 0.5)*2
                 local dy = enemies.enemies.tentacle.burning_particleRect.h * (love.math.random() - 0.5)*2
 
-                --todo assuming the particle pos is right, spawn a particle there!
                 Particles.new(0, 0, "fire", true, function()
                     if self.pos then
                         return self.pos.x + dx, self.pos.y + dy
@@ -411,11 +424,13 @@ function t.enemies.tentacle:onUpdate(enemies, dt)
         if (self.burning_deathTimer <= 0) then
             self.dead = true
         end
+    elseif self.state == "spawning" then
+        self.sg.anim:update(dt)
     end
 end
 
 function t.enemies.tentacle:onDraw(enemies)
-    orderedAnimDraw(self.pos.y + self.g.h/2, self.g.anim, self.g.img, self.pos.x, self.pos.y, 0, 1, 1, self.g.w/2, self.g.h/2)
+    orderedAnimDraw(self.pos.y + self.g.h/2, self.state == "spawning" and self.sg.anim or self.g.anim, self.state == "spawning" and self.sg.img or self.g.img, self.pos.x, self.pos.y, 0, 1, 1, self.g.w/2, self.g.h/2)
     --enemies.g.anim:draw(enemies.g.img, v.pos.x, v.pos.y, 0, 1, 1, enemies.g.w * 0.5, enemies.g.h * 0.75)
 end
 
