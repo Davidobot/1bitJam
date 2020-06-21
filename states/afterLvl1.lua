@@ -19,11 +19,8 @@ function state:load()
     pointer_img = love.graphics.newImage("gfx/pointer.png")
 
     text = {
-        {s = "BACK", f = font20, y = 0, ty = h/2 + 140},
-        {s = "Hit near (1) to turn the boat left", f = font20, y = 0, ty = 20},
-        {s = "Hit near (2) to turn the boat right", f = font20, y = 0, ty = 40},
-        {s = "Hit near (3) to attack", f = font20, y = 0, ty = 60},
-        {s = "Strength matters", f = font20, y = 0, ty = 80},
+        {s = "ONWARDS", f = font20, y = 0, ty = h/2 + 140},
+        {s = "You CLEARED THE FIRST TRIAL", f = font20, y = 0, ty = 20},
     }
 
     buttons = {
@@ -32,12 +29,13 @@ function state:load()
             txt = text[1].s,
             hovered = false,
             onClick = function()
-                lovelyMoon.switchState("controls", "title")
+                cur_level = 2
+                lovelyMoon.switchState("afterLvl1", "map")
             end
         },
     }
 
-    img = love.graphics.newImage("gfx/controls.png")
+    img = love.graphics.newImage("gfx/after1.png")
 end
 
 function state:close()
@@ -51,9 +49,6 @@ function state:enable()
 
     flux.to(text[1], 1.2, {y = text[1].ty}):ease("backout"):delay(1.4)
     flux.to(text[2], 1.2, {y = text[2].ty}):ease("backout")
-    flux.to(text[3], 1.2, {y = text[3].ty}):ease("backout"):delay(0.3)
-    flux.to(text[4], 1.2, {y = text[4].ty}):ease("backout"):delay(0.6)
-    flux.to(text[5], 1.2, {y = text[5].ty}):ease("backout"):delay(0.9)
 end
 
 function state:disable()
@@ -93,7 +88,7 @@ function state:draw()
     love.graphics.setCanvas(screen)
     love.graphics.clear()
 
-    love.graphics.draw(img, (w - img:getWidth())/2, (h - img:getHeight())/2)
+    love.graphics.draw(img, (w - img:getWidth() - 1)/2, (h - img:getHeight() - 1)/2)
 
     for i,v in ipairs(text) do
         love.graphics.setFont(v.f)
