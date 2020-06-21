@@ -11,7 +11,7 @@ t.data = {
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
-            --{name = "rock", pos = {x = 0,         y = 0}},
+            {row = true, randOffset = true, name = "rock", pos = {x = 0,         y = 0},   pos2 = {x = w / 2,      y = h}},
             --{name = "rock", pos = {x = w*0.5,     y = 0}},
             --{name = "rock", pos = {x = w*0.3,     y = -h*0.25}},
             --{name = "rock", pos = {x = w*0.1,     y = -h*0.5}},
@@ -128,7 +128,33 @@ function t.startCurrentLevel()
     player_boat.pos.y = t.data[t.currentLevel].startPos.y
 
     for i,v in ipairs(t.data[t.currentLevel].obstacles) do
-        t.obstacleRef.new(v.pos.x, v.pos.y, v.name)
+        if (v.row) then
+            local distBetween = 50
+            local vec = {x = v.pos2.x - v.pos.x, y = v.pos2.y - v.pos.y}
+            local steps = math.floor(math.dist(v.pos.x, v.pos.y, v.pos2.x, v.pos2.y) / distBetween)
+
+            for i = 1,steps do
+                local posX = v.pos.x + vec.x * ((i-1) / steps)
+                local posY = v.pos.y + vec.y * ((i-1) / steps)
+                if (v.randOffset) then
+                    posX = posX + love.math.random(-10, 10)
+                    posY = posY + love.math.random(-10, 10)
+                end
+
+                t.obstacleRef.new(posX, posY, v.name)
+            end
+        else
+            local posX = v.pos.x
+            local posY = v.pos.y
+
+            if (v.randOffset) then
+                posX = love.math.random(-10, 10)
+                posY = love.math.random(-10, 10)
+            end
+
+            t.obstacleRef.new(v.pos.x, v.pos.y, v.name)
+        end
+        
     end
     for i,v in ipairs(t.data[t.currentLevel].enemies) do
         t.enemyRef.spawnEnemy(v.name, v.pos.x, v.pos.y)
