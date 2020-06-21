@@ -163,9 +163,9 @@ end
 function t.drumHit(left)
     player_boat:paddle(left)
     if not left then
-        playSound("ka") --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity.max
+        playSound("ka", t.drumstick_velocity / t.drumstick_velocity_max) --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity_max
     else
-        playSound("don") --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity.max
+        playSound("don", t.drumstick_velocity / t.drumstick_velocity_max) --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity_max
     end
     local dx = 12 * math.cos(player_boat.pos.rot)
     local dy = 12* math.sin(player_boat.pos.rot)
@@ -175,7 +175,7 @@ function t.drumHit(left)
 end
 
 function t.gongHit()
-    playSound("gong") --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity.max
+    playSound("gong", t.drumstick_velocity / t.drumstick_velocity_max) --todo volume multiplier t.drumstick_velocity / t.drumstick_velocity_max
     player_boat:fire()
 end
 
