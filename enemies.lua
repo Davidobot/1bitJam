@@ -78,14 +78,11 @@ function t.update(dt)
     end
 
     --destroy all enemies that are marked "dead"
-    local i = 1
-    while i <= #t.data do
-        if (t.data[i].dead == true) then
-            t.data[i].pos = nil
-            t.data[i]:onDestroy(t)
-            table.remove(t, i)
-        else
-            i = i + 1
+    for i=#t.data,1,-1 do
+        local v = t.data[i]
+        if (v.dead == true) then
+            v:onDestroy(t)
+            table.remove(t.data, i)
         end
     end
 end
@@ -243,8 +240,8 @@ function t.enemies.pirate:takeDamage()
 end
 
 function t.enemies.pirate:onDestroy(enemies)
-    self.boat.pos = nil
-    self.boat = nil
+    --self.boat.pos = nil
+    --self.boat = nil
 end
 
 ------------------------------------------------
