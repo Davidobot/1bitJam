@@ -8,10 +8,15 @@ t.currentLevel = 0
 t.data = {
     -- level 1: the race
     {
+        stormy = false,
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
-            {row = true, randOffset = true, name = "rock", pos = {x = 0,         y = 0},   pos2 = {x = w / 2,      y = h}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,         y = h * 0.1},   pos2 = {x = w * 0.4,             y = h * 0.1}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,           y = h * 0},   pos2 = {x = w * -0.1,           y = h * -0.5}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * 0.4,           y = h * 0},   pos2 = {x = w * 0.75,            y = h * -0.5}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.1,            y = h * -0.6},     pos2 = {x = w * -0.1,   y = h * -1.5}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * 0.75,          y = h * -0.6},   pos2 = {x = w * 0.75,         y = h * -1.5}},
             --{name = "rock", pos = {x = w*0.5,     y = 0}},
             --{name = "rock", pos = {x = w*0.3,     y = -h*0.25}},
             --{name = "rock", pos = {x = w*0.1,     y = -h*0.5}},
@@ -25,9 +30,10 @@ t.data = {
             --{name = "tentacle", pos = {x = w*0.2, y = -h*1-2}},
             --{name = "tentacle", pos = {x = w*0.8, y = -h*1.3}},
             --{name = "tentacle", pos = {x = w*0.5, y = -h*0.5}},
-            {name = "tentacle", pos = {x = w*0, y = -h*0.5}},
+            --{name = "tentacle", pos = {x = w*0, y = -h*0.5}},
             --{name = "racer", pos = {x = w*0.3, y = -h*0.3}},
-            {name = "pirate", pos = {x = w*0.1, y = -h*0.3}},
+            --{name = "pirate", pos = {x = w*0.1, y = -h*0.3}},
+            {name = "racer", pos = {x = w*1, y = -h*2}},
         },
         startFunc = function()
 
@@ -41,6 +47,7 @@ t.data = {
     },
     -- level 2: pirates
     {
+        stormy = false,
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
@@ -67,6 +74,7 @@ t.data = {
     },
     -- level 3: storm
     {
+        stormy = true,
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
@@ -122,6 +130,8 @@ function t.endCurrentLevel()
 end
 
 function t.startCurrentLevel()
+    stormy = t.data[t.currentLevel].stormy
+
     player_boat = Boat()
     player_boat.isPlayer = true
     player_boat.pos.x = t.data[t.currentLevel].startPos.x
@@ -134,8 +144,8 @@ function t.startCurrentLevel()
             local steps = math.floor(math.dist(v.pos.x, v.pos.y, v.pos2.x, v.pos2.y) / distBetween)
 
             for i = 1,steps do
-                local posX = v.pos.x + vec.x * ((i-1) / steps)
-                local posY = v.pos.y + vec.y * ((i-1) / steps)
+                local posX = v.pos.x + vec.x * ((i-1) / (steps-1))
+                local posY = v.pos.y + vec.y * ((i-1) / (steps-1))
                 if (v.randOffset) then
                     posX = posX + love.math.random(-10, 10)
                     posY = posY + love.math.random(-10, 10)
