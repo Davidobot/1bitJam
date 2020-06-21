@@ -12,11 +12,14 @@ t.data = {
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
+            {row = false, randOffset = false, name = "tape", pos = {x = w * 0.75,         y = h * - 1.2}},
+
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,         y = h * 0.1},   pos2 = {x = w * 0.4,             y = h * 0.1}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,           y = h * 0},   pos2 = {x = w * -0.1,           y = h * -0.5}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.4,           y = h * 0},   pos2 = {x = w * 0.75,            y = h * -0.5}},
-            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.1,            y = h * -0.6},     pos2 = {x = w * -0.1,   y = h * -1.5}},
-            {row = true, randOffset = true, name = "rock", pos = {x = w * 0.75,          y = h * -0.6},   pos2 = {x = w * 0.75,         y = h * -1.5}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.1,            y = h * -0.6},     pos2 = {x = w * -0.1,   y = h * -1}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * 0.75,          y = h * -0.6},   pos2 = {x = w * 0.75,         y = h * -1}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.05,          y = h * -1},   pos2 = {x = w * 0.75,         y = h * -1.2}},
             --{name = "rock", pos = {x = w*0.5,     y = 0}},
             --{name = "rock", pos = {x = w*0.3,     y = -h*0.25}},
             --{name = "rock", pos = {x = w*0.1,     y = -h*0.5}},
