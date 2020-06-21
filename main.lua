@@ -39,9 +39,6 @@ function love.draw()
 end
 
 function love.keypressed(key, unicode)
-    if key == "escape" then
-        love.event.quit()
-    end
 	lovelyMoon.event.keypressed(key, unicode)
 end
 

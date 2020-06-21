@@ -35,7 +35,7 @@ function Boat:kill(n)
     table.insert(self.dead, n)
 
     if #self.dead == 8 and self.isPlayer then
-        playSound("gong")
+        --playSound("gong")
         --camera:fade(1, {0, 0, 0, 1})
         local t = {t = 0}
         flux.to(t, 1.1, {t= 1}):oncomplete(function()

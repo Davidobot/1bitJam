@@ -12,6 +12,7 @@ local text
 local buttons
 
 local img = nil
+local t = 10
 
 function state:load()
     font20 = love.graphics.newFont("PERTILI.TTF", 20, "mono")
@@ -39,6 +40,8 @@ function state:enable()
 
     --flux.to(text[1], 1.2, {y = text[1].ty}):ease("backout"):delay(1.4)
     flux.to(text[1], 1.2, {y = text[1].ty}):ease("backout")
+
+    t = 10
 end
 
 function state:disable()
@@ -63,6 +66,13 @@ function state:update(dt)
             v.hovered = false
             v.t.s = v.txt
         end
+    end
+
+    t = t - dt
+
+    if t <= 0 then
+        cur_level = 1
+        lovelyMoon.switchState("afterLvl3", "title")
     end
 end
 
@@ -101,7 +111,9 @@ function state:keypressed(key, unicode)
 end
 
 function state:keyreleased(key, unicode)
-	
+	if key == "escape" then
+        love.event.quit()
+    end
 end
 
 function state:mousepressed(x, y, button)
