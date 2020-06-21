@@ -99,6 +99,7 @@ t.data = {
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
+            {row = false, randOffset = false, name = "tape", pos = {x = w * 0,         y = h * -8.2}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * -5,         y = h * 0},   pos2 = {x = w * -0.15,             y = h * -8}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 5,         y = h * 0},   pos2 = {x = w * 0.15,             y = h * -8}},
         },
