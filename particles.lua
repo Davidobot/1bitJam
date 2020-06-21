@@ -29,7 +29,7 @@ function Particles.new(x, y, type, above, getCoords, a, s)
     v.dead = false;
     v.above = above or false
     v.getCoords = getCoords;
-    v.anim = anim8.newAnimation(imgs[type].g('1-'..imgs[type].n, 1), imgs[type].t * love.math.random(0.8, 1.2), function()
+    v.anim = anim8.newAnimation(imgs[type].g('1-'..imgs[type].n, 1), imgs[type].t * (0.8 + love.math.random()*0.4), function()
         v.dead = true;
     end)
 

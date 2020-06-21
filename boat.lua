@@ -66,7 +66,7 @@ function Boat:fire()
         local dy = (i*6 + 36) * math.sin(player_boat.pos.rot)
         Particles.new(0, 0, "fire", true, function()
             return player_boat.pos.x + dx, player_boat.pos.y + dy
-        end, love.math.random(0, math.pi/2), math.random(0.8 + (i/len), 1 + 2*(i/len)))
+        end, love.math.random(0, math.pi/2), 0.8 + (i/len) + math.random()*( 0.2 + 2*(i/len)))
 
         for i,v in ipairs(Enemies.data) do
             if math.dist(player_boat.pos.x + dx, player_boat.pos.y + dy, v.pos.x, v.pos.y) < v.w then
