@@ -102,9 +102,11 @@ function t.update(dt)
     t.drumstick_pos.y = lerp(t.drumstick_pos.y, t.drumstick_targetPos.y, t.drumstick_lerp * dt)
 
     -- drumstick to drum collision
-    for i,v in ipairs(t.drum_collisionLines) do
-        if (checkIntersect(prevDrumstickPos, t.drumstick_pos, v.point1, v.point2)) then
-            v.onHitFunc()
+    if (t.drumstick_pos.y > prevDrumstickPos.y) then
+        for i,v in ipairs(t.drum_collisionLines) do
+            if (checkIntersect(prevDrumstickPos, t.drumstick_pos, v.point1, v.point2)) then
+                v.onHitFunc()
+            end
         end
     end
 
