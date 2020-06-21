@@ -201,6 +201,8 @@ function t.loadLevel(index)
     t.endCurrentLevel()
     t.currentLevel = index
     t.startCurrentLevel()
+
+    --love.mouse.setPosition(0.75 * love.graphics:getWidth(), 0.5 * love.graphics:getHeight())
 end
 
 function t.endCurrentLevel()
