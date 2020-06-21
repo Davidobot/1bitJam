@@ -23,6 +23,7 @@ function love.load()
 	
 	states.afterLvl1 = lovelyMoon.addState("states.afterLvl1", "afterLvl1")
 	states.afterLvl1After = lovelyMoon.addState("states.afterLvl1Fail", "afterLvl1Fail")
+	states.afterLvl1After = lovelyMoon.addState("states.afterLvl1Burn", "afterLvl1Burn")
 	states.afterLvl2 = lovelyMoon.addState("states.afterLvl2", "afterLvl2")
 	states.afterLvl3 = lovelyMoon.addState("states.afterLvl3", "afterLvl3")
 

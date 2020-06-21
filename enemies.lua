@@ -170,16 +170,19 @@ function t.enemies.racer:onUpdate(enemies, dt)
         self.burning_deathTimer = self.burning_deathTimer - dt
         if (self.burning_deathTimer <= 0) then
             self.dead = true
+            lovelyMoon.switchState("game", "afterLvl1Burn")
         end
     end
 
-    self.boat:update(dt)
+    if self.boat then
+        self.boat:update(dt)
 
-    self.pos.x = self.boat.pos.x
-    self.pos.y = self.boat.pos.y
+        self.pos.x = self.boat.pos.x
+        self.pos.y = self.boat.pos.y
 
-    if (self.boat.pos.y < h * -5.4) then
-        lovelyMoon.switchState("game", "afterLvl1Fail")
+        if (self.boat.pos.y < h * -5.4) then
+            lovelyMoon.switchState("game", "afterLvl1Fail")
+        end
     end
 end
 
