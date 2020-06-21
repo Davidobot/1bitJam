@@ -87,7 +87,7 @@ function Boat:update(dt)
     self.mov.rot_speed = self.mov.rot_speed < 0 and math.min(0, self.mov.rot_speed + _rot_decel * dt) or math.max(0, self.mov.rot_speed - _rot_decel * dt)
 
     for i,v in ipairs(Obstacles.t) do
-        if math.pow((v.x - self.pos.x), 2) + math.pow(v.y - self.pos.y, 2) < 300 then
+        if math.pow((v.x - self.pos.x), 2) + math.pow(v.y - self.pos.y, 2) < 300 and v.type ~= "tape" then
             if self.isPlayer then
                 camera:shake(8 * (self.mov.forward_speed / _max_speed), 1, 60)
             end
