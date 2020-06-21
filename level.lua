@@ -190,6 +190,7 @@ function t.update(dt)
 
     t.data[t.currentLevel].updateFunc(dt)
 
+    --[[
     if love.keyboard.isDown("1") then
         t.loadLevel(1)
     elseif love.keyboard.isDown("2") then
@@ -197,6 +198,7 @@ function t.update(dt)
     elseif love.keyboard.isDown("3") then
         t.loadLevel(3)
     end
+    ]]
 end
 
 function t.loadLevel(index)
