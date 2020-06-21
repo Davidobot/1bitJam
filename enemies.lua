@@ -125,9 +125,13 @@ function t.enemies.racer:onStart(enemies)
     self.moving = false
     self.t = 0
     self.paddleIndex = 1
+    self.state = "alive"
+    self.burning_particleTimer = 0
+    self.burning_deathTimer = enemies.enemies.pirate.burning_deathTimer
 end
 
 function t.enemies.racer:onUpdate(enemies, dt)
+    if self.state == "alive" then
     if (self.moving == false) then
         if (player_boat.pos.y < self.boat.pos.y) then
             self.moving = true
@@ -142,6 +146,33 @@ function t.enemies.racer:onUpdate(enemies, dt)
             end
         end
     end
+    elseif self.state == "burning" then
+        self.burning_particleTimer = self.burning_particleTimer - dt
+        if (self.burning_particleTimer <= 0) then
+            self.burning_particleTimer = self.burning_particleTimer + (1 / enemies.enemies.pirate.burning_particleRate)
+            for i = 1, 10 do 
+                local dx = enemies.enemies.pirate.burning_particleRect.w * (love.math.random() - 0.5)*2
+                local dy = enemies.enemies.pirate.burning_particleRect.h * (love.math.random() - 0.5)*2
+                local x = dx * math.cos(self.boat.pos.rot) - dy * math.sin(self.boat.pos.rot)
+                local y = dx * math.sin(self.boat.pos.rot) + dy * math.cos(self.boat.pos.rot)
+
+                --todo assuming the particle pos is right, spawn a particle there!
+                Particles.new(0, 0, "fire", true, function()
+                    if self.boat then
+                        if self.boat.pos then
+                            return self.boat.pos.x + x, self.boat.pos.y + y
+                        end
+                    end
+                    return 0, 0
+                end)
+            end
+        end
+        self.burning_deathTimer = self.burning_deathTimer - dt
+        if (self.burning_deathTimer <= 0) then
+            self.dead = true
+        end
+    end
+
     self.boat:update(dt)
 
     self.pos.x = self.boat.pos.x
@@ -157,7 +188,10 @@ function t.enemies.racer:onDraw(enemies)
 end
 
 function t.enemies.racer:takeDamage()
-    --racer never engaged the player in combat, so it can just ignore damage
+    if self.state ~= "burning" then
+        self.state = "burning"
+        playSound("screams")
+    end
 end
 
 function t.enemies.racer:onDestroy(enemies)

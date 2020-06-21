@@ -168,6 +168,10 @@ t.data = {
                 t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.05, player_boat.pos.y + h*-1.1)
                 t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.1, player_boat.pos.y + h*-1.2)
             end
+
+            if (player_boat.pos.y < h * -8.1) then
+                lovelyMoon.switchState("game", "afterLvl3")
+            end
         end,
         endFunc = function()
 
