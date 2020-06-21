@@ -22,9 +22,10 @@ function love.load()
 	states.gameover = lovelyMoon.addState("states.gameover", "gameover")
 	
 	states.afterLvl1 = lovelyMoon.addState("states.afterLvl1", "afterLvl1")
+	states.afterLvl1 = lovelyMoon.addState("states.afterLvl1Fail", "afterLvl1Fail")
 	states.afterLvl1 = lovelyMoon.addState("states.afterLvl2", "afterLvl2")
 
-	lovelyMoon.enableState("game")
+	lovelyMoon.enableState("title")
 end
 
 function love.update(dt)

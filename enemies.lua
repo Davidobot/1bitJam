@@ -76,17 +76,19 @@ function t.update(dt)
         v.attackCoolDown = math.max(0, v.attackCoolDown - dt)
 
         -- Physical collision
-        if math.dist(v.pos.x, v.pos.y, player_boat.pos.x, player_boat.pos.y) <  v.w and v.attackCoolDown <= 0 then
-            camera:shake(10, 1, 60)
-            player_boat.mov.current.speed = 50
-            player_boat.mov.forward_speed = 0
-            player_boat.mov.current.rot = math.atan2(player_boat.pos.y - v.pos.y , player_boat.pos.x - v.pos.x)
-            flux.to(player_boat.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
-            player_boat:killSomeone()
-            v.attackCoolDown = 1
-            
-            if v.boat then
-                v.boat:killSomeone()
+        if v.pos then
+            if math.dist(v.pos.x, v.pos.y, player_boat.pos.x, player_boat.pos.y) <  v.w and v.attackCoolDown <= 0 then
+                camera:shake(10, 1, 60)
+                player_boat.mov.current.speed = 50
+                player_boat.mov.forward_speed = 0
+                player_boat.mov.current.rot = math.atan2(player_boat.pos.y - v.pos.y , player_boat.pos.x - v.pos.x)
+                flux.to(player_boat.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
+                player_boat:killSomeone()
+                v.attackCoolDown = 1
+                
+                if v.boat then
+                    v.boat:killSomeone()
+                end
             end
         end
     end
@@ -145,7 +147,7 @@ function t.enemies.racer:onUpdate(enemies, dt)
     self.pos.y = self.boat.pos.y
 
     if (self.boat.pos.y < h * -5.4) then
-        lovelyMoon.switchState("game", "afterLvl1")
+        lovelyMoon.switchState("game", "afterLvl1Fail")
     end
 end
 
