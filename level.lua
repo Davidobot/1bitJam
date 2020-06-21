@@ -62,10 +62,16 @@ t.data = {
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
-            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.5,         y = h * 1},   pos2 = {x = w * 0.4,             y = h * 0.2}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.5,         y = h * 0.5},   pos2 = {x = w * 0.5,             y = h * 0.5}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.5,         y = h * 0.5},   pos2 = {x = w * -0.5,             y = h * -5}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * 0.5,         y = h * 0.5},   pos2 = {x = w * 0.5,             y = h * -5}},
         },
         enemies = {
             {name = "pirate", pos = {x = w*0.25, y = h*-1}},
+            {name = "pirate", pos = {x = w*0.25, y = h*-2}},
+            {name = "pirate", pos = {x = w*0.25, y = h*-3}},
+            {name = "pirate", pos = {x = w*0.25, y = h*-4}},
+            {name = "pirate", pos = {x = w*0.25, y = h*-5}},
         },
         startFunc = function()
 
