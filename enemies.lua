@@ -304,8 +304,10 @@ function t.enemies.pirate:onDraw(enemies)
 end
 
 function t.enemies.pirate:takeDamage()
-    self.state = "burning"
-    playSound("screams")
+    if self.state ~= "burning" then
+        self.state = "burning"
+        playSound("screams")
+    end
 end
 
 function t.enemies.pirate:onDestroy(enemies)

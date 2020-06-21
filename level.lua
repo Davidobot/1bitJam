@@ -72,6 +72,8 @@ t.data = {
             {name = "pirate", pos = {x = w*0.25, y = h*-3}},
             {name = "pirate", pos = {x = w*0.25, y = h*-4}},
             {name = "pirate", pos = {x = w*0.25, y = h*-5}},
+            {name = "tentacle", pos = {x = w*-0.5, y = h*-3}},
+            {name = "tentacle", pos = {x = w*0.5, y = h*-4}},
         },
         startFunc = function()
 
