@@ -154,11 +154,6 @@ function t.drumHit(left)
     else
         playSound("don")
     end
-    local dx = 12 * math.cos(player_boat.pos.rot)
-    local dy = 12* math.sin(player_boat.pos.rot)
-    Particles.new(0, 0, "sound", true, function()
-        return player_boat.pos.x + dx, player_boat.pos.y + dy
-    end)
 end
 
 function t.gongHit()

@@ -70,7 +70,7 @@ function Boat:fire()
 
         for i,v in ipairs(Enemies.data) do
             if math.dist(player_boat.pos.x + dx, player_boat.pos.y + dy, v.pos.x, v.pos.y) < v.w then
-                print("HI")
+                v:takeDamage()
             end
         end
     end
@@ -108,6 +108,12 @@ function Boat:paddle(left)
     local pow = alive/4
     self.mov.rot_speed = math.clamp(-_max_rot, self.mov.rot_speed + (left and -1 or 1) * _instant_rot_speed, _max_rot)
     self.mov.forward_speed = math.min(self.mov.forward_speed + _instant_forward_speed * pow, _max_speed)
+
+    local dx = 12 * math.cos(player_boat.pos.rot)
+    local dy = 12* math.sin(player_boat.pos.rot)
+    Particles.new(0, 0, "sound", true, function()
+        return player_boat.pos.x + dx, player_boat.pos.y + dy
+    end)
 
     for i=0,3 do
         local dx = -self.img:getHeight()/2*1.2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
