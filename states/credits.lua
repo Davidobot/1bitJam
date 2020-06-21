@@ -22,9 +22,8 @@ function state:load()
     text = {
         {s = "CODE & DESIGN:", f = font16, y = 0, ty = h * 0.1},
         {s = "Joonas Lima Suikki", f = font20, y = 0, ty = h * 0.15},
-        {s = "David Khachaturov", f = font20, y = 0, ty = h * 0.22},
-        {s = "SOUND EFFECTS:", f = font16, y = 0, ty = h * 0.35},
-        {s = "Samu Kaivola", f = font20, y = 0, ty = h * 0.4},
+        {s = "CODE, DESIGN & ART:", f = font16, y = 0, ty = h * 0.25},
+        {s = "David Khachaturov", f = font20, y = 0, ty = h * 0.3},
         {s = "BACK", f = font16, y = 0, ty = h * 0.85}
     }
 
@@ -39,24 +38,16 @@ function state:load()
             end
         },
         davidobot = {
-            t = text[3],
-            txt = text[3].s,
+            t = text[4],
+            txt = text[4].s,
             hovered = false,
             onClick = function()
                 love.system.openURL("http://www.davidobot.net/")
             end
         },
-        samu = {
+        back = {
             t = text[5],
             txt = text[5].s,
-            hovered = false,
-            onClick = function()
-                love.system.openURL("https://www.instagram.com/samukosamu/")
-            end
-        },
-        back = {
-            t = text[6],
-            txt = text[6].s,
             hovered = false,
             onClick = function()
                 lovelyMoon.switchState("credits", "title")
