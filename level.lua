@@ -63,7 +63,7 @@ t.data = {
             {name = "rock", pos = {x = w*0.3,     y = -h*1.2}},
         },
         enemies = {
-            {name = "racer", pos = {x = 0, y = 0}},
+            {name = "pirate", pos = {x = 0, y = 100}},
         },
         startFunc = function()
 

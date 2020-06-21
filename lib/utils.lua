@@ -142,8 +142,8 @@ end
 -- SOUNDS
 local _channels = { }
 local _sounds = { }
-_sounds.don = love.sound.newSoundData ( "sfx/don.wav" )
-_sounds.ka = love.sound.newSoundData ( "sfx/ka.wav" )
+_sounds.don = love.sound.newSoundData ( "sfx/don.ogg" )
+_sounds.ka = love.sound.newSoundData ( "sfx/ka.ogg" )
 _sounds.gong = love.sound.newSoundData ( "sfx/gong.ogg" )
 
 function playSound ( sound, volume )
