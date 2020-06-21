@@ -115,7 +115,6 @@ function state:draw()
 end
 
 function state:keypressed(key, unicode)
-    player_boat:killSomeone()
 end
 
 function state:keyreleased(key, unicode)

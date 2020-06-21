@@ -226,6 +226,7 @@ function t.enemies.tentacle:onStart(enemies)
     self.g.g = anim8.newGrid(self.g.w, self.g.h, self.g.img:getWidth(), self.g.img:getHeight())
     self.g.t = 0.3; self.g.n = 3
     self.g.anim = anim8.newAnimation(self.g.g('1-'..self.g.n, 1), self.g.t * love.math.random(0.8, 1.2))
+    self.w = 20
 end
 
 function t.enemies.tentacle:onUpdate(enemies, dt)

@@ -1,6 +1,9 @@
 local Boat = Object:extend()
 
-Boat.img = love.graphics.newImage("gfx/boat.png")
+Boat.img = {
+    img = love.graphics.newImage("gfx/boat.png"),
+    pirate = love.graphics.newImage("gfx/boat.png")
+}
 Boat.deadman = love.graphics.newImage("gfx/deadman.png")
 
 local _forward_decel = 5
@@ -11,7 +14,7 @@ local _instant_forward_speed = 20
 local _max_speed = 50
 local _max_rot = math.pi
 
-function Boat:new()
+function Boat:new(type)
     self.pos = {x = w/2, y = h, rot = -math.pi/2}
     self.mov = {
         forward_speed = 0,
@@ -21,6 +24,7 @@ function Boat:new()
             rot = 0,
         },
     }
+    self.img = type and Boat .img[type] or Boat.img.img
 
     -- 0,3 on left, 4 to 7 on right
     self.dead = {}
@@ -30,10 +34,9 @@ end
 function Boat:kill(n)
     table.insert(self.dead, n)
 
-    -- TODO: if #self.dead == 8, then go to GAMEOVER screen
     if #self.dead == 8 and self.isPlayer then
-        -- TODO: play sound
-        camera:fade(1, {0, 0, 0, 1})
+        playSound("gong")
+        --camera:fade(1, {0, 0, 0, 1})
         local t = {t = 0}
         flux.to(t, 1.1, {t= 1}):oncomplete(function()
             lovelyMoon.switchState("game", "gameover")
@@ -106,10 +109,10 @@ function Boat:paddle(left)
     self.mov.forward_speed = math.min(self.mov.forward_speed + _instant_forward_speed * pow, _max_speed)
 
     for i=0,3 do
-        local dx = -Boat.img:getHeight()/2*1.2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
-        local dx2 = Boat.img:getHeight()/2*1.2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
-        local dy = Boat.img:getHeight()/2*1.2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
-        local dy2 = -Boat.img:getHeight()/2*1.2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
+        local dx = -self.img:getHeight()/2*1.2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
+        local dx2 = self.img:getHeight()/2*1.2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
+        local dy = self.img:getHeight()/2*1.2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
+        local dy2 = -self.img:getHeight()/2*1.2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
         if left and not contains(self.dead, (3- i) + 4) then
             Particles.new(self.pos.x + dx, self.pos.y + dy, "splash")
         elseif not left and not contains(self.dead, (3-i)) then
@@ -120,7 +123,7 @@ end
 
 function Boat:draw()
     --love.graphics.draw(Boat.img, self.pos.x, self.pos.y, self.pos.rot, 1, 1, Boat.img:getWidth()/2, Boat.img:getHeight()/2)
-    orderedDraw(self.pos.y, Boat.img, self.pos.x, self.pos.y, self.pos.rot, 1, 1, Boat.img:getWidth()/2, Boat.img:getHeight()/2)
+    orderedDraw(self.pos.y, self.img, self.pos.x, self.pos.y, self.pos.rot, 1, 1, self.img:getWidth()/2, self.img:getHeight()/2)
 
     for i,v in ipairs(self.dead) do
         local dx = -20 + (v % 4) * 10 - 9
