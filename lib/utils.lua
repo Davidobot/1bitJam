@@ -45,6 +45,15 @@ function math.angleDifference(t1, t2)
 	return (t1 - t2 + math.pi) % (math.pi * 2) - math.pi
  end
 
+function contains(table, val)
+	for i=1,#table do
+	   if table[i] == val then 
+		  return true
+	   end
+	end
+	return false
+ end
+
 -- GRAPHICS --
 function isVisible(x, y, ww, hh)
 	return x + ww >= 0 and y + hh >= 0 and x <= w and y <= h

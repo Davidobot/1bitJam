@@ -1,6 +1,7 @@
 local Boat = Object:extend()
 
 Boat.img = love.graphics.newImage("gfx/boat.png")
+Boat.deadman = love.graphics.newImage("gfx/deadman.png")
 
 local _forward_decel = 5
 local _rot_decel = math.pi/4
@@ -20,6 +21,13 @@ function Boat:new()
             rot = 0,
         },
     }
+
+    -- 0,3 on left, 4 to 7 on right
+    self.dead = {1, 3}
+end
+
+function Boat:kill(n)
+    table.insert(self.dead, n)
 end
 
 function Boat:update(dt)
@@ -45,17 +53,24 @@ end
 
 ---@param left boolean
 function Boat:paddle(left)
-    self.mov.rot_speed = math.clamp(-_max_rot, self.mov.rot_speed + (left and -1 or 1) * _instant_rot_speed, _max_rot)
-    self.mov.forward_speed = math.min(self.mov.forward_speed + _instant_forward_speed, _max_speed)
+    local alive = 4
+    for i=(left and 4 or 0), (left and 7 or 3) do
+        if contains(self.dead, i) then
+            alive = alive - 1
+        end
+    end
+    local pow = alive/4
+    self.mov.rot_speed = math.clamp(-_max_rot, self.mov.rot_speed + (left and -1 or 1) * _instant_rot_speed * pow, _max_rot)
+    self.mov.forward_speed = math.min(self.mov.forward_speed + _instant_forward_speed * pow, _max_speed)
 
     for i=0,3 do
         local dx = -Boat.img:getHeight()/2*1.2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
         local dx2 = Boat.img:getHeight()/2*1.2 * math.sin(self.pos.rot) - 9 * i * math.cos(self.pos.rot)
         local dy = Boat.img:getHeight()/2*1.2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
         local dy2 = -Boat.img:getHeight()/2*1.2 * math.cos(self.pos.rot) - 9 * i * math.sin(self.pos.rot)
-        if left then
+        if left and not contains(self.dead, (3- i) + 4) then
             Particles.new(self.pos.x + dx, self.pos.y + dy, "splash")
-        else
+        elseif not left and not contains(self.dead, (3-i)) then
             Particles.new(self.pos.x + dx2, self.pos.y + dy2, "splash")
         end
     end
@@ -64,6 +79,14 @@ end
 function Boat:draw()
     --love.graphics.draw(Boat.img, self.pos.x, self.pos.y, self.pos.rot, 1, 1, Boat.img:getWidth()/2, Boat.img:getHeight()/2)
     orderedDraw(self.pos.y, Boat.img, self.pos.x, self.pos.y, self.pos.rot, 1, 1, Boat.img:getWidth()/2, Boat.img:getHeight()/2)
+
+    for i,v in ipairs(self.dead) do
+        local dx = -20 + (v % 4) * 10 - 9
+        local dy = -10 + math.floor(v / 4) * 10 + 5
+        local x = dx * math.cos(self.pos.rot) - dy * math.sin(self.pos.rot)
+        local y = dx * math.sin(self.pos.rot) + dy * math.cos(self.pos.rot)
+        orderedDraw(self.pos.y + 1, Boat.deadman, self.pos.x + x, self.pos.y + y, self.pos.rot, 1, 1, 5, 5)
+    end
 end
 
 return Boat
