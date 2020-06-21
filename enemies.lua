@@ -191,22 +191,6 @@ end
 
 function t.enemies.pirate:onDraw(enemies)
     self.boat:draw()
-
-    --debug distances
-    local dist = math.dist(player_boat.pos.x, player_boat.pos.y, self.pos.x, self.pos.y)
-    local debugColor
-    if (dist > enemies.pirate_seeDistance) then
-        debugColor = {1, 0, 0}
-    elseif (dist > enemies.pirate_closeDistance) then --pirate is pretty far so it attempts to face the player and paddle towards them
-        debugColor = {1, 1, 0}
-    else --pirate is pretty close so it tries to turn its side towards the player as an attempt to aim and fire with its cannons
-        debugColor = {0, 1, 0}
-    end
-    love.graphics.setColor(debugColor)
-    love.graphics.circle("line", self.boat.pos.x, self.boat.pos.y, 30)
-    love.graphics.circle("line", self.boat.pos.x, self.boat.pos.y, 40)
-    love.graphics.circle("line", self.boat.pos.x, self.boat.pos.y, 50)
-    love.graphics.setColor(1,1,1)
 end
 
 function t.enemies.pirate:onDestroy(enemies)

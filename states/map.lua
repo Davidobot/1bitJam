@@ -11,9 +11,7 @@ local pointer_img
 local text
 local buttons
 
-local anim8 = require 'lib/anim8'
 local maps = {}
-
 
 function state:load()
     font20 = love.graphics.newFont("PERTILI.TTF", 20, "mono")
