@@ -15,12 +15,13 @@ cur_level = 1
 function love.load()
 	states.title = lovelyMoon.addState("states.title", "title")
 	states.intro = lovelyMoon.addState("states.intro", "intro")
+	states.controls = lovelyMoon.addState("states.controls", "controls")
     states.credits = lovelyMoon.addState("states.credits", "credits")
 	states.game = lovelyMoon.addState("states.game", "game")
 	states.map = lovelyMoon.addState("states.map", "map")
 	states.gameover = lovelyMoon.addState("states.gameover", "gameover")
 	
-	lovelyMoon.enableState("game")
+	lovelyMoon.enableState("title")
 end
 
 function love.update(dt)

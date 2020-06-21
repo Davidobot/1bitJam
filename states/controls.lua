@@ -6,71 +6,37 @@ function state:new()
 	return lovelyMoon.new(self)
 end
 
-local font32, font24, font20
+local font20
 local pointer_img
 local text
 local buttons
-local dragon_img
+
+local img = nil
+
 function state:load()
-    font32 = love.graphics.newFont("PERTILI.TTF", 32, "mono")
-    font24 = love.graphics.newFont("PERTILI.TTF", 24, "mono")
     font20 = love.graphics.newFont("PERTILI.TTF", 20, "mono")
 
     pointer_img = love.graphics.newImage("gfx/pointer.png")
-    dragon_img = love.graphics.newImage("gfx/dragon.png")
 
     text = {
-        {s = "THE GENTLE BEAT OF A DRAGON BOAT", f = font32, y = 0, ty = 10},
-        {s = "A STORY OF HATE, FEAR, AND REDEMPTION", f = font24, y = 0, ty = 40},
-        {s = "INTRO", f = font20, y = 0, ty = h/2 + 20},
-        {s = "CONTROLS", f = font20, y = 0, ty = h/2 + 40},
-        {s = "START", f = font20, y = 0, ty = h/2 + 60},
-        {s = "CREDITS", f = font20, y = 0, ty = h/2 + 80},
-        {s = "QUIT", f = font20, y = 0, ty = h/2 + 100}
+        {s = "BACK", f = font20, y = 0, ty = h/2 + 140},
+        {s = "Hit near (1) to turn the boat left", f = font20, y = 0, ty = 20},
+        {s = "Hit near (2) to turn the boat right", f = font20, y = 0, ty = 40},
+        {s = "Hit near (3) to attack", f = font20, y = 0, ty = 60},
     }
 
     buttons = {
-        intro = {
-            t = text[3],
-            txt = text[3].s,
-            hovered = false,
-            onClick = function()
-                lovelyMoon.switchState("title", "intro")
-            end
-        },
-        controls = {
-            t = text[4],
-            txt = text[4].s,
-            hovered = false,
-            onClick = function()
-                lovelyMoon.switchState("title", "controls")
-            end
-        },
-        start = {
-            t = text[5],
-            txt = text[5].s,
-            hovered = false,
-            onClick = function()
-                lovelyMoon.switchState("title", "map")
-            end
-        },
-        credits = {
-            t = text[6],
-            txt = text[6].s,
-            hovered = false,
-            onClick = function()
-                lovelyMoon.switchState("title", "credits")
-            end
-        },
         quit = {
-            t = text[7],
-            txt = text[7].s,
+            t = text[1],
+            txt = text[1].s,
             hovered = false,
             onClick = function()
-                love.event.quit()
+                lovelyMoon.switchState("controls", "title")
             end
-        }
+        },
     }
+
+    img = love.graphics.newImage("gfx/controls.png")
 end
 
 function state:close()
@@ -82,20 +48,17 @@ function state:enable()
         v.y = -v.f:getHeight(v.s)
     end
 
-    flux.to(text[1], 1, {y = text[1].ty}):ease("backout")
-    flux.to(text[2], 1, {y = text[2].ty}):ease("backout"):delay(0.8)
-    flux.to(text[3], 1.2, {y = text[3].ty}):ease("backout"):delay(1.8)
-    flux.to(text[4], 1.2, {y = text[4].ty}):ease("backout"):delay(1.8)
-    flux.to(text[5], 1.2, {y = text[5].ty}):ease("backout"):delay(1.8)
-    flux.to(text[6], 1.2, {y = text[6].ty}):ease("backout"):delay(1.8)
-    flux.to(text[7], 1.2, {y = text[7].ty}):ease("backout"):delay(1.8)
+    flux.to(text[1], 1.2, {y = text[1].ty}):ease("backout"):delay(1.4)
+    flux.to(text[2], 1.2, {y = text[2].ty}):ease("backout")
+    flux.to(text[3], 1.2, {y = text[3].ty}):ease("backout"):delay(0.3)
+    flux.to(text[4], 1.2, {y = text[4].ty}):ease("backout"):delay(0.6)
 end
 
 function state:disable()
 	
 end
 
-function state:update(dt)  
+function state:update(dt)   
     local mouseX = love.mouse.getX() / love.graphics.getWidth() * w
     local mouseY = love.mouse.getY() / love.graphics.getHeight() * h
     for i,v in pairs(buttons) do
@@ -127,7 +90,8 @@ function state:draw()
 
     love.graphics.setCanvas(screen)
     love.graphics.clear()
-    love.graphics.draw(dragon_img, (w - dragon_img:getWidth()) / 2, 70)
+
+    love.graphics.draw(img, (w - img:getWidth())/2, (h - img:getHeight())/2)
 
     for i,v in ipairs(text) do
         love.graphics.setFont(v.f)
