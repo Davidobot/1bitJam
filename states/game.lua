@@ -9,6 +9,7 @@ Boat = require "boat"
 
 local screen = love.graphics.newCanvas(w/2, h)
 local drumScreen = love.graphics.newCanvas(w/2, h)
+local pauseScreen = love.graphics.newCanvas(w, h)
 player_boat = Boat()
 player_boat.isPlayer = true
 local drumControls = require "drumControls"
@@ -35,7 +36,7 @@ function state:load()
 
     drumControls.init(player_boat)
 
-    pauseFont = love.graphics.newFont("PERTILI.TTF", 26, "mono")
+    pauseFont = love.graphics.newFont("PERTILI.TTF", 20, "mono")
 
     --for i=1, 100 do
     --    Obstacles.new(love.math.random(-w, w), love.math.random(-h, h), "rock")
@@ -81,6 +82,8 @@ function state:update(dt)
     end
 end
 
+local pauseYs = {-30, -30, -30}
+
 function state:draw()
 	love.graphics.setCanvas(screen)
         love.graphics.clear()
@@ -123,17 +126,23 @@ function state:draw()
 
     
     if (paused) then
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle("fill", 0, 0, love.graphics:getWidth(), love.graphics:getHeight())
-        love.graphics.setFont(pauseFont)
-        love.graphics.setColor(1, 1, 1)
-        local txt
-        txt = "GAME PAUSED"
-        love.graphics.print(txt, love.graphics.getWidth()/2, 50, 0, 1, 1, love.graphics.getFont():getWidth(txt)/2, 0)
-        txt = "[ESC] to continue."
-        love.graphics.print(txt, love.graphics.getWidth()/2, 100, 0, 1, 1, love.graphics.getFont():getWidth(txt)/2, 0)
-        txt = "[M] to return to main menu."
-        love.graphics.print(txt, love.graphics.getWidth()/2, 150, 0, 1, 1, love.graphics.getFont():getWidth(txt)/2, 0)
+        love.graphics.setCanvas(pauseScreen)
+            love.graphics.clear(0, 0, 0, 1)
+            love.graphics.setFont(pauseFont)
+            love.graphics.setColor(1, 1, 1)
+            local txt
+            txt = "GAME PAUSED"
+            love.graphics.print(txt, w/2, pauseYs[1], 0, 1, 1, love.graphics.getFont():getWidth(txt)/2, 0)
+            txt = "[ESC] to continue."
+            love.graphics.print(txt, w/2, pauseYs[2], 0, 1, 1, love.graphics.getFont():getWidth(txt)/2, 0)
+            txt = "[M] to return to main menu."
+            love.graphics.print(txt, w/2, pauseYs[3], 0, 1, 1, love.graphics.getFont():getWidth(txt)/2, 0)
+        love.graphics.setCanvas()
+
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.setBlendMode('alpha', 'premultiplied')
+        love.graphics.draw(pauseScreen, 0, 0, 0, cur_w/w, cur_h/h)
+        love.graphics.setBlendMode('alpha')
     end
 end
 
@@ -141,8 +150,17 @@ function state:keypressed(key, unicode)
     if key == "escape" then
         paused = not paused
         love.mouse.setGrabbed(not paused)
+        love.mouse.setVisible(paused)
+
+        if paused then
+            pauseYs = {-30, -30, -30}
+            flux.to(pauseYs, 0.3, {h * 0.25, h * 0.35, h * 0.45})
+        end
     end
     if paused and key == "m" then
+        paused = false
+        love.mouse.setGrabbed(not paused)
+        love.mouse.setVisible(paused)
         lovelyMoon.switchState("game", "title")
     end
 end
