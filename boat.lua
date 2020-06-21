@@ -115,7 +115,11 @@ function Boat:paddle(left, strength)
     local dx = 12 * math.cos(self.pos.rot)
     local dy = 12* math.sin(self.pos.rot)
     Particles.new(0, 0, "sound", true, function()
-        return self.pos.x + dx, self.pos.y + dy
+        if self.pos ~= nil then
+            return self.pos.x + dx, self.pos.y + dy
+        else
+            return 0, 0
+        end
     end)
 
     for i=0,3 do

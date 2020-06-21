@@ -10,7 +10,7 @@ require "lib/utils"
 flux = require "lib/flux"
 anim8 = require 'lib/anim8'
 
-cur_level = 2
+cur_level = 1
 
 function love.load()
 	states.title = lovelyMoon.addState("states.title", "title")
@@ -22,6 +22,7 @@ function love.load()
 	states.gameover = lovelyMoon.addState("states.gameover", "gameover")
 	
 	states.afterLvl1 = lovelyMoon.addState("states.afterLvl1", "afterLvl1")
+	states.afterLvl1 = lovelyMoon.addState("states.afterLvl1Fail", "afterLvl1Fail")
 	states.afterLvl1 = lovelyMoon.addState("states.afterLvl2", "afterLvl2")
 
 	lovelyMoon.enableState("title")
