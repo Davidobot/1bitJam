@@ -43,7 +43,7 @@ function state:load()
             txt = text[3].s,
             hovered = false,
             onClick = function()
-                love.system.openURL("http://www.davidobot.net/")
+                love.system.openURL("https://davidobot.net/")
             end
         },
         samu = {
