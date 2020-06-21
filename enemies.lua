@@ -249,6 +249,10 @@ end
 ------------------------------------------------
 t.enemies.tentacle = Object:extend()
 
+t.enemies.tentacle.burning_particleRate = 30
+t.enemies.tentacle.burning_particleRect = {w = 20, h = 20}
+t.enemies.tentacle.burning_deathTimer = 5
+
 function t.enemies.tentacle:onStart(enemies)
     self.g = {}
     self.g.img = enemies.tentacle_img
@@ -256,18 +260,42 @@ function t.enemies.tentacle:onStart(enemies)
     self.g.g = anim8.newGrid(self.g.w, self.g.h, self.g.img:getWidth(), self.g.img:getHeight())
     self.g.t = 0.3; self.g.n = 3
     self.g.anim = anim8.newAnimation(self.g.g('1-'..self.g.n, 1), self.g.t * love.math.random(0.8, 1.2))
-    self.w = 20
+    self.w = 40
+
+    self.state = "alive"
+    self.burning_particleTimer = 0
+    self.burning_deathTimer = enemies.enemies.tentacle.burning_deathTimer
 end
 
 function t.enemies.tentacle:onUpdate(enemies, dt)
-    self.g.anim:update(dt)
-    local dir = {x = player_boat.pos.x - self.pos.x, y = player_boat.pos.y - self.pos.y}
-    local magnitude = math.abs(dir.x) + math.abs(dir.y)
-    dir.x = dir.x / magnitude
-    dir.y = dir.y / magnitude
+    if self.state == "alive" then
+        self.g.anim:update(dt)
+        local dir = {x = player_boat.pos.x - self.pos.x, y = player_boat.pos.y - self.pos.y}
+        local magnitude = math.abs(dir.x) + math.abs(dir.y)
+        dir.x = dir.x / magnitude
+        dir.y = dir.y / magnitude
 
-    self.pos.x = self.pos.x + dir.x * enemies.tentacle_speed * dt
-    self.pos.y = self.pos.y + dir.y * enemies.tentacle_speed * dt
+        self.pos.x = self.pos.x + dir.x * enemies.tentacle_speed * dt
+        self.pos.y = self.pos.y + dir.y * enemies.tentacle_speed * dt
+    elseif self.state == "burning" then
+        self.burning_particleTimer = self.burning_particleTimer - dt
+        if (self.burning_particleTimer <= 0) then
+            self.burning_particleTimer = self.burning_particleTimer + (1 / enemies.enemies.tentacle.burning_particleRate)
+            for i = 1, 10 do 
+                local dx = enemies.enemies.tentacle.burning_particleRect.w * (love.math.random() - 0.5)*2
+                local dy = enemies.enemies.tentacle.burning_particleRect.h * (love.math.random() - 0.5)*2
+
+                --todo assuming the particle pos is right, spawn a particle there!
+                Particles.new(0, 0, "fire", true, function()
+                    return self.pos.x + dx, self.pos.y + dy
+                end)
+            end
+        end
+        self.burning_deathTimer = self.burning_deathTimer - dt
+        if (self.burning_deathTimer <= 0) then
+            self.dead = true
+        end
+    end
 end
 
 function t.enemies.tentacle:onDraw(enemies)
@@ -276,7 +304,7 @@ function t.enemies.tentacle:onDraw(enemies)
 end
 
 function t.enemies.tentacle:takeDamage()
-
+    self.state = "burning"
 end
 
 function t.enemies.tentacle:onDestroy(enemies)
