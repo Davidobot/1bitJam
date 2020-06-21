@@ -25,7 +25,6 @@ function Boat:new(type)
         },
     }
     self.img = type and Boat.img[type] or Boat.img.img
-    print(type)
 
     -- 0,3 on left, 4 to 7 on right
     self.dead = {}
@@ -113,10 +112,10 @@ function Boat:paddle(left, strength)
     self.mov.rot_speed = math.clamp(-_max_rot, self.mov.rot_speed + (left and -1 or 1) * _instant_rot_speed, _max_rot)
     self.mov.forward_speed = math.min(self.mov.forward_speed + _instant_forward_speed * pow, _max_speed)
 
-    local dx = 12 * math.cos(player_boat.pos.rot)
-    local dy = 12* math.sin(player_boat.pos.rot)
+    local dx = 12 * math.cos(self.pos.rot)
+    local dy = 12* math.sin(self.pos.rot)
     Particles.new(0, 0, "sound", true, function()
-        return player_boat.pos.x + dx, player_boat.pos.y + dy
+        return self.pos.x + dx, self.pos.y + dy
     end)
 
     for i=0,3 do

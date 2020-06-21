@@ -169,6 +169,7 @@ t.enemies.pirate = Object:extend()
 t.enemies.pirate.burning_particleRate = 30
 t.enemies.pirate.burning_particleRect = {w = 40, h = 20}
 t.enemies.pirate.burning_deathTimer = 5
+t.enemies.pirate.bulletImg = love.graphics.newImage("gfx/bullet.png")
 
 function t.enemies.pirate:onStart(enemies)
     self.boat = enemies.boatClassRef("pirate")
@@ -179,6 +180,9 @@ function t.enemies.pirate:onStart(enemies)
     self.state = "alive"
     self.burning_particleTimer = 0
     self.burning_deathTimer = enemies.enemies.pirate.burning_deathTimer
+
+    self.bullets = {}
+    self.bulletTimer = 0
 end
 
 function t.enemies.pirate:onUpdate(enemies, dt)
@@ -219,7 +223,32 @@ function t.enemies.pirate:onUpdate(enemies, dt)
             if self.paddleT <= 0 and left ~= nil then
                 self.paddleT = enemies.pirate_paddleTimer
                 self.boat:paddle(left)
-            end           
+            end
+            
+            self.bulletTimer = math.max(0, self.bulletTimer - dt)
+            if (a >= 90 - thershold and a <= 90 + thershold) or
+               (a >= -90 - thershold and a <= -90 + thershold) then
+                    if self.bulletTimer <= 0 then
+                        local vv = self.boat
+                        for i=0,3, 3 do
+                            local dx = -vv.img:getHeight()/2*1.2 * math.sin(vv.pos.rot) - 9 * i * math.cos(vv.pos.rot)
+                            local dx2 = vv.img:getHeight()/2*1.2 * math.sin(vv.pos.rot) - 9 * i * math.cos(vv.pos.rot)
+                            local dy = vv.img:getHeight()/2*1.2 * math.cos(vv.pos.rot) - 9 * i * math.sin(vv.pos.rot)
+                            local dy2 = -vv.img:getHeight()/2*1.2 * math.cos(vv.pos.rot) - 9 * i * math.sin(vv.pos.rot)
+                            
+                                local tt = {}
+                                tt.x = vv.pos.x + dx; tt.y = vv.pos.y + dy
+                                tt.rot = vv.pos.rot + math.pi/2
+                                table.insert(self.bullets, tt)
+
+                                local tt = {}
+                                tt.x = vv.pos.x + dx2; tt.y = vv.pos.y + dy2
+                                tt.rot = vv.pos.rot - math.pi/2
+                                table.insert(self.bullets, tt)
+                        end
+                        self.bulletTimer = 5
+                    end
+               end
         end
     elseif self.state == "burning" then
         self.burning_particleTimer = self.burning_particleTimer - dt
@@ -245,12 +274,33 @@ function t.enemies.pirate:onUpdate(enemies, dt)
 
     self.boat:update(dt)
 
+    for i=#self.bullets,1,-1 do
+        local v = self.bullets[i]
+        v.x = v.x + math.cos(v.rot) * 50 * dt
+        v.y = v.y + math.sin(v.rot) * 50 * dt
+
+        if math.dist(v.x, v.y, player_boat.pos.x, player_boat.pos.y) < 30 then
+            camera:shake(10, 1, 60)
+            player_boat:killSomeone()
+            table.remove(self.bullets, i)
+        end
+
+        local cx, cy = camera:toCameraCoords(v.x, v.y)
+        if cx < 0 or cy < 0 or cx > w/2 or cy > h then
+            table.remove(self.bullets, i)
+        end
+    end
+
     self.pos.x = self.boat.pos.x
     self.pos.y = self.boat.pos.y
 end
 
 function t.enemies.pirate:onDraw(enemies)
     self.boat:draw()
+
+    for i,v in ipairs(self.bullets) do
+        orderedDraw(v.y, enemies.enemies.pirate.bulletImg, v.x, v.y, v.rot, 1, 1, enemies.enemies.pirate.bulletImg:getWidth()/2, enemies.enemies.pirate.bulletImg:getHeight()/2)
+    end
 end
 
 function t.enemies.pirate:takeDamage()
