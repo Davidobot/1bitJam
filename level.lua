@@ -4,6 +4,11 @@ t.obstacleRef = nil
 t.playerBoatRef = nil
 t.enemyRef = nil
 
+t.ambient = love.audio.newSource("sfx/ambient.ogg", "stream")
+t.ambient:setLooping(true)
+t.rain = love.audio.newSource("sfx/rain.ogg", "stream")
+t.rain:setLooping(true)
+
 t.currentLevel = 0
 t.data = {
     --! level 1: the race
@@ -151,10 +156,18 @@ function t.endCurrentLevel()
     t.enemyRef.clearEnemies()
 
     t.data[t.currentLevel].endFunc()
+
+    love.audio.pause(t.ambient)
+    love.audio.pause(t.rain)
 end
 
 function t.startCurrentLevel()
+    --t.ambient:start()
+    love.audio.play(t.ambient)
     stormy = t.data[t.currentLevel].stormy
+    if stormy then
+        love.audio.play(t.rain)
+    end
 
     player_boat = Boat()
     player_boat.isPlayer = true
