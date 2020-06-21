@@ -9,7 +9,7 @@ t.data = {
 local paddleSpeed = 2.25
 
 t.racer_paddles = {
-    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = 0, left = false}, {t = paddleSpeed, left = true},
     {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
     {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
     {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},

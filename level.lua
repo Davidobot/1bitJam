@@ -15,7 +15,7 @@ t.data = {
         obstacles = {
             {row = false, randOffset = false, name = "tape", pos = {x = w * 0.9,         y = h * - 1.3}},
             {row = false, randOffset = false, name = "tape", pos = {x = w * 1,         y = h * - 5.5}},
-            {row = false, randOffset = false, name = "tape", pos = {x = w * 1.2,         y = h * - 5.5}},
+            {row = false, randOffset = false, name = "tape", pos = {x = w * 1.3,         y = h * - 5.5}},
 
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,         y = h * 0.1},   pos2 = {x = w * 0.4,             y = h * 0.1}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,           y = h * 0},   pos2 = {x = w * -0.1,           y = h * -0.5}},
@@ -70,8 +70,8 @@ t.data = {
             {name = "pirate", pos = {x = w*0.25, y = h*-1}},
             {name = "pirate", pos = {x = w*0.25, y = h*-2}},
             {name = "pirate", pos = {x = w*0.25, y = h*-3}},
-            {name = "pirate", pos = {x = w*0.25, y = h*-4}},
-            {name = "pirate", pos = {x = w*0.25, y = h*-5}},
+            {name = "pirate", pos = {x = w*0.15, y = h*-4}},
+            {name = "pirate", pos = {x = w*0.4, y = h*-5}},
             {name = "tentacle", pos = {x = w*-0.5, y = h*-3}},
             {name = "tentacle", pos = {x = w*0.5, y = h*-4}},
         },
