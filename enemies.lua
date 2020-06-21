@@ -7,16 +7,28 @@ t.data = {
 }
 
 t.racer_paddles = {
-    {t = 1, left = false},
-    {t = 1, left = true},
-    {t = 2, left = false},
-    {t = 2, left = true},
-    {t = 1, left = false},
-
-    {t = 1, left = false},
-    {t = 1, left = true},
-    {t = 3, left = true},
-    {t = 2, left = false},
+    {t = 1, left = false}, {t = 1, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true},
+    {t = 2, left = false}, {t = 2, left = true}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true}, {t = 2, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true}, {t = 2, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
+    {t = 1, left = false}, {t = 1, left = true},
+    {t = 2, left = false}, {t = 2, left = true},
 }
 
 t.tentacle_img = love.graphics.newImage("gfx/tentacle.png")

@@ -9,17 +9,41 @@ t.data = {
     -- level 1: the race
     {
         stormy = false,
-        startPos = {x = w * 0.25, y = 0},
+        --startPos = {x = w * 0.25, y = 0},
+        startPos = {x = w * 0.9, y = h * -1},
         goalPosY = -99999,
         obstacles = {
-            {row = false, randOffset = false, name = "tape", pos = {x = w * 0.75,         y = h * - 1.2}},
+            {row = false, randOffset = false, name = "tape", pos = {x = w * 0.9,         y = h * - 1.3}},
+            {row = false, randOffset = false, name = "tape", pos = {x = w * 1,         y = h * - 5.5}},
 
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,         y = h * 0.1},   pos2 = {x = w * 0.4,             y = h * 0.1}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,           y = h * 0},   pos2 = {x = w * -0.1,           y = h * -0.5}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.4,           y = h * 0},   pos2 = {x = w * 0.75,            y = h * -0.5}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * -0.1,            y = h * -0.6},     pos2 = {x = w * -0.1,   y = h * -1}},
-            {row = true, randOffset = true, name = "rock", pos = {x = w * 0.75,          y = h * -0.6},   pos2 = {x = w * 0.75,         y = h * -1}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * -0.05,          y = h * -1},   pos2 = {x = w * 0.75,         y = h * -1.2}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * 0.8,          y = h * -0.6},   pos2 = {x = w * 1.3,         y = h * -1.25}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * 1.35,          y = h * -1.3},   pos2 = {x = w * 1.75,         y = h * -1.6}},
+            {row = false, randOffset = false, name = "rock", pos = {x = w * 1,          y = h * -1.05}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 0.75,          y = h * -1.4}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 1,          y = h * -1.6}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 1.25,          y = h * -1.8}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 1.1,          y = h * -2}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 1.5,          y = h * -2.2}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 0.9,          y = h * -2.4}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 1,          y = h * -2.6}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 0.8,          y = h * -2.8}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 0.8,          y = h * -3}},
+            --{row = false, randOffset = true, name = "rock", pos = {x = w * 1,          y = h * -3.2}},
+            --{row = false, randOffset = true, name = "rock", pos = {x = w * 1.2,          y = h * -3.4}},
+            --{row = false, randOffset = true, name = "rock", pos = {x = w * 1.3,          y = h * -3.6}},
+            --{row = false, randOffset = true, name = "rock", pos = {x = w * 1.4,          y = h * -3.8}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 1.0,          y = h * -4}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 0.9,          y = h * -4.2}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 0.74,          y = h * -4.4}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 0.6,          y = h * -4.6}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 0.9,          y = h * -4.8}},
+            {row = false, randOffset = true, name = "rock", pos = {x = w * 1.24,          y = h * -5}},
+
             --{name = "rock", pos = {x = w*0.5,     y = 0}},
             --{name = "rock", pos = {x = w*0.3,     y = -h*0.25}},
             --{name = "rock", pos = {x = w*0.1,     y = -h*0.5}},
@@ -36,13 +60,15 @@ t.data = {
             --{name = "tentacle", pos = {x = w*0, y = -h*0.5}},
             --{name = "racer", pos = {x = w*0.3, y = -h*0.3}},
             --{name = "pirate", pos = {x = w*0.1, y = -h*0.3}},
-            {name = "racer", pos = {x = w*1, y = -h*2}},
+            {name = "racer", pos = {x = w*1.1, y = -h*1.25}},
         },
         startFunc = function()
 
         end,
         updateFunc = function(dt)
-            
+            if (player_boat.pos.y < h * -5.5) then
+                lovelyMoon.switchState("afterLvl1")
+            end
         end,
         endFunc = function()
 
@@ -150,22 +176,30 @@ function t.startCurrentLevel()
                 local posX = v.pos.x + vec.x * ((i-1) / (steps-1))
                 local posY = v.pos.y + vec.y * ((i-1) / (steps-1))
                 if (v.randOffset) then
-                    posX = posX + love.math.random(-10, 10)
-                    posY = posY + love.math.random(-10, 10)
+                    posX = posX + randomOffset(10)
+                    posY = posY + randomOffset(10)
                 end
-
-                t.obstacleRef.new(posX, posY, v.name)
+                
+                local name = v.name
+                if name == "rock" and love.math.random() < 0.5 then
+                    name = "rock2"
+                end
+                t.obstacleRef.new(posX, posY, name)
             end
         else
             local posX = v.pos.x
             local posY = v.pos.y
 
             if (v.randOffset) then
-                posX = love.math.random(-10, 10)
-                posY = love.math.random(-10, 10)
+                posX = randomOffset(10)
+                posY = randomOffset(10)
             end
 
-            t.obstacleRef.new(v.pos.x, v.pos.y, v.name)
+            local name = v.name
+            if name == "rock" and love.math.random() < 0.5 then
+                name = "rock2"
+            end
+            t.obstacleRef.new(v.pos.x, v.pos.y, name)
         end
         
     end
@@ -174,6 +208,10 @@ function t.startCurrentLevel()
     end
 
     t.data[t.currentLevel].startFunc()
+end
+
+function randomOffset(strength)
+    return (love.math.random() - 0.5) * strength
 end
 
 return t
