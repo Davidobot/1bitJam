@@ -102,7 +102,7 @@ function Boat:paddle(left)
         end
     end
     local pow = alive/4
-    self.mov.rot_speed = math.clamp(-_max_rot, self.mov.rot_speed + (left and -1 or 1) * _instant_rot_speed * pow, _max_rot)
+    self.mov.rot_speed = math.clamp(-_max_rot, self.mov.rot_speed + (left and -1 or 1) * _instant_rot_speed, _max_rot)
     self.mov.forward_speed = math.min(self.mov.forward_speed + _instant_forward_speed * pow, _max_speed)
 
     for i=0,3 do
