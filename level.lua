@@ -25,7 +25,7 @@ t.data = {
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,         y = h * 0.1},   pos2 = {x = w * 0.4,             y = h * 0.1}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.1,           y = h * 0},   pos2 = {x = w * -0.1,           y = h * -0.5}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.4,           y = h * 0},   pos2 = {x = w * 0.75,            y = h * -0.5}},
-            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.1,            y = h * -0.6},     pos2 = {x = w * -0.1,   y = h * -1}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * -0.1,            y = h * -0.55},     pos2 = {x = w * -0.1,   y = h * -1}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * -0.05,          y = h * -1},   pos2 = {x = w * 0.75,         y = h * -1.2}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 0.8,          y = h * -0.6},   pos2 = {x = w * 1.3,         y = h * -1.25}},
             {row = true, randOffset = true, name = "rock", pos = {x = w * 1.35,          y = h * -1.3},   pos2 = {x = w * 1.75,         y = h * -1.6}},
