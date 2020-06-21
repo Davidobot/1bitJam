@@ -6,7 +6,7 @@ t.enemyRef = nil
 
 t.currentLevel = 0
 t.data = {
-    -- level 1
+    -- level 1: the race
     {
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
@@ -39,7 +39,7 @@ t.data = {
 
         end
     },
-    -- level 2
+    -- level 2: pirates
     {
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
@@ -65,7 +65,7 @@ t.data = {
 
         end
     },
-    -- level 3
+    -- level 3: storm
     {
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
