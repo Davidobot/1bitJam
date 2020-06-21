@@ -30,6 +30,14 @@ function Boat:kill(n)
     table.insert(self.dead, n)
 
     -- TODO: if #self.dead == 8, then go to GAMEOVER screen
+    if #self.dead == 8 then
+        -- TODO: play sound
+        camera:fade(1, {0, 0, 0, 1})
+        local t = {t = 0}
+        flux.to(t, 1.1, {t= 1}):oncomplete(function()
+            lovelyMoon.switchState("game", "gameover")
+        end)
+    end
 end
 
 function Boat:killSomeone()

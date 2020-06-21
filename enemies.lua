@@ -58,6 +58,7 @@ function t.spawnEnemy(name, x, y)
         newEnemy.g.g = anim8.newGrid(newEnemy.g.w, newEnemy.g.h, newEnemy.g.img:getWidth(), newEnemy.g.img:getHeight())
         newEnemy.g.t = 0.3; newEnemy.g.n = 3
         newEnemy.g.anim = anim8.newAnimation(newEnemy.g.g('1-'..newEnemy.g.n, 1), newEnemy.g.t * love.math.random(0.8, 1.2))
+        newEnemy.attackCoolDown = 0
     elseif newEnemy.name == "seagull" then
 
     elseif newEnemy.name == "boss" then
@@ -141,20 +142,23 @@ function t.update(dt)
 
             v.pos.x = v.pos.x + dir.x * t.tentacle_speed * dt
             v.pos.y = v.pos.y + dir.y * t.tentacle_speed * dt
+
+            v.attackCoolDown = math.max(0, v.attackCoolDown - dt)
+
+            -- Physical collision
+            if math.dist(v.pos.x, v.pos.y, t.playerBoatRef.pos.x, t.playerBoatRef.pos.y) <  v.g.w*3/4 and v.attackCoolDown <= 0 then
+                camera:shake(10, 1, 60)
+                t.playerBoatRef.mov.current.speed = 50
+                t.playerBoatRef.mov.forward_speed = 0
+                t.playerBoatRef.mov.current.rot = math.atan2(t.playerBoatRef.pos.y - v.pos.y , t.playerBoatRef.pos.x - v.pos.x)
+                flux.to(t.playerBoatRef.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
+                t.playerBoatRef:killSomeone()
+                v.attackCoolDown = 1
+            end
         elseif v.name == "seagull" then
 
         elseif v.name == "boss" then
     
-        end
-
-        -- Physical collision
-        if math.dist(v.pos.x, v.pos.y, t.playerBoatRef.pos.x, t.playerBoatRef.pos.y) <  (v.g and v.g.w*3/4 or 20) then
-            camera:shake(10, 1, 60)
-            t.playerBoatRef.mov.current.speed = 50
-            t.playerBoatRef.mov.forward_speed = 0
-            t.playerBoatRef.mov.current.rot = math.atan2(t.playerBoatRef.pos.y - v.pos.y , t.playerBoatRef.pos.x - v.pos.x)
-            flux.to(t.playerBoatRef.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
-            t.playerBoatRef:killSomeone()
         end
     end
 end
