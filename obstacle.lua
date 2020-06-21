@@ -33,7 +33,7 @@ function Obstacles.draw()
 end
 
 function Obstacles.clearObstacles()
-    table.clear(Obstacles.t)
+    Obstacles.t = {}
 end
 
 return Obstacles
