@@ -19,6 +19,8 @@ Enemies = require "enemies"
 stormy = true
 local time_til_next_light = 0
 
+local paused = false
+
 function state:new()
 	return lovelyMoon.new(self)
 end
@@ -51,26 +53,28 @@ function state:disable()
 end
 
 function state:update(dt)
-	camera:update(dt)
-    drumControls.update(dt)
+    if (paused == false) then
+        camera:update(dt)
+        drumControls.update(dt)
 
-    Particles.update(dt)
-    Obstacles.update(dt)
-    Enemies.update(dt)
+        Particles.update(dt)
+        Obstacles.update(dt)
+        Enemies.update(dt)
 
-    if stormy then
-        time_til_next_light = time_til_next_light - dt
-        if time_til_next_light <= 0 then
-            time_til_next_light = love.math.random(2, 10)
-            camera:flash(0.05, {1, 1, 1, 1})
-            -- TODO: Add thunder noise
+        if stormy then
+            time_til_next_light = time_til_next_light - dt
+            if time_til_next_light <= 0 then
+                time_til_next_light = love.math.random(2, 10)
+                camera:flash(0.05, {1, 1, 1, 1})
+                -- TODO: Add thunder noise
+            end
         end
+
+        player_boat:update(dt)
+        camera:follow(player_boat.pos.x, player_boat.pos.y)
+
+        level.update(dt)
     end
-
-    player_boat:update(dt)
-    camera:follow(player_boat.pos.x, player_boat.pos.y)
-
-    level.update(dt)
 end
 
 function state:draw()
@@ -112,9 +116,17 @@ function state:draw()
     love.graphics.draw(screen, 0, 0, 0, cur_w/w, cur_h/h)
     love.graphics.draw(drumScreen, cur_w/2, 0, 0, cur_w/w, cur_h/h)
     love.graphics.setBlendMode('alpha')
+
+    if (paused) then
+        
+    end
 end
 
 function state:keypressed(key, unicode)
+    if key == "escape" then
+        paused = not paused
+        love.mouse.setGrabbed(not paused)
+    end
 end
 
 function state:keyreleased(key, unicode)
