@@ -10,6 +10,8 @@ require "lib/utils"
 flux = require "lib/flux"
 anim8 = require 'lib/anim8'
 
+cur_level = 1
+
 function love.load()
 	states.title = lovelyMoon.addState("states.title", "title")
 	states.intro = lovelyMoon.addState("states.intro", "intro")

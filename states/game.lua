@@ -5,15 +5,16 @@ Particles = require "particles"
 Obstacles = require "obstacle"
 
 local Camera = require 'lib/Camera'
-local Boat = require "boat"
+Boat = require "boat"
 
 local screen = love.graphics.newCanvas(w/2, h)
 local drumScreen = love.graphics.newCanvas(w/2, h)
-local boat = Boat()
+player_boat = Boat()
+player_boat.isPlayer = true
 local drumControls = require "drumControls"
 
-local level = require "level"
-local Enemies = require "enemies"
+level = require "level"
+Enemies = require "enemies"
 
 local stormy = true
 local time_til_next_light = 0
@@ -28,14 +29,11 @@ function state:load()
     camera:setFollowLead(40)
     camera:setFollowStyle('TOPDOWN_TIGHT')
 
-    drumControls.init(boat)
+    drumControls.init(player_boat)
 
     --for i=1, 100 do
     --    Obstacles.new(love.math.random(-w, w), love.math.random(-h, h), "rock")
     --end
-
-    level.init(Obstacles, boat, Enemies)
-    Enemies.init(boat, Boat)
 end
 
 function state:close()
@@ -43,7 +41,9 @@ function state:close()
 end
 
 function state:enable()
-	level.loadLevel(1)
+    level.init(Obstacles, player_boat, Enemies)
+    Enemies.init(player_boat, Boat)
+    level.loadLevel(cur_level)
 end
 
 function state:disable()
@@ -67,8 +67,8 @@ function state:update(dt)
         end
     end
 
-    boat:update(dt)
-    camera:follow(boat.pos.x, boat.pos.y)
+    player_boat:update(dt)
+    camera:follow(player_boat.pos.x, player_boat.pos.y)
 
     level.update(dt)
 end
@@ -87,7 +87,7 @@ function state:draw()
             Obstacles.draw()
             Enemies.draw()
             Particles.draw()
-            boat:draw()
+            player_boat:draw()
 
             -- Actually render
             sortedDraw()
@@ -115,9 +115,7 @@ function state:draw()
 end
 
 function state:keypressed(key, unicode)
-    for i=1,10 do
-        Particles.new(boat.pos.x, boat.pos.y, "fire", true)
-    end
+    player_boat:killSomeone()
 end
 
 function state:keyreleased(key, unicode)

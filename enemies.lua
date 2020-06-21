@@ -27,11 +27,11 @@ t.pirate_seeDistance = w * 1.5
 t.pirate_fireTimer = 3
 t.pirate_paddleTimer = 0.2
 
-t.playerBoatRef = nil
+player_boat = nil
 t.boatClassRef = nil
 
 function t.init(playerBoat, BoatClass)
-    t.playerBoatRef = playerBoat
+    player_boat = playerBoat
     t.boatClassRef = BoatClass
 end
 

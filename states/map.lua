@@ -10,14 +10,12 @@ local font20
 local pointer_img
 local text
 local buttons
-local unlocked_levels
 
 local anim8 = require 'lib/anim8'
 local maps = {}
 
 
 function state:load()
-    unlocked_levels = 1
     font20 = love.graphics.newFont("PERTILI.TTF", 20, "mono")
 
     pointer_img = love.graphics.newImage("gfx/pointer.png")
@@ -74,7 +72,7 @@ function state:disable()
 end
 
 function state:update(dt)
-    maps[unlocked_levels].anim:update(dt)
+    maps[cur_level].anim:update(dt)
     
     local mouseX = love.mouse.getX() / love.graphics.getWidth() * w
     local mouseY = love.mouse.getY() / love.graphics.getHeight() * h
@@ -108,7 +106,7 @@ function state:draw()
     love.graphics.setCanvas(screen)
     love.graphics.clear()
 
-    local i = maps[unlocked_levels]
+    local i = maps[cur_level]
     i.anim:draw(i.img, (w - i.w - 1)/2, (h - i.h - 1)/2)
 
     for i,v in ipairs(text) do

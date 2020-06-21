@@ -24,13 +24,14 @@ function Boat:new()
 
     -- 0,3 on left, 4 to 7 on right
     self.dead = {}
+    self.isPlayer = false
 end
 
 function Boat:kill(n)
     table.insert(self.dead, n)
 
     -- TODO: if #self.dead == 8, then go to GAMEOVER screen
-    if #self.dead == 8 then
+    if #self.dead == 8 and self.isPlayer then
         -- TODO: play sound
         camera:fade(1, {0, 0, 0, 1})
         local t = {t = 0}
@@ -50,6 +51,23 @@ function Boat:killSomeone()
         if not contains(self.dead, t) then
             self:kill(t)
             return
+        end
+    end
+end
+
+function Boat:fire()
+    local len = 15
+    for i=1, len do
+        local dx = (i*6 + 36) * math.cos(player_boat.pos.rot)
+        local dy = (i*6 + 36) * math.sin(player_boat.pos.rot)
+        Particles.new(0, 0, "fire", true, function()
+            return player_boat.pos.x + dx, player_boat.pos.y + dy
+        end, love.math.random(0, math.pi/2), math.random(0.8 + (i/len), 1 + 2*(i/len)))
+
+        for i,v in ipairs(Enemies.data) do
+            if math.dist(player_boat.pos.x + dx, player_boat.pos.y + dy, v.pos.x, v.pos.y) < v.w then
+                print("HI")
+            end
         end
     end
 end
