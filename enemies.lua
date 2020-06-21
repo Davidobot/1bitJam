@@ -126,6 +126,10 @@ function t.enemies.racer:onDraw(enemies)
     self.boat:draw()
 end
 
+function t.enemies.racer:onTakeDamage(enemies)
+
+end
+
 function t.enemies.racer:onDestroy(enemies)
     self.boat.pos = nil
     self.boat = nil
@@ -135,6 +139,8 @@ end
 --! Pirate
 ------------------------------------------------
 t.enemies.pirate = Object:extend()
+t.enemies.pirate.burning_particleRate = 30
+t.enemies.pirate.burning_particleRect = {w = 20, h = 40}
 
 function t.enemies.pirate:onStart(enemies)
     self.boat = enemies.boatClassRef()
@@ -142,47 +148,53 @@ function t.enemies.pirate:onStart(enemies)
     self.boat.pos.y = self.pos.y
     self.fireT = enemies.pirate_fireTimer
     self.paddleT = enemies.pirate_paddleTimer
+    self.state = "alive"
 end
 
 function t.enemies.pirate:onUpdate(enemies, dt)
-    if self.paddleT > 0 then
-        self.paddleT = self.paddleT - dt
-    end
-
-    -- Calculate angle difference between the directions of the boat and the players
-    local v1 = {x=math.cos(self.boat.pos.rot), y=math.sin(self.boat.pos.rot)}
-    local b = math.atan2(player_boat.pos.y - self.boat.pos.y, player_boat.pos.x - self.boat.pos.x)
-    local v2 = {x=math.cos(b), y=math.sin(b)}
-    local a = math.deg(math.acos((v1.x*v2.x + v1.y*v2.y) / (((v1.x^2 + v1.y^2)^0.5) * ((v2.x^2 + v2.y^2)^0.5))))
-    if math.angleDifference(b, self.boat.pos.rot) < 0 then a = -a end
-    
-    local dist = math.dist(player_boat.pos.x, player_boat.pos.y, self.boat.pos.x, self.boat.pos.y)
-    if (dist > enemies.pirate_seeDistance) then --pirate is too far to see the player so it's not interested in doing anything
-        --do nothing lol
-    elseif (dist > enemies.pirate_closeDistance) then --pirate is pretty far so it attempts to face the player and paddle towards them
-        local left = a < 0
-        if self.paddleT <= 0 then
-            self.paddleT = enemies.pirate_paddleTimer
-            self.boat:paddle(left)
-        end
-    elseif (dist <= enemies.pirate_closeDistance) then --pirate is pretty close so it tries to turn its side towards the player as an attempt to aim and fire with its cannons
-        local left
-        local thershold = 2
-        if a >= 0 and a <= 90 - thershold then
-            left = true
-        elseif a > 90 + thershold and a <= 180 then
-            left = false
-        elseif a >= -180 and a <= -90 - thershold then
-            left = true
-        elseif a > -90 + thershold and a <= 0 then
-            left = false
+    if self.state == "alive" then
+        if self.paddleT > 0 then
+            self.paddleT = self.paddleT - dt
         end
 
-        if self.paddleT <= 0 and left ~= nil then
-            self.paddleT = enemies.pirate_paddleTimer
-            self.boat:paddle(left)
-        end           
+        -- Calculate angle difference between the directions of the boat and the players
+        local v1 = {x=math.cos(self.boat.pos.rot), y=math.sin(self.boat.pos.rot)}
+        local b = math.atan2(player_boat.pos.y - self.boat.pos.y, player_boat.pos.x - self.boat.pos.x)
+        local v2 = {x=math.cos(b), y=math.sin(b)}
+        local a = math.deg(math.acos((v1.x*v2.x + v1.y*v2.y) / (((v1.x^2 + v1.y^2)^0.5) * ((v2.x^2 + v2.y^2)^0.5))))
+        if math.angleDifference(b, self.boat.pos.rot) < 0 then a = -a end
+        
+        local dist = math.dist(player_boat.pos.x, player_boat.pos.y, self.boat.pos.x, self.boat.pos.y)
+        if (dist > enemies.pirate_seeDistance) then --pirate is too far to see the player so it's not interested in doing anything
+            --do nothing lol
+        elseif (dist > enemies.pirate_closeDistance) then --pirate is pretty far so it attempts to face the player and paddle towards them
+            local left = a < 0
+            if self.paddleT <= 0 then
+                self.paddleT = enemies.pirate_paddleTimer
+                self.boat:paddle(left)
+            end
+        elseif (dist <= enemies.pirate_closeDistance) then --pirate is pretty close so it tries to turn its side towards the player as an attempt to aim and fire with its cannons
+            local left
+            local thershold = 2
+            if a >= 0 and a <= 90 - thershold then
+                left = true
+            elseif a > 90 + thershold and a <= 180 then
+                left = false
+            elseif a >= -180 and a <= -90 - thershold then
+                left = true
+            elseif a > -90 + thershold and a <= 0 then
+                left = false
+            end
+
+            if self.paddleT <= 0 and left ~= nil then
+                self.paddleT = enemies.pirate_paddleTimer
+                self.boat:paddle(left)
+            end           
+        end
+    elseif self.state == "burning" then
+
     end
+
     self.boat:update(dt)
 
     self.pos.x = self.boat.pos.x
@@ -207,6 +219,10 @@ function t.enemies.pirate:onDraw(enemies)
     love.graphics.circle("line", self.boat.pos.x, self.boat.pos.y, 40)
     love.graphics.circle("line", self.boat.pos.x, self.boat.pos.y, 50)
     love.graphics.setColor(1,1,1)
+end
+
+function t.enemies.pirate:onTakeDamage(enemies)
+    self.state = "burning"
 end
 
 function t.enemies.pirate:onDestroy(enemies)
