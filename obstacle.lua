@@ -4,7 +4,7 @@ Obstacles.t = {}
 
 local imgs = {
     rock = love.graphics.newImage("gfx/rocks.png"),
-    tentacle = love.graphics.newImage("gfx/tentacle.png")
+    rock2 = love.graphics.newImage("gfx/rock2.png")
 }
 
 ---@param type string

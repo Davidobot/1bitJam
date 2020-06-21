@@ -101,7 +101,7 @@ end
 
 ---@param left boolean
 function Boat:paddle(left, strength)
-    strength = strength or 0
+    strength = strength or 1
     local alive = 4
     for i=(left and 4 or 0), (left and 7 or 3) do
         if contains(self.dead, i) then
