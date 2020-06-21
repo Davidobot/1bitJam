@@ -99,7 +99,8 @@ t.data = {
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
-            
+            {row = true, randOffset = true, name = "rock", pos = {x = w * -5,         y = h * 0},   pos2 = {x = w * -0.15,             y = h * -8}},
+            {row = true, randOffset = true, name = "rock", pos = {x = w * 5,         y = h * 0},   pos2 = {x = w * 0.15,             y = h * -8}},
         },
         enemies = {
             {name = "tentacle", pos = {x = w*-0.1, y = h*0.15}},
@@ -109,12 +110,63 @@ t.data = {
             {name = "tentacle", pos = {x = w*0.3, y = h*0.25}},
             {name = "tentacle", pos = {x = w*0.4, y = h*0.2}},
             {name = "tentacle", pos = {x = w*0.5, y = h*0.15}},
+
+            {name = "pirate", pos = {x = w*0, y = h*-2}},
+           --{name = "pirate", pos = {x = w*0.5, y = h*-2}},
+
+            {name = "pirate", pos = {x = w*0, y = h*-5}},
+            --{name = "pirate", pos = {x = w*0.5, y = h*-4}},
         },
         startFunc = function()
-
+            t.tentacleSpawnTimer = 5
+            t.tentacleSurprise = true
+            t.tentacleSurprise2 = true
         end,
         updateFunc = function(dt)
-            
+            t.tentacleSpawnTimer = t.tentacleSpawnTimer - dt
+            if (t.tentacleSpawnTimer <= 0) then
+                t.tentacleSpawnTimer = t.tentacleSpawnTimer + 4
+                local randomRot = (math.pi * 2) * love.math.random()
+                local posX = player_boat.pos.x + math.cos(randomRot) * w / 3
+                local posY = player_boat.pos.y + math.sin(randomRot) * w / 3
+
+                t.enemyRef.spawnEnemy("tentacle", posX, posY)
+            end
+            if (t.tentacleSurprise == true and player_boat.pos.y < h*-3) then
+                t.tentacleSurprise = false
+
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.5, player_boat.pos.y + h*-0)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.45, player_boat.pos.y + h*-0.1)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.4, player_boat.pos.y + h*-0.2)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.35, player_boat.pos.y + h*-0.3)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.3, player_boat.pos.y + h*-0.4)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.25, player_boat.pos.y + h*-0.5)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.2, player_boat.pos.y + h*-0.6)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.15, player_boat.pos.y + h*-0.7)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.1, player_boat.pos.y + h*-0.8)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*-0.05, player_boat.pos.y + h*-0.9)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0, player_boat.pos.y + h*-1)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.05, player_boat.pos.y + h*-1.1)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.1, player_boat.pos.y + h*-1.2)
+            end
+
+            if (t.tentacleSurprise2 == true and player_boat.pos.y < h*-5) then
+                t.tentacleSurprise2 = false
+
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.5, player_boat.pos.y + h*-0)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.45, player_boat.pos.y + h*-0.1)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.4, player_boat.pos.y + h*-0.2)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.35, player_boat.pos.y + h*-0.3)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.3, player_boat.pos.y + h*-0.4)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.25, player_boat.pos.y + h*-0.5)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.2, player_boat.pos.y + h*-0.6)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.15, player_boat.pos.y + h*-0.7)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.1, player_boat.pos.y + h*-0.8)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.05, player_boat.pos.y + h*-0.9)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0, player_boat.pos.y + h*-1)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.05, player_boat.pos.y + h*-1.1)
+                t.enemyRef.spawnEnemy("tentacle", player_boat.pos.x + w*0.1, player_boat.pos.y + h*-1.2)
+            end
         end,
         endFunc = function()
 
