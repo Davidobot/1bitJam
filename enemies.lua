@@ -264,7 +264,12 @@ function t.enemies.pirate:onUpdate(enemies, dt)
 
                 --todo assuming the particle pos is right, spawn a particle there!
                 Particles.new(0, 0, "fire", true, function()
-                    return self.boat.pos.x + x, self.boat.pos.y + y
+                    if self.boat then
+                        if self.boat.pos then
+                            return self.boat.pos.x + x, self.boat.pos.y + y
+                        end
+                    end
+                    return 0, 0
                 end)
             end
         end
@@ -360,7 +365,11 @@ function t.enemies.tentacle:onUpdate(enemies, dt)
 
                 --todo assuming the particle pos is right, spawn a particle there!
                 Particles.new(0, 0, "fire", true, function()
-                    return self.pos.x + dx, self.pos.y + dy
+                    if self.pos then
+                        return self.pos.x + dx, self.pos.y + dy
+                    else
+                        return 0, 0
+                    end
                 end)
             end
         end
