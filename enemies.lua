@@ -152,7 +152,7 @@ end
 ------------------------------------------------
 t.enemies.pirate = Object:extend()
 t.enemies.pirate.burning_particleRate = 30
-t.enemies.pirate.burning_particleRect = {w = 20, h = 40}
+t.enemies.pirate.burning_particleRect = {w = 30, h = 90}
 t.enemies.pirate.burning_deathTimer = 5
 
 function t.enemies.pirate:onStart(enemies)
@@ -210,11 +210,16 @@ function t.enemies.pirate:onUpdate(enemies, dt)
         self.burning_particleTimer = self.burning_particleTimer - dt
         if (self.burning_particleTimer <= 0) then
             self.burning_particleTimer = self.burning_particleTimer + (1 / enemies.enemies.pirate.burning_particleRate)
-            local particlePos = {x = self.boat.pos.x, y = self.boat.pos.y}
-            particlePos.x = particlePos.x + math.cos(self.boat.pos.rot) * (enemies.enemies.pirate.burning_particleRect.w * love.math.random(-1, 1))
-            particlePos.y = particlePos.y + math.sin(self.boat.pos.rot) * (enemies.enemies.pirate.burning_particleRect.h * love.math.random(-1, 1))
+            for i = 1, 10 do 
+                local particlePos = {x = self.boat.pos.x, y = self.boat.pos.y}
+                particlePos.x = particlePos.x + math.cos(self.boat.pos.rot) * (enemies.enemies.pirate.burning_particleRect.w * (love.math.random() - 0.5)*2)
+                particlePos.y = particlePos.y + math.sin(self.boat.pos.rot) * (enemies.enemies.pirate.burning_particleRect.h * (love.math.random() - 0.5)*2)
 
-            --todo assuming the particle pos is right, spawn a particle there!
+                --todo assuming the particle pos is right, spawn a particle there!
+                Particles.new(0, 0, "fire", true, function()
+                    return particlePos.x, particlePos.y
+                end)
+            end
         end
         self.burning_deathTimer = self.burning_deathTimer - dt
         if (self.burning_deathTimer <= 0) then

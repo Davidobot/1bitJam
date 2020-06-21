@@ -21,7 +21,7 @@ function love.load()
 	states.map = lovelyMoon.addState("states.map", "map")
 	states.gameover = lovelyMoon.addState("states.gameover", "gameover")
 	
-	lovelyMoon.enableState("title")
+	lovelyMoon.enableState("game")
 end
 
 function love.update(dt)
