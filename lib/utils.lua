@@ -41,6 +41,10 @@ function math.sign(n) return n>0 and 1 or n<0 and -1 or 0 end
 -- Gives a precise random decimal number given a minimum and maximum
 function math.prandom(min, max) return love.math.random() * (max - min) + min end
 
+function math.angleDifference(t1, t2)
+	return (t1 - t2 + math.pi) % (math.pi * 2) - math.pi
+ end
+
 -- GRAPHICS --
 function isVisible(x, y, ww, hh)
 	return x + ww >= 0 and y + hh >= 0 and x <= w and y <= h

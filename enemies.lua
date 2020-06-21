@@ -23,9 +23,9 @@ t.tentacle_img = love.graphics.newImage("gfx/tentacle.png")
 t.tentacle_speed = 10
 
 t.pirate_closeDistance = w / 4
-t.pirate_seeDistance = w * 0.75
+t.pirate_seeDistance = w * 1.5
 t.pirate_fireTimer = 3
-t.pirate_paddleTimer = 1
+t.pirate_paddleTimer = 0.2
 
 t.playerBoatRef = nil
 t.boatClassRef = nil
@@ -96,36 +96,42 @@ function t.update(dt)
             if v.paddleT > 0 then
                 v.paddleT = v.paddleT - dt
             end
-            v.boat:update(dt)
 
+            -- Calculate angle difference between the directions of the boat and the players
+            local v1 = {x=math.cos(v.boat.pos.rot), y=math.sin(v.boat.pos.rot)}
+            local b = math.atan2(t.playerBoatRef.pos.y - v.boat.pos.y, t.playerBoatRef.pos.x - v.boat.pos.x)
+            local v2 = {x=math.cos(b), y=math.sin(b)}
+            local a = math.deg(math.acos((v1.x*v2.x + v1.y*v2.y) / (((v1.x^2 + v1.y^2)^0.5) * ((v2.x^2 + v2.y^2)^0.5))))
+            if math.angleDifference(b, v.boat.pos.rot) < 0 then a = -a end
+            
             local dist = math.dist(t.playerBoatRef.pos.x, t.playerBoatRef.pos.y, v.boat.pos.x, v.boat.pos.y)
             if (dist > t.pirate_seeDistance) then --pirate is too far to see the player so it's not interested in doing anything
                 --do nothing lol
             elseif (dist > t.pirate_closeDistance) then --pirate is pretty far so it attempts to face the player and paddle towards them
-                local angle = math.atan2(t.playerBoatRef.pos.y - v.boat.pos.y, t.playerBoatRef.pos.y - v.boat.pos.x)
-                local left = angle < 0
+                local left = a < 0
                 if v.paddleT <= 0 then
                     v.paddleT = t.pirate_paddleTimer
                     v.boat:paddle(left)
                 end
-            else --pirate is pretty close so it tries to turn its side towards the player as an attempt to aim and fire with its cannons
-                local angle = math.atan2(t.playerBoatRef.pos.y - v.boat.pos.y, t.playerBoatRef.pos.y - v.boat.pos.x)
+            elseif (dist <= t.pirate_closeDistance) then --pirate is pretty close so it tries to turn its side towards the player as an attempt to aim and fire with its cannons
                 local left
-                if angle < -math.pi * 0.5 then
-                    left = false
-                elseif angle < 0 then
+                local thershold = 2
+                if a >= 0 and a <= 90 - thershold then
                     left = true
-                elseif angle < math.pi * 0.5 then
+                elseif a > 90 + thershold and a <= 180 then
                     left = false
-                else
+                elseif a >= -180 and a <= -90 - thershold then
                     left = true
+                elseif a > -90 + thershold and a <= 0 then
+                    left = false
                 end
 
-                if v.paddleT <= 0 then
+                if v.paddleT <= 0 and left ~= nil then
                     v.paddleT = t.pirate_paddleTimer
                     v.boat:paddle(left)
                 end           
             end
+            v.boat:update(dt)
         elseif v.name == "tentacle" then
             v.g.anim:update(dt)
             local dir = {x = t.playerBoatRef.pos.x - v.pos.x, y = t.playerBoatRef.pos.y - v.pos.y}

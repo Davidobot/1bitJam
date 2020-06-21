@@ -2,7 +2,7 @@
 
 local t = Object:extend()
 
-love.mouse.setVisible(false)
+--love.mouse.setVisible(false)
 --love.mouse.setGrabbed(true)
 
 t.drumstick_pos = {x = w * 0.75, y = h * 0.5}
@@ -87,7 +87,7 @@ function t.update(dt)
         mouseX = math.max(math.min(mouseX, t.drumstick_maxPos.x), t.drumstick_minPos.x)
         mouseY = math.max(math.min(mouseY, t.drumstick_maxPos.y), t.drumstick_minPos.y)
         
-        love.mouse.setPosition(mouseX / w * love.graphics.getWidth(), mouseY / h * love.graphics.getHeight())
+        --love.mouse.setPosition(mouseX / w * love.graphics.getWidth(), mouseY / h * love.graphics.getHeight())
     end
 
     --if (mouseX >= t.drumstick_minPos.x and mouseX <= t.drumstick_maxPos.x and
