@@ -112,12 +112,12 @@ end
 
 function t.enemies.racer:onUpdate(enemies, dt)
     if (self.moving == false) then
-        if (self.playerBoatRef.pos.y < self.boat.pos.y) then
+        if (player_boat.pos.y < self.boat.pos.y) then
             self.moving = true
         end
     else
         if (self.paddleIndex <= #enemies.racer_paddles) then
-            self.t = v.t + dt
+            self.t = self.t + dt
             if (self.t >= enemies.racer_paddles[self.paddleIndex].t) then
                 self.boat:paddle(enemies.racer_paddles[self.paddleIndex].left)
                 self.t = self.t - enemies.racer_paddles[self.paddleIndex].t

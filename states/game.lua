@@ -16,7 +16,7 @@ local drumControls = require "drumControls"
 level = require "level"
 Enemies = require "enemies"
 
-local stormy = true
+stormy = true
 local time_til_next_light = 0
 
 function state:new()
