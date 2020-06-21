@@ -41,7 +41,7 @@ function state:load()
             txt = text[2].s,
             hovered = false,
             onClick = function()
-                -- TODO: setup level again
+                camera:fade(0.5, {0, 0, 0, 0})
                 lovelyMoon.switchState("gameover", "game")
             end
         }

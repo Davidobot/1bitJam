@@ -24,13 +24,14 @@ function Boat:new()
 
     -- 0,3 on left, 4 to 7 on right
     self.dead = {}
+    self.isPlayer = false
 end
 
 function Boat:kill(n)
     table.insert(self.dead, n)
 
     -- TODO: if #self.dead == 8, then go to GAMEOVER screen
-    if #self.dead == 8 then
+    if #self.dead == 8 and self.isPlayer then
         -- TODO: play sound
         camera:fade(1, {0, 0, 0, 1})
         local t = {t = 0}

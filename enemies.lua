@@ -27,11 +27,11 @@ t.pirate_seeDistance = w * 1.5
 t.pirate_fireTimer = 3
 t.pirate_paddleTimer = 0.2
 
-t.playerBoatRef = nil
+player_boat = nil
 t.boatClassRef = nil
 
 function t.init(playerBoat, BoatClass)
-    t.playerBoatRef = playerBoat
+    player_boat = playerBoat
     t.boatClassRef = BoatClass
 end
 
@@ -58,12 +58,12 @@ function t.spawnEnemy(name, x, y)
         newEnemy.g.g = anim8.newGrid(newEnemy.g.w, newEnemy.g.h, newEnemy.g.img:getWidth(), newEnemy.g.img:getHeight())
         newEnemy.g.t = 0.3; newEnemy.g.n = 3
         newEnemy.g.anim = anim8.newAnimation(newEnemy.g.g('1-'..newEnemy.g.n, 1), newEnemy.g.t * love.math.random(0.8, 1.2))
-        newEnemy.attackCoolDown = 0
     elseif newEnemy.name == "seagull" then
 
     elseif newEnemy.name == "boss" then
 
     end
+    newEnemy.attackCoolDown = 0
     
     table.insert(t.data, newEnemy)
 end
@@ -79,7 +79,7 @@ function t.update(dt)
     for i,v in ipairs(t.data) do
         if v.name == "racer" then
             if (v.moving == false) then
-                if (t.playerBoatRef.pos.y < v.boat.pos.y) then
+                if (player_boat.pos.y < v.boat.pos.y) then
                     v.moving = true
                 end
             else
@@ -100,12 +100,12 @@ function t.update(dt)
 
             -- Calculate angle difference between the directions of the boat and the players
             local v1 = {x=math.cos(v.boat.pos.rot), y=math.sin(v.boat.pos.rot)}
-            local b = math.atan2(t.playerBoatRef.pos.y - v.boat.pos.y, t.playerBoatRef.pos.x - v.boat.pos.x)
+            local b = math.atan2(player_boat.pos.y - v.boat.pos.y, player_boat.pos.x - v.boat.pos.x)
             local v2 = {x=math.cos(b), y=math.sin(b)}
             local a = math.deg(math.acos((v1.x*v2.x + v1.y*v2.y) / (((v1.x^2 + v1.y^2)^0.5) * ((v2.x^2 + v2.y^2)^0.5))))
             if math.angleDifference(b, v.boat.pos.rot) < 0 then a = -a end
             
-            local dist = math.dist(t.playerBoatRef.pos.x, t.playerBoatRef.pos.y, v.boat.pos.x, v.boat.pos.y)
+            local dist = math.dist(player_boat.pos.x, player_boat.pos.y, v.boat.pos.x, v.boat.pos.y)
             if (dist > t.pirate_seeDistance) then --pirate is too far to see the player so it's not interested in doing anything
                 --do nothing lol
             elseif (dist > t.pirate_closeDistance) then --pirate is pretty far so it attempts to face the player and paddle towards them
@@ -139,30 +139,33 @@ function t.update(dt)
 
         elseif v.name == "tentacle" then
             v.g.anim:update(dt)
-            local dir = {x = t.playerBoatRef.pos.x - v.pos.x, y = t.playerBoatRef.pos.y - v.pos.y}
+            local dir = {x = player_boat.pos.x - v.pos.x, y = player_boat.pos.y - v.pos.y}
             local magnitude = math.abs(dir.x) + math.abs(dir.y)
             dir.x = dir.x / magnitude
             dir.y = dir.y / magnitude
 
             v.pos.x = v.pos.x + dir.x * t.tentacle_speed * dt
-            v.pos.y = v.pos.y + dir.y * t.tentacle_speed * dt
-
-            v.attackCoolDown = math.max(0, v.attackCoolDown - dt)
-
-            -- Physical collision
-            if math.dist(v.pos.x, v.pos.y, t.playerBoatRef.pos.x, t.playerBoatRef.pos.y) <  v.g.w*3/4 and v.attackCoolDown <= 0 then
-                camera:shake(10, 1, 60)
-                t.playerBoatRef.mov.current.speed = 50
-                t.playerBoatRef.mov.forward_speed = 0
-                t.playerBoatRef.mov.current.rot = math.atan2(t.playerBoatRef.pos.y - v.pos.y , t.playerBoatRef.pos.x - v.pos.x)
-                flux.to(t.playerBoatRef.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
-                t.playerBoatRef:killSomeone()
-                v.attackCoolDown = 1
-            end
+            v.pos.y = v.pos.y + dir.y * t.tentacle_speed * dt            
         elseif v.name == "seagull" then
 
         elseif v.name == "boss" then
     
+        end
+
+        v.attackCoolDown = math.max(0, v.attackCoolDown - dt)
+        -- Physical collision
+        if math.dist(v.pos.x, v.pos.y, player_boat.pos.x, player_boat.pos.y) <  (v.g and v.g.w*3/4 or 30) and v.attackCoolDown <= 0 then
+            camera:shake(10, 1, 60)
+            player_boat.mov.current.speed = 50
+            player_boat.mov.forward_speed = 0
+            player_boat.mov.current.rot = math.atan2(player_boat.pos.y - v.pos.y , player_boat.pos.x - v.pos.x)
+            flux.to(player_boat.mov.current, 4, {speed = 0, rot = 0}):ease("quadout")
+            player_boat:killSomeone()
+            v.attackCoolDown = 1
+
+            if v.boat then
+                v.boat:killSomeone()
+            end
         end
     end
 end
@@ -176,7 +179,7 @@ function t.draw()
             v.boat:draw()
 
             --debug distances
-            local dist = math.dist(t.playerBoatRef.pos.x, t.playerBoatRef.pos.y, v.pos.x, v.pos.y)
+            local dist = math.dist(player_boat.pos.x, player_boat.pos.y, v.pos.x, v.pos.y)
             local debugColor
             if (dist > t.pirate_seeDistance) then
                 debugColor = {1, 0, 0}

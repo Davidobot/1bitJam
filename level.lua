@@ -95,7 +95,7 @@ t.data = {
 
 function t.init(obstacle, playerBoat, enemies)
     t.obstacleRef = obstacle
-    t.playerBoatRef = playerBoat
+    --t.playerBoatRef = playerBoat
     t.enemyRef = enemies
 end
 
@@ -115,15 +115,17 @@ end
 
 function t.endCurrentLevel()
     if (t.currentLevel < 1 or t.currentLevel > #t.data) then return end
-    t.obstacleRef.clearObstacles()
+    Obstacles.clearObstacles()
     t.enemyRef.clearEnemies()
 
     t.data[t.currentLevel].endFunc()
 end
 
 function t.startCurrentLevel()
-    t.playerBoatRef.pos.x = t.data[t.currentLevel].startPos.x
-    t.playerBoatRef.pos.y = t.data[t.currentLevel].startPos.y
+    player_boat = Boat()
+    player_boat.isPlayer = true
+    player_boat.pos.x = t.data[t.currentLevel].startPos.x
+    player_boat.pos.y = t.data[t.currentLevel].startPos.y
 
     for i,v in ipairs(t.data[t.currentLevel].obstacles) do
         t.obstacleRef.new(v.pos.x, v.pos.y, v.name)
