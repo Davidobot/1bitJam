@@ -76,6 +76,18 @@ function t.update(dt)
             end
         end
     end
+
+    --destroy all enemies that are marked "dead"
+    local i = 1
+    while i <= #t.data do
+        if (t.data[i].dead == true) then
+            t.data[i].pos = nil
+            t.data[i]:onDestroy(t)
+            table.remove(t, i)
+        else
+            i = i + 1
+        end
+    end
 end
 
 function t.draw()
@@ -126,8 +138,8 @@ function t.enemies.racer:onDraw(enemies)
     self.boat:draw()
 end
 
-function t.enemies.racer:onTakeDamage(enemies)
-
+function t.enemies.racer:takeDamage(enemies)
+    --racer never engaged the player in combat, so it can just ignore damage
 end
 
 function t.enemies.racer:onDestroy(enemies)
@@ -141,6 +153,7 @@ end
 t.enemies.pirate = Object:extend()
 t.enemies.pirate.burning_particleRate = 30
 t.enemies.pirate.burning_particleRect = {w = 20, h = 40}
+t.enemies.pirate.burning_deathTimer = 5
 
 function t.enemies.pirate:onStart(enemies)
     self.boat = enemies.boatClassRef("pirate")
@@ -149,6 +162,8 @@ function t.enemies.pirate:onStart(enemies)
     self.fireT = enemies.pirate_fireTimer
     self.paddleT = enemies.pirate_paddleTimer
     self.state = "alive"
+    self.burning_particleTimer = 0
+    self.burning_deathTimer = enemies.enemies.pirate.burning_deathTimer
 end
 
 function t.enemies.pirate:onUpdate(enemies, dt)
@@ -192,7 +207,19 @@ function t.enemies.pirate:onUpdate(enemies, dt)
             end           
         end
     elseif self.state == "burning" then
+        self.burning_particleTimer = self.burning_particleTimer - dt
+        if (self.burning_particleTimer <= 0) then
+            self.burning_particleTimer = self.burning_particleTimer + (1 / enemies.enemies.pirate.burning_particleRate)
+            local particlePos = {x = self.boat.pos.x, y = self.boat.pos.y}
+            particlePos.x = particlePos.x + math.cos(self.boat.pos.rot) * (enemies.enemies.pirate.burning_particleRect.w * love.math.random(-1, 1))
+            particlePos.y = particlePos.y + math.sin(self.boat.pos.rot) * (enemies.enemies.pirate.burning_particleRect.h * love.math.random(-1, 1))
 
+            --todo assuming the particle pos is right, spawn a particle there!
+        end
+        self.burning_deathTimer = self.burning_deathTimer - dt
+        if (self.burning_deathTimer <= 0) then
+            self.dead = true
+        end
     end
 
     self.boat:update(dt)
@@ -221,7 +248,7 @@ function t.enemies.pirate:onDraw(enemies)
     love.graphics.setColor(1,1,1)
 end
 
-function t.enemies.pirate:onTakeDamage(enemies)
+function t.enemies.pirate:takeDamage(enemies)
     self.state = "burning"
 end
 
@@ -259,6 +286,10 @@ end
 function t.enemies.tentacle:onDraw(enemies)
     orderedAnimDraw(self.pos.y + self.g.h/2, self.g.anim, self.g.img, self.pos.x, self.pos.y, 0, 1, 1, self.g.w/2, self.g.h/2)
     --enemies.g.anim:draw(enemies.g.img, v.pos.x, v.pos.y, 0, 1, 1, enemies.g.w * 0.5, enemies.g.h * 0.75)
+end
+
+function t.enemies.tentacle:takeDamage(enemies)
+
 end
 
 function t.enemies.tentacle:onDestroy(enemies)
