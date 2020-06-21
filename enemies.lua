@@ -137,7 +137,7 @@ end
 t.enemies.pirate = Object:extend()
 
 function t.enemies.pirate:onStart(enemies)
-    self.boat = enemies.boatClassRef()
+    self.boat = enemies.boatClassRef("pirate")
     self.boat.pos.x = self.pos.x
     self.boat.pos.y = self.pos.y
     self.fireT = enemies.pirate_fireTimer

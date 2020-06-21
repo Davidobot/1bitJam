@@ -2,7 +2,7 @@ local Boat = Object:extend()
 
 Boat.img = {
     img = love.graphics.newImage("gfx/boat.png"),
-    pirate = love.graphics.newImage("gfx/boat.png")
+    pirate = love.graphics.newImage("gfx/pirate.png")
 }
 Boat.deadman = love.graphics.newImage("gfx/deadman.png")
 
@@ -24,7 +24,8 @@ function Boat:new(type)
             rot = 0,
         },
     }
-    self.img = type and Boat .img[type] or Boat.img.img
+    self.img = type and Boat.img[type] or Boat.img.img
+    print(type)
 
     -- 0,3 on left, 4 to 7 on right
     self.dead = {}
