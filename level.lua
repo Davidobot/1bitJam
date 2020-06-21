@@ -74,12 +74,15 @@ t.data = {
             {name = "pirate", pos = {x = w*0.4, y = h*-5}},
             {name = "tentacle", pos = {x = w*-0.5, y = h*-3}},
             {name = "tentacle", pos = {x = w*0.5, y = h*-4}},
+            {name = "tentacle", pos = {x = w*0, y = h*-5}},
         },
         startFunc = function()
 
         end,
         updateFunc = function(dt)
-            
+            if (player_boat.pos.y < h * -5) then
+                lovelyMoon.switchState("game", "afterLvl2")
+            end
         end,
         endFunc = function()
 
@@ -91,16 +94,16 @@ t.data = {
         startPos = {x = w * 0.25, y = 0},
         goalPosY = -99999,
         obstacles = {
-            {name = "rock", pos = {x = 0,         y = 0}},
-            {name = "rock", pos = {x = w*0.5,     y = 0}},
-            {name = "rock", pos = {x = w*0.3,     y = -h*0.25}},
-            {name = "rock", pos = {x = w*0.1,     y = -h*0.5}},
-            {name = "rock", pos = {x = w*0.4,     y = -h*0.6}},
-            {name = "rock", pos = {x = w*0.1,     y = -h*0.65}},
-            {name = "rock", pos = {x = w*0.3,     y = -h*1.2}},
+            
         },
         enemies = {
-            {name = "racer", pos = {x = 0, y = 0}},
+            {name = "tentacle", pos = {x = w*-0.1, y = h*0.15}},
+            {name = "tentacle", pos = {x = w*0, y =   h*0.2}},
+            {name = "tentacle", pos = {x = w*0.1, y = h*0.25}},
+            {name = "tentacle", pos = {x = w*0.2, y = h*0.25}},
+            {name = "tentacle", pos = {x = w*0.3, y = h*0.25}},
+            {name = "tentacle", pos = {x = w*0.4, y = h*0.2}},
+            {name = "tentacle", pos = {x = w*0.5, y = h*0.15}},
         },
         startFunc = function()
 
