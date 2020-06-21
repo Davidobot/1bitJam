@@ -6,17 +6,31 @@ t.data = {
     --{name = "boss", pos = {x = 0, y = 0}}
 }
 
-t.racer_paddles = {
-    {t = 1, left = false},
-    {t = 1, left = true},
-    {t = 2, left = false},
-    {t = 2, left = true},
-    {t = 1, left = false},
+local paddleSpeed = 2.25
 
-    {t = 1, left = false},
-    {t = 1, left = true},
-    {t = 3, left = true},
-    {t = 2, left = false},
+t.racer_paddles = {
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
+    {t = paddleSpeed, left = false}, {t = paddleSpeed, left = true},
 }
 
 t.tentacle_img = love.graphics.newImage("gfx/tentacle.png")
@@ -129,6 +143,10 @@ function t.enemies.racer:onUpdate(enemies, dt)
 
     self.pos.x = self.boat.pos.x
     self.pos.y = self.boat.pos.y
+
+    if (self.boat.pos.y < h * -5.4) then
+        lovelyMoon.switchState("game", "afterLvl1")
+    end
 end
 
 function t.enemies.racer:onDraw(enemies)
